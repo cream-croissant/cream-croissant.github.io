@@ -406,7 +406,24 @@ async function memberLogout() {
   if (error) throw error;
 }
 
+async function 
 async function getCurrentMember() {
+  const { data: sessionData, error: sessionError } =
+    await supabaseClient.auth.getSession();
+
+  if (sessionError) throw sessionError;
+
+  if (!sessionData.session) {
+    return null;
+  }
+
+  const { data, error } =
+    await supabaseClient.auth.getUser();
+
+  if (error) throw error;
+
+  return data.user;
+}
   const { data, error } = await supabaseClient.auth.getUser();
   if (error) throw error;
   return data.user;
