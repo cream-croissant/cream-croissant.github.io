@@ -1,21 +1,98 @@
 <!DOCTYPE html>
-<html lang="zh-Hant"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#faf7f1"><title>奶油可頌團｜Cream Croissant Shop</title>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#faf7f1">
+<title>奶油可頌團｜Cream Croissant Shop</title>
 <style>
 @font-face{font-family:CreamHand;src:url('./cream-font.ttf') format('truetype');font-display:swap}
-:root{--bg:#faf7f1;--paper:#fffdf9;--coffee:#49362b;--brown:#785b47;--milk:#efe5d8;--line:#e5d8c8;--muted:#95816f;--danger:#a64d45;--success:#56765a}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--coffee);font:15px/1.7 system-ui,'PingFang TC',sans-serif}button,input,select,textarea{font:inherit}button{cursor:pointer;border:1px solid var(--coffee);background:var(--coffee);color:#fff;padding:10px 15px;border-radius:4px}button:disabled{opacity:.5}button.light{background:transparent;color:var(--coffee)}button.danger{background:var(--danger);border-color:var(--danger)}button.saved{background:var(--success)}input,select,textarea{width:100%;padding:10px;border:1px solid var(--line);border-radius:4px;background:white;color:var(--coffee)}input[type=checkbox]{width:auto}label{display:block;margin:12px 0 4px;font-size:13px}.hidden{display:none!important}.muted{color:var(--muted);font-size:13px}.error{color:var(--danger)}.success{color:var(--success)}.message{min-height:20px;font-size:13px}.container{max-width:1100px;margin:auto;padding:0 18px}.header{background:var(--paper);border-bottom:1px solid var(--line)}.header-inner{min-height:80px;display:flex;justify-content:space-between;align-items:center;gap:12px}.brand{text-decoration:none;font:25px CreamHand,serif}.brand small{display:block;font:10px system-ui;letter-spacing:2px}.top-links,.subnav-inner,.actions{display:flex;flex-wrap:wrap;gap:10px}.top-links button,.subnav button{background:transparent;border:0;color:var(--coffee);padding:8px;font-size:13px}.subnav{background:#f6f0e8;border-bottom:1px solid var(--line)}.subnav-inner{justify-content:center}.hero{display:grid;grid-template-columns:1fr 1fr;gap:35px;align-items:center;padding:70px 0}.hero h1,h2,.page-title{font-family:CreamHand,serif;font-weight:400}.hero h1{font-size:clamp(35px,5vw,60px);line-height:1.45}.hero-art{background:#e9dfd2;min-height:320px;display:grid;place-items:center;text-align:center;padding:20px}.hero-art img{max-width:280px;width:75%}.section{padding:48px 0;border-top:1px solid var(--line)}.categories{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.category{background:var(--milk);border:0;color:var(--coffee);min-height:125px}.toolbar{display:grid;grid-template-columns:1fr 200px;gap:12px;margin:20px 0}.products{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:15px}.product,.panel{background:var(--paper);border:1px solid var(--line)}.product{overflow:hidden}.product img,.placeholder{width:100%;aspect-ratio:1;object-fit:cover;background:var(--milk)}.placeholder{display:grid;place-items:center}.placeholder img{width:65%;height:65%;object-fit:contain}.product-body{padding:13px}.product-body button{width:100%}.price{font-weight:700;font-size:18px}.panel{padding:20px;margin:18px 0}.form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px 16px}.line{border-bottom:1px solid var(--line);padding:15px 0}.line-top{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}.actions{margin-top:14px}.note{padding:14px;background:#f1e8dc}.variant-row{display:grid;grid-template-columns:repeat(4,minmax(0,1fr)) auto;gap:8px;align-items:end;margin:10px 0;padding:10px;background:#f8f3eb;border:1px solid var(--line)}.variant-row label{margin:0}.variant-row input{margin-top:4px}.variant-row button{margin-bottom:0}.preview{display:block;width:180px;max-width:100%;aspect-ratio:1;object-fit:cover;margin-top:12px;border:1px solid var(--line)}dialog{width:min(460px,calc(100% - 24px));max-height:90vh;overflow:auto;border:1px solid var(--line);padding:24px;color:var(--coffee);background:var(--paper)}dialog::backdrop{background:#24180fa8}footer{text-align:center;border-top:1px solid var(--line);padding:35px 15px;margin-top:40px}footer img{width:48px}.page-title{margin-top:40px}@media(max-width:800px){.products{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:650px){.brand{font-size:18px}.top-links{gap:0}.top-links button{font-size:11px}.hero{grid-template-columns:1fr;padding:40px 0}.hero-art{min-height:220px}.toolbar,.form-grid{grid-template-columns:1fr}.categories{gap:7px}.category{font-size:12px}.variant-row{grid-template-columns:repeat(2,minmax(0,1fr))}.variant-row button{grid-column:span 2}.panel{padding:15px}.product-body{padding:10px}}
-</style></head><body>
+:root{--bg:#faf7f1;--paper:#fffdf9;--coffee:#49362b;--brown:#785b47;--milk:#efe5d8;--line:#e5d8c8;--muted:#95816f;--danger:#a64d45;--success:#56765a}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--coffee);font:15px/1.7 system-ui,'PingFang TC',sans-serif}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer;border:1px solid var(--coffee);background:var(--coffee);color:#fff;padding:10px 15px;border-radius:4px}
+button:disabled{opacity:.5}
+button.light{background:transparent;color:var(--coffee)}
+button.danger{background:var(--danger);border-color:var(--danger)}
+button.saved{background:var(--success)}
+input,select,textarea{width:100%;padding:10px;border:1px solid var(--line);border-radius:4px;background:white;color:var(--coffee)}
+input[type=checkbox]{width:auto}
+label{display:block;margin:12px 0 4px;font-size:13px}
+.hidden{display:none!important}
+.muted{color:var(--muted);font-size:13px}
+.error{color:var(--danger)}
+.success{color:var(--success)}
+.message{min-height:20px;font-size:13px}
+.container{max-width:1100px;margin:auto;padding:0 18px}
+.header{background:var(--paper);border-bottom:1px solid var(--line)}
+.header-inner{min-height:80px;display:flex;justify-content:space-between;align-items:center;gap:12px}
+.brand{text-decoration:none;font:25px CreamHand,serif}
+.brand small{display:block;font:10px system-ui;letter-spacing:2px}
+.top-links,.subnav-inner,.actions{display:flex;flex-wrap:wrap;gap:10px}
+.top-links button,.subnav button{background:transparent;border:0;color:var(--coffee);padding:8px;font-size:13px}
+.subnav{background:#f6f0e8;border-bottom:1px solid var(--line)}
+.subnav-inner{justify-content:center}
+.hero{display:grid;grid-template-columns:1fr 1fr;gap:35px;align-items:center;padding:70px 0}
+.hero h1,h2,.page-title{font-family:CreamHand,serif;font-weight:400}
+.hero h1{font-size:clamp(35px,5vw,60px);line-height:1.45}
+.hero-art{background:#e9dfd2;min-height:320px;display:grid;place-items:center;text-align:center;padding:20px}
+.hero-art img{max-width:280px;width:75%}
+.section{padding:48px 0;border-top:1px solid var(--line)}
+.categories{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.category{background:var(--milk);border:0;color:var(--coffee);min-height:125px}
+.toolbar{display:grid;grid-template-columns:1fr 200px;gap:12px;margin:20px 0}
+.products{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:15px}
+.product,.panel{background:var(--paper);border:1px solid var(--line)}
+.product{overflow:hidden}
+.product img,.placeholder{width:100%;aspect-ratio:1;object-fit:cover;background:var(--milk)}
+.placeholder{display:grid;place-items:center}
+.placeholder img{width:65%;height:65%;object-fit:contain}
+.product-body{padding:13px}
+.product-body button{width:100%}
+.price{font-weight:700;font-size:18px}
+.panel{padding:20px;margin:18px 0}
+.form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px 16px}
+.line{border-bottom:1px solid var(--line);padding:15px 0}
+.line-top{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.actions{margin-top:14px}
+.note{padding:14px;background:#f1e8dc}
+.variant-row{display:grid;grid-template-columns:repeat(4,minmax(0,1fr)) auto;gap:8px;align-items:end;margin:10px 0;padding:10px;background:#f8f3eb;border:1px solid var(--line)}
+.variant-row label{margin:0}
+.variant-row input{margin-top:4px}
+.preview{display:block;width:180px;max-width:100%;aspect-ratio:1;object-fit:cover;margin-top:12px;border:1px solid var(--line)}
+dialog{width:min(460px,calc(100% - 24px));max-height:90vh;overflow:auto;border:1px solid var(--line);padding:24px;color:var(--coffee);background:var(--paper)}
+dialog::backdrop{background:#24180fa8}
+footer{text-align:center;border-top:1px solid var(--line);padding:35px 15px;margin-top:40px}
+footer img{width:48px}
+.page-title{margin-top:40px}
+@media(max-width:800px){.products{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:650px){.brand{font-size:18px}.top-links{gap:0}.top-links button{font-size:11px}.hero{grid-template-columns:1fr;padding:40px 0}.hero-art{min-height:220px}.toolbar,.form-grid{grid-template-columns:1fr}.categories{gap:7px}.category{font-size:12px}.variant-row{grid-template-columns:repeat(2,minmax(0,1fr))}.variant-row button{grid-column:span 2}.panel{padding:15px}.product-body{padding:10px}}
+/* 修正 Safari 預設藍色連結，維持品牌奶茶咖啡色 */
+a,a:link,a:visited,a:hover,a:active{color:var(--coffee);text-decoration:none}
+.brand,.brand:link,.brand:visited,.brand:hover,.brand:active,.brand small{color:#49362b!important;text-decoration:none!important}
+footer a,footer a:link,footer a:visited,footer a:hover,footer a:active{color:#785b47!important;text-decoration:underline;text-underline-offset:4px}
+</style>
+</head>
+<body>
 <header class="header"><div class="container header-inner"><a href="#" class="brand" onclick="showPage('shop');return false">奶油可頌團<small>CREAM CROISSANT SHOP</small></a><nav class="top-links"><button onclick="showPage('shop')">日本連線</button><button onclick="goAbout()">關於我們</button><button onclick="showPage('member')">會員中心</button></nav></div></header>
 <div class="subnav"><div class="container subnav-inner"><button onclick="showPage('shop')">商品選購</button><button onclick="showPage('cart')">我的喊單 (<span id="cartCount">0</span>)</button><button onclick="showPage('orders')">我的訂單</button><button id="adminNav" class="hidden" onclick="showPage('admin')">管理後台</button></div></div>
-<main class="container"><section id="shop"><div class="hero"><div><small>JAPAN SELECT SHOP</small><h1>日常裡的<br>溫柔小選物。</h1><p>從日本帶回喜歡的生活片刻。<br>童裝、雜貨與每一件值得收藏的小美好。</p><button onclick="scrollProducts()">探索日本連線 ↗</button></div><div class="hero-art"><div><img src="./croissant.png" alt="奶油可頌團可頌"><p>little things, lovely days.</p></div></div></div>
+<main class="container">
+<section id="shop">
+<div class="hero"><div><small>JAPAN SELECT SHOP</small><h1>日常裡的<br>溫柔小選物。</h1><p>從日本帶回喜歡的生活片刻。<br>童裝、雜貨與每一件值得收藏的小美好。</p><button onclick="scrollProducts()">探索日本連線 ↗</button></div><div class="hero-art"><div><img src="./croissant.png" alt="奶油可頌團可頌"><p>little things, lovely days.</p></div></div></div>
 <div class="section"><h2>Our Collection</h2><p class="muted">精選日本好物・收藏喜歡的日常</p><div class="categories"><button class="category" onclick="chooseCategory('童裝')">♧<br>童裝選物</button><button class="category" onclick="chooseCategory('雜貨')">✿<br>生活雜貨</button><button class="category" onclick="chooseCategory('')">♡<br>日本連線</button></div></div>
-<div class="section" id="collection"><h2>Japan Select</h2><p class="muted">本期選物・慢慢挑選喜歡的日常</p><div class="toolbar"><input id="search" placeholder="搜尋商品名稱" oninput="renderShop()"><select id="category" onchange="renderShop()"><option value="">全部分類</option></select></div><p id="shopMessage" class="message"></p><div id="products" class="products"></div></div><div class="section" id="about"><h2>About us</h2><p>奶油可頌團 Cream Croissant Shop<br>從日本帶回每一件值得收藏的小美好。<br>用一點點喜歡，收藏平凡日子裡的溫柔。</p></div></section>
+<div class="section" id="collection"><h2>Japan Select</h2><p class="muted">本期選物・慢慢挑選喜歡的日常</p><div class="toolbar"><input id="search" placeholder="搜尋商品名稱" oninput="renderShop()"><select id="category" onchange="renderShop()"><option value="">全部分類</option></select></div><p id="shopMessage" class="message"></p><div id="products" class="products"></div></div>
+<div class="section" id="about"><h2>About us</h2><p>奶油可頌團 Cream Croissant Shop<br>從日本帶回每一件值得收藏的小美好。<br>用一點點喜歡，收藏平凡日子裡的溫柔。</p></div>
+</section>
 <section id="cart" class="hidden"><h2 class="page-title">我的喊單清單</h2><div id="cartLines" class="panel"></div><div class="panel"><p class="muted">請先登入會員。價格及庫存以正式送出時為準；多項商品會分別建立訂單。</p><label>訂單備註</label><textarea id="memo" rows="3" placeholder="例如：希望合併出貨"></textarea><div class="actions"><button id="submitOrder" onclick="placeOrders()">確認送出喊單</button><button class="light" onclick="showPage('shop')">繼續選購</button></div><p id="cartMessage" class="message"></p></div></section>
 <section id="orders" class="hidden"><h2 class="page-title">我的訂單</h2><div id="myOrders" class="panel"></div></section>
 <section id="member" class="hidden"><h2 class="page-title">會員中心</h2><div id="memberAuth" class="panel"><h3>會員註冊／登入</h3><label>Email 電子郵件</label><input id="memberEmail" type="email" autocomplete="email"><label>密碼</label><input id="memberPassword" type="password" autocomplete="current-password"><div class="actions"><button onclick="handleSignup()">註冊會員</button><button class="light" onclick="handleLogin()">會員登入</button></div><p id="memberMessage" class="message"></p></div><div id="memberProfile" class="panel hidden"><h3>我的會員資料</h3><p id="memberInfo" class="muted"></p><label>會員名稱</label><input id="displayName"><label>Instagram 帳號</label><input id="igHandle" placeholder="例如：cream_shop"><p class="muted">僅登記 IG 名稱，並非 Instagram 官方授權綁定。</p><label>聯絡電話</label><input id="memberPhone" type="tel"><div class="actions"><button id="saveProfileBtn" onclick="saveProfile()">儲存資料</button><button class="light" onclick="handleLogout()">登出</button></div><p id="profileMessage" class="message"></p></div></section>
-<section id="admin" class="hidden"><h2 class="page-title">管理後台</h2><div class="note">只有管理員能管理商品與訂單。每個顏色／款式／尺寸組合有獨立庫存。</div><div class="panel"><h3 id="formTitle">新增商品</h3><input id="editId" type="hidden"><div class="form-grid"><div><label>商品名稱</label><input id="pName" placeholder="例如：日系復古花卉上衣"></div><div><label>售價 NT$</label><input id="pPrice" type="number" min="0"></div><div><label>商品分類</label><input id="pCategory" placeholder="童裝／髮飾／雜貨"></div><div><label>商品照片（手機相簿）</label><input id="pImageFile" type="file" accept="image/*" onchange="previewProductImage()"><p class="muted">單張上限 10MB，支援 JPG／PNG／WebP；編輯時不選新照片會保留原圖。</p><img id="pImagePreview" class="preview hidden" alt="照片預覽"><p id="pImageMessage" class="message"></p></div></div><label>商品說明</label><textarea id="pDesc" rows="3"></textarea><h3>商品規格與獨立庫存</h3><p class="muted">每列是一個可購買組合。無顏色或尺寸可填「單色」「單一尺寸」。同商品內不能重複相同組合。</p><div id="variantRows"></div><div class="actions"><button type="button" class="light" onclick="addVariantRow()">＋ 新增規格</button></div><label><input id="pActive" type="checkbox" checked> 商品上架中</label><div class="actions"><button id="saveProductBtn" onclick="saveProduct()">儲存商品</button><button class="light" onclick="resetForm()">清空欄位</button></div><p id="adminMessage" class="message"></p></div><div class="panel"><h3>商品管理</h3><div id="adminProducts"></div></div><div class="panel"><h3>訂單管理</h3><div id="adminOrders"></div></div></section></main>
+<section id="admin" class="hidden"><h2 class="page-title">管理後台</h2><div class="note">只有管理員能管理商品與訂單。每個顏色／款式／尺寸組合有獨立庫存。</div><div class="panel"><h3 id="formTitle">新增商品</h3><input id="editId" type="hidden"><div class="form-grid"><div><label>商品名稱</label><input id="pName" placeholder="例如：日系復古花卉上衣"></div><div><label>售價 NT$</label><input id="pPrice" type="number" min="0"></div><div><label>商品分類</label><input id="pCategory" placeholder="童裝／髮飾／雜貨"></div><div><label>商品照片（手機相簿）</label><input id="pImageFile" type="file" accept="image/*" onchange="previewProductImage()"><p class="muted">單張上限 10MB，支援 JPG／PNG／WebP；編輯時不選新照片會保留原圖。</p><img id="pImagePreview" class="preview hidden" alt="照片預覽"><p id="pImageMessage" class="message"></p></div></div><label>商品說明</label><textarea id="pDesc" rows="3"></textarea><h3>商品規格與獨立庫存</h3><p class="muted">每列是一個可購買組合。無顏色或尺寸可填「單色」「單一尺寸」。同商品內不能重複相同組合。</p><div id="variantRows"></div><div class="actions"><button type="button" class="light" onclick="addVariantRow()">＋ 新增規格</button></div><label><input id="pActive" type="checkbox" checked> 商品上架中</label><div class="actions"><button id="saveProductBtn" onclick="saveProduct()">儲存商品</button><button class="light" onclick="resetForm()">清空欄位</button></div><p id="adminMessage" class="message"></p></div><div class="panel"><h3>商品管理</h3><div id="adminProducts"></div></div><div class="panel"><h3>訂單管理</h3><div id="adminOrders"></div></div></section>
+</main>
 <footer><img src="./croissant.png" alt="可頌"><div>奶油可頌團</div><p>CREAM CROISSANT SHOP · JAPAN SELECT</p><a href="https://ig.me/m/creamoosin" target="_blank" rel="noopener noreferrer">私訊奶油</a></footer>
 <dialog id="detail"><div class="line-top"><h3 id="dName"></h3><button class="light" onclick="$('detail').close()">✕</button></div><p id="dDesc" class="muted"></p><p id="dPrice" class="price"></p><label>顏色</label><select id="dColor" onchange="updateVariantChoices()"></select><label>款式</label><select id="dStyle" onchange="updateVariantChoices()"></select><label>尺寸</label><select id="dSize" onchange="updateVariantStock()"></select><label>數量</label><input id="dQty" type="number" min="1" value="1"><p id="dStock" class="muted"></p><button id="addCartBtn" onclick="addCart()">加入喊單</button></dialog>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
 'use strict';
 const SUPABASE_URL='https://hnrmbcldslljkctlepiz.supabase.co';
 const SUPABASE_KEY='sb_publishable_zJeAc2z9_lPIj_KG2YUnFw_sgo2BWQA';
@@ -27,7 +104,7 @@ function element(tag,text,cls){const n=document.createElement(tag);if(text!==und
 function placeholder(){const d=element('div',undefined,'placeholder'),i=element('img');i.src='./croissant.png';d.append(i);return d}
 const orderStatuses={pending:'待確認',confirmed:'已確認',purchasing:'採購中',arrived:'已到貨',shipped:'已出貨',cancelled:'已取消'};
 const paymentStatuses={unpaid:'未付款',submitted:'已回報',paid:'已付款'};
-let products=[],variants=[],cart=[],selectedProduct=null,currentUser=null,isAdmin=false,profileSavedValues=null,profileSaving=false,profileLoadVersion=0,existingProductImage='',previewUrl=null,editingVariantIds=[];
+let products=[],variants=[],cart=[],selectedProduct=null,currentUser=null,isAdmin=false,profileSavedValues=null,profileSaving=false,profileLoadVersion=0,existingProductImage='',previewUrl=null;
 try{cart=JSON.parse(localStorage.getItem('cream_v10_cart')||'null')||JSON.parse(localStorage.getItem('cream_v9_cart')||'[]');if(!Array.isArray(cart))cart=[];cart=cart.filter(x=>x.variant_id)}catch{cart=[]}
 function saveCart(){localStorage.setItem('cream_v10_cart',JSON.stringify(cart))}
 function showPage(page){if(page==='admin'&&!isAdmin){alert('僅管理員可進入後台');return}['shop','cart','orders','member','admin'].forEach(id=>$(id).classList.toggle('hidden',id!==page));if(page==='orders')loadOrders();if(page==='admin')loadAdminOrders();window.scrollTo(0,0)}
@@ -64,7 +141,7 @@ function addVariantRow(v={}){const row=element('div',undefined,'variant-row');ro
 function readVariantRows(){const rows=[...$('variantRows').children].map(row=>{const get=k=>row.querySelector('[data-field="'+k+'"]').value.trim();return{id:row.dataset.id||null,color:get('color')||'單色',style:get('style')||'一般款',size:get('size')||'單一尺寸',stock:Number(get('stock')),rawStock:get('stock')}});if(!rows.length)throw Error('請至少新增一個商品規格');const keys=new Set();rows.forEach(v=>{if(v.rawStock===''||!Number.isInteger(v.stock)||v.stock<0)throw Error('每個規格的庫存必須是 0 以上整數');const key=JSON.stringify([v.color,v.style,v.size]);if(keys.has(key))throw Error('顏色／款式／尺寸組合不能重複：'+v.color+'／'+v.style+'／'+v.size);keys.add(key)});return rows}
 function clearPreview(){if(previewUrl){URL.revokeObjectURL(previewUrl);previewUrl=null}}
 function showPreview(url){const img=$('pImagePreview');if(url){img.src=url;img.classList.remove('hidden')}else{img.removeAttribute('src');img.classList.add('hidden')}}
-function previewProductImage(){clearPreview();message('pImageMessage','');const file=$('pImageFile').files[0];if(!file){showPreview(existingProductImage);return}if(file.size>10*1024*1024){$('pImageFile').value='';showPreview(existingProductImage);message('pImageMessage','照片不能超過 10MB',true);return}if(!['image/jpeg','image/png','image/webp'].includes(file.type)){ $('pImageFile').value='';showPreview(existingProductImage);message('pImageMessage','目前僅支援 JPG／PNG／WebP；iPhone HEIC 請先轉成 JPG',true);return}previewUrl=URL.createObjectURL(file);showPreview(previewUrl);message('pImageMessage','✓ 已選擇照片，儲存商品時上傳')}
+function previewProductImage(){clearPreview();message('pImageMessage','');const file=$('pImageFile').files[0];if(!file){showPreview(existingProductImage);return}if(file.size>10*1024*1024){$('pImageFile').value='';showPreview(existingProductImage);message('pImageMessage','照片不能超過 10MB',true);return}if(!['image/jpeg','image/png','image/webp'].includes(file.type)){$('pImageFile').value='';showPreview(existingProductImage);message('pImageMessage','目前僅支援 JPG／PNG／WebP；iPhone HEIC 請先轉成 JPG',true);return}previewUrl=URL.createObjectURL(file);showPreview(previewUrl);message('pImageMessage','✓ 已選擇照片，儲存商品時上傳')}
 async function uploadProductImage(file){const ext={'image/jpeg':'jpg','image/png':'png','image/webp':'webp'}[file.type];if(!ext||file.size>10*1024*1024)throw Error('照片必須是 10MB 內的 JPG／PNG／WebP');const path=currentUser.id+'/'+crypto.randomUUID()+'.'+ext;const {error}=await db.storage.from('product-images').upload(path,file,{contentType:file.type,upsert:false});if(error)throw Error('照片上傳失敗：'+error.message);const {data}=db.storage.from('product-images').getPublicUrl(path);return{url:data.publicUrl,path}}
 function resetForm(){['editId','pName','pPrice','pCategory','pDesc','pImageFile'].forEach(id=>$(id).value='');existingProductImage='';clearPreview();showPreview('');$('variantRows').replaceChildren();addVariantRow();$('pActive').checked=true;$('formTitle').textContent='新增商品';$('saveProductBtn').textContent='儲存商品';$('saveProductBtn').classList.remove('saved');message('adminMessage','');message('pImageMessage','')}
 async function saveProduct(){if(!isAdmin||!currentUser){alert('沒有管理員權限');return}const name=$('pName').value.trim(),price=Number($('pPrice').value);if(!name||$('pPrice').value===''||!Number.isInteger(price)||price<0){message('adminMessage','請正確填寫商品名稱與價格',true);return}let rows;try{rows=readVariantRows()}catch(e){message('adminMessage',e.message,true);return}const id=$('editId').value,file=$('pImageFile').files[0],button=$('saveProductBtn');button.disabled=true;button.textContent='儲存中...';let uploaded=null;try{let image=existingProductImage;if(file){message('adminMessage','正在上傳照片...');uploaded=await uploadProductImage(file);image=uploaded.url}const payload={name,price,category:$('pCategory').value.trim()||'日本選物',description:$('pDesc').value.trim(),image_url:image,is_active:$('pActive').checked,stock:rows.reduce((n,v)=>n+v.stock,0),options:rows.map(v=>v.color+'／'+v.style+'／'+v.size)};message('adminMessage','正在儲存商品及規格...');const {data,error}=await db.rpc('admin_save_product_variants',{p_product_id:id?Number(id):null,p_product:payload,p_variants:rows.map(v=>({id:v.id?Number(v.id):null,color:v.color,style:v.style,size:v.size,stock:v.stock}))});if(error)throw error;if(!data)throw Error('無法確認商品儲存結果');$('editId').value=String(data);existingProductImage=image;$('pImageFile').value='';clearPreview();showPreview(image);message('pImageMessage',image?'✓ 商品照片已儲存':'');$('formTitle').textContent='編輯商品';button.textContent='✓ 已存檔';button.classList.add('saved');message('adminMessage','✓ 商品及獨立庫存已成功存檔');await loadProducts();const savedRows=variantsOf(data);$('variantRows').replaceChildren();savedRows.forEach(addVariantRow)}catch(e){message('adminMessage','儲存失敗：'+e.message,true);button.textContent='儲存商品';button.classList.remove('saved');if(uploaded){await db.storage.from('product-images').remove([uploaded.path])}}finally{button.disabled=false}}
@@ -74,15 +151,6 @@ async function toggleProductActive(id){const p=products.find(x=>String(x.id)===S
 function renderAdminProducts(){const box=$('adminProducts');box.replaceChildren();if(!products.length){box.append(element('p','尚無商品'));return}products.forEach(p=>{const line=element('div',undefined,'line'),top=element('div',undefined,'line-top');top.append(element('strong',p.name+(p.is_active?'（上架中）':'（已下架）')),element('span',money(p.price)+'｜總庫存 '+totalStock(p.id)));const detail=element('p',variantsOf(p.id).map(v=>v.color+'／'+v.style+'／'+v.size+'：'+v.stock).join('　'),'muted'),actions=element('div',undefined,'actions'),edit=element('button','編輯','light'),toggle=element('button',p.is_active?'下架':'重新上架','light'),remove=element('button','刪除','danger');edit.onclick=()=>editProduct(p.id);toggle.onclick=()=>toggleProductActive(p.id);remove.onclick=()=>deleteProduct(p.id);actions.append(edit,toggle,remove);line.append(top,detail,actions);box.append(line)})}
 async function loadAdminOrders(){if(!isAdmin)return;const box=$('adminOrders');box.replaceChildren();const {data,error}=await db.from('orders').select('*,order_items(*)').order('created_at',{ascending:false}).limit(100);if(error){box.append(element('p','訂單讀取失敗：'+error.message));return}if(!data?.length){box.append(element('p','目前沒有訂單'));return}data.forEach(o=>box.append(renderOrder(o,true)))}
 resetForm();db.auth.onAuthStateChange(()=>setTimeout(()=>refreshAuth().catch(console.error),0));refreshAuth().catch(e=>message('shopMessage','網站連線失敗：'+e.message,true));renderCart();
-</script></body></html>
-
-/* 奶油可頌團 Logo 顏色修正 */
-header a,
-header a:visited,
-.logo,
-.logo:visited,
-.brand,
-.brand:visited {
-  color: #4B362B !important;
-  text-decoration: none !important;
-}
+</script>
+</body>
+</html>
