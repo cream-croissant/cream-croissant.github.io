@@ -412,6 +412,75 @@ async function getCurrentMember() {
   return data.user;
 }
   
+function showMemberPage() {
+  showPage('member');
+  refreshMemberUI();
+}
+
+async function refreshMemberUI() {
+  const auth = document.getElementById('memberAuth');
+  const profile = document.getElementById('memberProfile');
+  const info = document.getElementById('memberInfo');
+
+  if (!auth || !profile || !info) return;
+
+  try {
+    const user = await getCurrentMember();
+    auth.classList.toggle('hidden', !!user);
+    profile.classList.toggle('hidden', !user);
+    info.textContent = user ? '會員 Email：' + user.email : '';
+  } catch (error) {
+    console.error(error);
+    alert('讀取會員資料失敗：' + error.message);
+  }
+}
+
+async function handleMemberSignUp() {
+  const email = document.getElementById('memberEmail').value.trim();
+  const password = document.getElementById('memberPassword').value;
+
+  if (!email || password.length < 6) {
+    alert('請輸入 Email，密碼至少 6 碼');
+    return;
+  }
+
+  try {
+    const data = await memberSignUp(email, password);
+    alert(data.session ? '註冊成功！' : '註冊資料已送出，請到信箱確認驗證信。');
+    await refreshMemberUI();
+  } catch (error) {
+    alert('註冊失敗：' + error.message);
+  }
+}
+
+async function handleMemberLogin() {
+  const email = document.getElementById('memberEmail').value.trim();
+  const password = document.getElementById('memberPassword').value;
+
+  try {
+    await memberLogin(email, password);
+    document.getElementById('memberPassword').value = '';
+    alert('登入成功！');
+    await refreshMemberUI();
+  } catch (error) {
+    alert('登入失敗：' + error.message);
+  }
+}
+
+async function handleMemberLogout() {
+  try {
+    await memberLogout();
+    alert('已登出會員');
+    await refreshMemberUI();
+  } catch (error) {
+    alert('登出失敗：' + error.message);
+  }
+}
+
+supabaseClient.auth.onAuthStateChange(() => {
+  setTimeout(() => refreshMemberUI(), 0);
+});
+
 </script>
 </body>
 </html>
