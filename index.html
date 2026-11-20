@@ -1,498 +1,1046 @@
 
-<!doctype html>
+<!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
-<meta charset="utf-8">
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>奶油可頌團｜日本連線</title>
 <style>
-:root{--cream:#f7f0e5;--paper:#fffaf2;--coffee:#583b2c;--tan:#b18b6c;--line:#d7c2ab}
+@font-face{
+  font-family:CreamHandwriting;
+  src:url("./cream-font.ttf") format("truetype");
+  font-display:swap;
+}
+:root{
+  --bg:#faf8f4;
+  --paper:#fffdf9;
+  --ink:#49382e;
+  --tan:#a58b74;
+  --line:#e7ded3;
+  --muted:#85766c;
+}
 *{box-sizing:border-box}
-body{margin:0;background:var(--cream);color:var(--coffee);font-family:'Klee One','Noto Serif TC','PingFang TC',serif}
+body{
+  margin:0;background:var(--bg);color:var(--ink);
+  font-family:"Noto Sans TC","PingFang TC",system-ui,sans-serif;
+  line-height:1.7;
+}
 button,input,select,textarea{font:inherit}
-button{cursor:pointer;border:1px solid var(--coffee);border-radius:7px;padding:10px 14px;background:var(--coffee);color:white}
-button.ghost{background:transparent;color:var(--coffee)}
-button:disabled{opacity:.5;cursor:not-allowed}
-input,select,textarea{width:100%;padding:11px;border:1px solid var(--line);border-radius:6px;background:#fffdf9;color:var(--coffee)}
-label{display:block;margin:10px 0 5px;font-size:.92rem}
-header{background:var(--paper);border-bottom:2px solid var(--coffee);padding:18px 16px;text-align:center}
-header .mark{font-size:35px}
-h1{font-size:30px;letter-spacing:3px;margin:5px}
-header p{margin:6px;color:#85654e}
-.nav{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;padding:12px}
-.wrap{max-width:1080px;margin:auto;padding:15px}
-.hero{background:#e8d9c7;border:1px solid var(--coffee);padding:28px;text-align:center;border-radius:10px;margin-bottom:24px}
-.hero h2{font-size:27px;margin:5px}
-.small{font-size:.85rem;color:#806550}
-.bar{display:flex;gap:10px;flex-wrap:wrap;margin:16px 0}
-.bar input{flex:1;min-width:180px}
-.bar select{width:auto}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px}
-.product{background:var(--paper);border:1px solid var(--line);border-radius:10px;overflow:hidden}
-.product img,.placeholder{width:100%;height:210px;object-fit:cover;background:#e7d8c7}
-.placeholder{display:grid;place-items:center;font-size:54px}
-.product .body{padding:15px}
-.product h3{margin:4px 0 10px;font-size:1.05rem}
-.price{font-weight:bold;font-size:1.15rem}
-.pill{display:inline-block;padding:4px 9px;border:1px solid var(--line);border-radius:20px;font-size:.8rem;margin:5px 0}
-.panel{background:var(--paper);border:1px solid var(--line);padding:20px;border-radius:10px;margin:15px 0}
+button{
+  cursor:pointer;border:1px solid var(--ink);
+  background:var(--ink);color:white;
+  padding:11px 16px;border-radius:3px;
+}
+button:disabled{opacity:.45;cursor:not-allowed}
+.ghost{background:transparent;color:var(--ink)}
+.danger{background:#994f45;border-color:#994f45}
+input,select,textarea{
+  width:100%;padding:11px;border:1px solid var(--line);
+  border-radius:3px;background:white;color:var(--ink);
+}
+label{display:block;margin:12px 0 5px;font-size:13px}
 .hidden{display:none!important}
-.row{display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap}
-.line{border-bottom:1px dashed var(--line);padding:12px 0}
-.line:last-child{border:0}
-.cols{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
-.note{background:#efe1d1;padding:12px;border-radius:6px}
-.danger{background:#a3453b;border-color:#a3453b}
-footer{text-align:center;padding:35px 10px;color:#826750}
-dialog{border:1px solid var(--coffee);border-radius:12px;max-width:480px;width:calc(100% - 24px);background:var(--paper);color:var(--coffee)}
-dialog::backdrop{background:#25170db0}
-dialog form{margin:0}
-@media(max-width:600px){
-.cols{grid-template-columns:1fr}
-.hero{padding:20px}
-.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
-.product img,.placeholder{height:145px}
-.product .body{padding:10px}
-.product h3{font-size:.95rem}
-button{padding:9px}
+.hand,.logo,.hero h1,.section h2,.page-title{
+  font-family:CreamHandwriting,"Noto Serif TC",serif;
+  font-weight:400;
+}
+header{
+  min-height:76px;padding:16px max(20px,calc((100vw - 1120px)/2));
+  display:flex;justify-content:space-between;align-items:center;
+  gap:15px;border-bottom:1px solid var(--line);
+}
+.logo{font-size:24px;line-height:1.3}
+.logo small{
+  display:block;font:10px Georgia,serif;
+  letter-spacing:2px;margin-top:6px;
+}
+.topnav{display:flex;gap:20px;flex-wrap:wrap;font-size:12px}
+.topnav a{text-decoration:none;color:inherit}
+.nav{
+  display:flex;justify-content:center;flex-wrap:wrap;
+  gap:6px;padding:10px;border-bottom:1px solid var(--line);
+}
+.nav button{font-size:12px;border:0;background:transparent;color:var(--ink)}
+.nav button:hover{background:#eee6dc}
+.wrap{max-width:1120px;margin:auto;padding:0 20px 70px}
+.hero{
+  display:grid;grid-template-columns:1.1fr .9fr;
+  align-items:center;gap:40px;padding:85px 5px;
+}
+.eyebrow{font-size:12px;letter-spacing:3px;color:var(--tan)}
+.hero h1{font-size:clamp(38px,5vw,64px);line-height:1.5;margin:18px 0}
+.hero p{color:var(--muted);font-size:14px;line-height:2.1}
+.hero-art{
+  height:380px;background:#e9e0d5;
+  display:flex;flex-direction:column;align-items:center;
+  justify-content:center;gap:18px;
+}
+.hero-art .croissant{font-size:90px}
+.hero-art small{font:13px Georgia,serif;letter-spacing:2px}
+.primary{padding:14px 30px;margin-top:20px}
+.section{border-top:1px solid var(--line);padding:58px 5px}
+.section h2{font-size:32px;margin:0 0 12px}
+.muted{color:var(--muted);font-size:13px}
+.categories{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:16px;margin-top:28px;
+}
+.category{
+  background:#f1ebe3;border:0;color:var(--ink);
+  padding:38px 10px;display:flex;flex-direction:column;
+  align-items:center;gap:9px;text-align:center;
+}
+.category span{font-size:32px}
+.category b{font-weight:500}
+.category small{font-size:10px;color:var(--muted)}
+.bar{display:flex;gap:10px;flex-wrap:wrap;margin:15px 0}
+.bar>*{flex:1;min-width:110px}
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
+  gap:18px;margin:22px 0;
+}
+.product{background:var(--paper);border:1px solid var(--line)}
+.product img,.placeholder{
+  width:100%;aspect-ratio:1/1;object-fit:cover;
+  background:#eee6dc;
+}
+.placeholder{display:grid;place-items:center;font-size:48px}
+.product .body{padding:15px}
+.product h3{font-size:16px;font-weight:500;margin:8px 0}
+.price{font-size:18px;font-weight:650}
+.pill{font-size:11px;color:var(--muted)}
+.panel{
+  background:var(--paper);border:1px solid var(--line);
+  padding:22px;margin:18px 0;
+}
+.page-title{font-size:32px;margin:35px 0 15px}
+.row{
+  display:flex;justify-content:space-between;
+  align-items:center;gap:12px;flex-wrap:wrap;
+}
+.cols{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+.line{padding:15px 0;border-bottom:1px solid var(--line)}
+.note{background:#f1e8dc;padding:13px;font-size:13px}
+.message{min-height:22px;font-size:13px}
+.error{color:#a13732}
+footer{
+  text-align:center;border-top:1px solid var(--line);
+  padding:35px 15px;color:var(--muted);font-size:12px;
+}
+footer a{color:var(--ink)}
+dialog{
+  width:min(450px,calc(100% - 24px));
+  border:1px solid var(--line);padding:24px;
+  background:var(--paper);color:var(--ink);
+}
+dialog::backdrop{background:#20171099}
+@media(max-width:650px){
+  header{padding:14px 18px}
+  .logo{font-size:18px}
+  .topnav{gap:10px;font-size:11px}
+  .hero{grid-template-columns:1fr;padding:55px 2px;gap:30px}
+  .hero-art{height:250px}
+  .categories{gap:8px}
+  .category{padding:28px 5px}
+  .category b{font-size:12px}
+  .category small{font-size:9px}
+  .section{padding:42px 2px}
+  .grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+  .product .body{padding:10px}
+  .product h3{font-size:14px}
+  .cols{grid-template-columns:1fr}
+  .panel{padding:15px}
 }
 </style>
 </head>
 <body>
+
 <header>
-<div class="mark">🥐</div>
-<h1>奶油可頌團</h1>
-<p>CREAM CROISSANT SHOP · 日本連線</p>
+  <div class="logo">
+    奶油可頌團
+    <small>CREAM CROISSANT SHOP</small>
+  </div>
+  <nav class="topnav">
+    <a href="#shop" onclick="showPage('shop')">日本連線</a>
+    <a href="#about" onclick="showPage('shop')">關於我們</a>
+    <a href="#member" onclick="showPage('member')">會員中心</a>
+  </nav>
 </header>
+
 <nav class="nav">
-<button class="ghost" onclick="showPage('shop')">選購商品</button>
-<button class="ghost" onclick="showPage('cart')">我的喊單 <span id="cartCount">0</span></button>
-<button class="ghost" onclick="showPage('admin')">管理後台（測試）</button>
-<button class="ghost" onclick="showMemberPage()">會員中心 ♡</button>
+  <button onclick="showPage('shop')">商品選購</button>
+  <button onclick="showPage('cart')">
+    我的喊單 <span id="cartCount">0</span>
+  </button>
+  <button onclick="showPage('orders')">我的訂單</button>
+  <button id="adminNav" class="hidden" onclick="showPage('admin')">
+    管理後台
+  </button>
 </nav>
+
 <main class="wrap">
+
 <section id="shop">
-<div class="hero">
-<div>✦ JAPAN SELECT ✦</div>
-<h2>日本連線 · 日常小確幸</h2>
-<p>精選童裝、配件與復古可愛雜貨</p>
-<button onclick="document.getElementById('products').scrollIntoView({behavior:'smooth'})">開始逛逛 ♡</button>
-</div>
-<div class="row"><h2>本期選物 ♡</h2><span class="small">奶油私藏的小小日常</span></div>
-<div class="bar">
-<input id="search" placeholder="搜尋商品名稱" oninput="renderShop()">
-<select id="category" onchange="renderShop()"><option value="">所有分類</option></select>
-</div>
-<div class="grid" id="products"></div>
+  <div class="hero">
+    <div>
+      <div class="eyebrow">JAPAN SELECT SHOP</div>
+      <h1>日常裡的<br>溫柔小選物。</h1>
+      <p>
+        從日本帶回喜歡的生活片刻。<br>
+        童裝、雜貨與每一件值得收藏的小美好。
+      </p>
+      <button class="primary"
+        onclick="document.getElementById('collection-products').scrollIntoView({behavior:'smooth'})">
+        探索日本連線 ↗
+      </button>
+    </div>
+    <div class="hero-art">
+      <div class="croissant">🥐</div>
+      <small>little things, lovely days.</small>
+    </div>
+  </div>
+
+  <section class="section">
+    <h2>Our Collection</h2>
+    <p class="muted">精選日本好物・簡單收藏喜歡的日常</p>
+    <div class="categories">
+      <button class="category" onclick="chooseCollection('童裝')">
+        <span>♧</span><b>童裝選物</b><small>KIDS WEAR</small>
+      </button>
+      <button class="category" onclick="chooseCollection('雜貨')">
+        <span>✿</span><b>生活雜貨</b><small>LIFESTYLE</small>
+      </button>
+      <button class="category" onclick="chooseCollection('')">
+        <span>♡</span><b>日本連線</b><small>JAPAN SELECT</small>
+      </button>
+    </div>
+  </section>
+
+  <section class="section" id="collection-products">
+    <h2>Japan Select</h2>
+    <p class="muted">本期選物・慢慢挑選喜歡的日常</p>
+  </section>
+
+  <div class="bar">
+    <input id="search" placeholder="搜尋商品" oninput="renderShop()">
+    <select id="category" onchange="renderShop()">
+      <option value="">全部分類</option>
+    </select>
+  </div>
+  <p id="shopMessage" class="message"></p>
+  <div id="products" class="grid"></div>
+
+  <section class="section" id="about">
+    <h2>About us</h2>
+    <p class="muted">
+      奶油可頌團 Cream Croissant Shop<br>
+      用一點點喜歡，收藏平凡日子裡的溫柔。
+    </p>
+  </section>
 </section>
+
 <section id="cart" class="hidden">
-<h2>我的喊單 🥐</h2>
-<div class="panel" id="cartLines"></div>
-<div class="panel">
-<h3>送出喊單（本機測試）</h3>
-<p class="small">此版本送出後只儲存在本裝置，不會傳送給店主。正式上線前請勿收集客人個資。</p>
-<label>稱呼（測試用）</label><input id="customer" placeholder="例如：奶油小姐">
-<label>備註</label><textarea id="memo" rows="3" placeholder="例如：希望合併出貨"></textarea>
-<div class="bar">
-<button onclick="placeOrder()">確認喊單</button>
-<button class="ghost" onclick="showPage('shop')">繼續選購</button>
-</div>
-</div>
+  <h2 class="page-title">我的喊單 ♡</h2>
+  <div id="cartLines" class="panel"></div>
+  <div class="panel">
+    <p class="muted">
+      請登入會員後送出喊單。
+      多項商品目前會分別建立訂單。
+    </p>
+    <label>訂單備註</label>
+    <textarea id="memo" rows="3" placeholder="希望合併出貨"></textarea>
+    <div class="bar">
+      <button id="submitOrder" onclick="placeOrders()">確認送出喊單</button>
+      <button class="ghost" onclick="showPage('shop')">繼續選購</button>
+    </div>
+    <p id="cartMessage" class="message"></p>
+  </div>
 </section>
-<section id="admin" class="hidden">
-<h2>商品與訂單管理（本機測試）</h2>
-<div class="note">⚠️ 這個後台目前是公開的示範介面，沒有登入保護。不要用來處理真實客戶訂單或個人資料。</div>
-<div class="panel">
-<h3 id="formTitle">新增商品</h3>
-<input id="editId" type="hidden">
-<div class="cols">
-<div><label>商品名稱</label><input id="pName" placeholder="例如：復古花朵髮夾"></div>
-<div><label>售價（NT$）</label><input id="pPrice" type="number" min="0" placeholder="380"></div>
-<div><label>分類</label><input id="pCategory" placeholder="童裝／髮飾／雜貨"></div>
-<div><label>庫存</label><input id="pStock" type="number" min="0" placeholder="5"></div>
-<div><label>款式／尺寸（逗號分隔）</label><input id="pVariants" placeholder="米白,咖啡,90碼"></div>
-<div><label>圖片網址（選填，https）</label><input id="pImage" placeholder="https://..."></div>
-</div>
-<label>商品說明</label><textarea id="pDesc" rows="2"></textarea>
-<div class="bar">
-<button onclick="saveProduct()">儲存商品</button>
-<button class="ghost" onclick="resetForm()">清空欄位</button>
-</div>
-</div>
-<div class="panel"><h3>商品清單</h3><div id="adminProducts"></div></div>
-<div class="panel"><h3>本機測試訂單</h3><div id="orders"></div></div>
-<button class="ghost" onclick="exportData()">匯出本機資料 JSON</button>
+
+<section id="orders" class="hidden">
+  <h2 class="page-title">我的訂單</h2>
+  <div id="myOrders" class="panel"></div>
 </section>
 
 <section id="member" class="hidden">
-  <h2>🥐 奶油可頌團｜會員中心</h2>
-
-  <div class="panel" id="memberAuth">
+  <h2 class="page-title">會員中心 ♡</h2>
+  <div id="memberAuth" class="panel">
     <h3>會員註冊／登入</h3>
     <label>Email 電子郵件</label>
-    <input id="memberEmail" type="email"
-      placeholder="請輸入電子郵件">
-
+    <input id="memberEmail" type="email" autocomplete="email">
     <label>密碼</label>
-    <input id="memberPassword" type="password"
-      placeholder="請輸入密碼">
-
+    <input id="memberPassword" type="password" autocomplete="current-password">
     <div class="bar">
-      <button onclick="handleMemberSignup()">
-        註冊會員
-      </button>
-      <button onclick="handleMemberLogin()">
-        會員登入
-      </button>
+      <button onclick="handleMemberSignup()">註冊會員</button>
+      <button class="ghost" onclick="handleMemberLogin()">會員登入</button>
     </div>
-    <p id="memberMessage"></p>
+    <p id="memberMessage" class="message"></p>
   </div>
 
-  <div class="panel hidden" id="memberProfile">
+  <div id="memberProfile" class="panel hidden">
     <h3>♡ 我的會員資料</h3>
     <p id="memberInfo"></p>
-    <button onclick="handleMemberLogout()">
-      登出會員
-    </button>
+    <label>顯示名稱</label>
+    <input id="displayName">
+    <label>Instagram 帳號</label>
+    <input id="igHandle" placeholder="@你的IG帳號">
+    <p class="muted">
+      這裡僅登記 IG 帳號，並非 Instagram 官方驗證綁定。
+    </p>
+    <label>聯絡電話（選填）</label>
+    <input id="memberPhone" type="tel">
+    <div class="bar">
+      <button onclick="saveProfile()">儲存會員資料</button>
+      <button class="ghost" onclick="handleMemberLogout()">登出</button>
+    </div>
+    <p id="profileMessage" class="message"></p>
   </div>
 </section>
+
+<section id="admin" class="hidden">
+  <h2 class="page-title">商品與訂單管理</h2>
+  <div class="note">
+    僅 Supabase 管理員可以存取。
+    資料庫仍必須設定 RLS 權限。
+  </div>
+
+  <div class="panel">
+    <h3 id="formTitle">新增商品</h3>
+    <input id="editId" type="hidden">
+    <div class="cols">
+      <div>
+        <label>商品名稱</label>
+        <input id="pName" placeholder="復古花朵髮夾">
+      </div>
+      <div>
+        <label>售價 NT$</label>
+        <input id="pPrice" type="number" min="0">
+      </div>
+      <div>
+        <label>分類</label>
+        <input id="pCategory" placeholder="童裝／髮飾／雜貨">
+      </div>
+      <div>
+        <label>庫存</label>
+        <input id="pStock" type="number" min="0">
+      </div>
+      <div>
+        <label>款式／尺寸（逗號分隔）</label>
+        <input id="pVariants" placeholder="米白,咖啡,90碼">
+      </div>
+      <div>
+        <label>圖片網址（HTTPS）</label>
+        <input id="pImage" type="url" placeholder="https://...">
+      </div>
+    </div>
+    <label>商品說明</label>
+    <textarea id="pDesc" rows="3"></textarea>
+    <label>
+      <input id="pActive" type="checkbox" checked
+        style="display:inline;width:auto">
+      商品上架中
+    </label>
+    <div class="bar">
+      <button onclick="saveProduct()">儲存商品</button>
+      <button class="ghost" onclick="resetForm()">清空欄位</button>
+    </div>
+    <p id="adminMessage" class="message"></p>
+  </div>
+
+  <div class="panel">
+    <h3>商品清單</h3>
+    <div id="adminProducts"></div>
+  </div>
+
+  <div class="panel">
+    <h3>訂單管理</h3>
+    <div id="adminOrders"></div>
+  </div>
+</section>
+
 </main>
+
 <footer>
-🥐 奶油可頌團 · 日本連線
-<span class="small">日系復古選物｜私訊奶油</span>
-<p><a id="contact" href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer">私訊奶油 ♡（請替換成你的 IG 連結）</a></p>
+  🥐 奶油可頌團 · 日本連線
+  <p>© 2026 Cream Croissant Shop · Made with care</p>
+  <p>
+    <a href="https://www.instagram.com/" target="_blank"
+      rel="noopener noreferrer">
+      私訊奶油 ♡（請改成你的 IG 連結）
+    </a>
+  </p>
 </footer>
+
 <dialog id="detail">
-<form method="dialog">
-<div class="row"><h3 id="dName"></h3><button class="ghost" value="cancel">✕</button></div>
-<p id="dDesc"></p><p class="price" id="dPrice"></p>
-<label>款式／尺寸</label><select id="dVariant"></select>
-<label>數量</label><input id="dQty" type="number" min="1" value="1">
-<p id="dStock" class="small"></p>
-<button type="button" onclick="addCart()">加入喊單 ♡</button>
-</form>
+  <div class="row">
+    <h3 id="dName"></h3>
+    <button class="ghost" onclick="document.getElementById('detail').close()">✕</button>
+  </div>
+  <p id="dDesc"></p>
+  <p id="dPrice" class="price"></p>
+  <label>款式／尺寸</label>
+  <select id="dVariant"></select>
+  <label>數量</label>
+  <input id="dQty" type="number" min="1" value="1">
+  <p id="dStock" class="muted"></p>
+  <button onclick="addCart()">加入喊單 ♡</button>
 </dialog>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-'use strict';
-const K='cream_croissant_v6_';
-const sample=[
-{id:'demo1',name:'復古花朵髮夾',price:380,category:'髮飾',stock:5,variants:['奶油白','咖啡'],desc:'日常穿搭的小小亮點',image:''},
-{id:'demo2',name:'日系童裝上衣',price:680,category:'童裝',stock:4,variants:['90碼','100碼','110碼'],desc:'柔和大地色系',image:''},
-{id:'demo3',name:'可愛雜貨小物',price:250,category:'雜貨',stock:8,variants:['單款'],desc:'日本連線精選',image:''}
-];
-function read(k,fallback){
-try{const v=JSON.parse(localStorage.getItem(K+k));return v??fallback}catch{return fallback}
-}
-let products=read('products',sample),cart=read('cart',[]),orders=read('orders',[]),selected=null;
-function persist(){
-localStorage.setItem(K+'products',JSON.stringify(products));
-localStorage.setItem(K+'cart',JSON.stringify(cart));
-localStorage.setItem(K+'orders',JSON.stringify(orders))
-}
+"use strict";
+
+const SUPABASE_URL="https://hnrmbcldslljkctlepiz.supabase.co";
+const SUPABASE_KEY="sb_publishable_zJeAc2z9_lPIj_KG2YUnFw_sgo2BWQA";
+const db=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+
+const $=id=>document.getElementById(id);
+const money=n=>"NT$ "+Number(n||0).toLocaleString("zh-TW");
+
 function el(tag,txt,cls){
-const e=document.createElement(tag);
-if(txt!==undefined)e.textContent=txt;
-if(cls)e.className=cls;
-return e
+  const e=document.createElement(tag);
+  if(txt!==undefined)e.textContent=txt;
+  if(cls)e.className=cls;
+  return e;
 }
-function money(n){return 'NT$ '+Number(n).toLocaleString('zh-TW')}
+function msg(id,s,bad=false){
+  const e=$(id);
+  e.textContent=s;
+  e.classList.toggle("error",bad);
+}
+
+const statusNames={
+  pending:"待確認",
+  confirmed:"已確認",
+  purchasing:"採購中",
+  arrived:"已到貨",
+  shipped:"已出貨",
+  cancelled:"已取消"
+};
+const payNames={
+  unpaid:"未付款",
+  submitted:"已回報",
+  paid:"已付款"
+};
+
+let products=[];
+let cart=[];
+let selected=null;
+let currentUser=null;
+let isAdmin=false;
+
+try{
+  cart=JSON.parse(localStorage.getItem("cream_v8_cart")||"[]");
+  if(!Array.isArray(cart))cart=[];
+}catch{
+  cart=[];
+}
+
+function persistCart(){
+  localStorage.setItem("cream_v8_cart",JSON.stringify(cart));
+}
+
 function showPage(id){
-for(const s of ['shop','cart','admin'])document.getElementById(s).classList.toggle('hidden',s!==id);
-renderAll();scrollTo(0,0)
+  if(id==="admin"&&!isAdmin){
+    alert("僅管理員可進入");
+    return;
+  }
+  for(const s of ["shop","cart","orders","member","admin"]){
+    $(s).classList.toggle("hidden",s!==id);
+  }
+  if(id==="orders")loadOrders();
+  if(id==="admin")loadAdminOrders();
+  window.scrollTo(0,0);
 }
+
+async function loadProducts(){
+  const {data,error}=await db.from("products")
+    .select("*").order("created_at",{ascending:false});
+
+  if(error){
+    msg("shopMessage","商品讀取失敗："+error.message,true);
+    return;
+  }
+  products=data||[];
+  msg("shopMessage","");
+  renderShop();
+  renderCart();
+  if(isAdmin)renderAdminProducts();
+}
+
 function renderShop(){
-const category=document.getElementById('category'),old=category.value;
-category.replaceChildren(new Option('所有分類',''));
-[...new Set(products.map(p=>p.category))].sort().forEach(c=>category.add(new Option(c,c)));
-category.value=old;
-const q=document.getElementById('search').value.trim().toLowerCase(),grid=document.getElementById('products');
-grid.replaceChildren();
-const filtered=products.filter(p=>(!category.value||p.category===category.value)&&p.name.toLowerCase().includes(q));
-if(!filtered.length)grid.append(el('p','目前沒有符合的商品。'));
-filtered.forEach(p=>{
-const card=el('article',undefined,'product');
-if(p.image&&/^https:\/\//i.test(p.image)){
-const img=el('img');
-img.src=p.image;img.alt=p.name;img.loading='lazy';
-img.onerror=()=>img.replaceWith(el('div','🥐','placeholder'));
-card.append(img)
-}else card.append(el('div','🥐','placeholder'));
-const body=el('div',undefined,'body');
-body.append(el('span',p.category,'pill'),el('h3',p.name),el('p',money(p.price),'price'),el('p',p.stock?'剩餘 '+p.stock+' 件':'已售完','small'));
-const b=el('button',p.stock?'選擇款式 +':'售完');
-b.disabled=!p.stock;b.onclick=()=>openDetail(p.id);
-body.append(b);card.append(body);grid.append(card)
-})
+  const sel=$("category"),old=sel.value;
+  sel.replaceChildren(new Option("全部分類",""));
+  [...new Set(products.filter(p=>p.is_active).map(p=>p.category))]
+    .sort().forEach(x=>sel.add(new Option(x,x)));
+  sel.value=old;
+
+  const q=$("search").value.trim().toLowerCase();
+  const grid=$("products");
+  grid.replaceChildren();
+
+  const list=products.filter(p=>
+    p.is_active &&
+    (!sel.value||p.category===sel.value) &&
+    p.name.toLowerCase().includes(q)
+  );
+
+  if(!list.length)grid.append(el("p","目前沒有符合的商品。"));
+
+  list.forEach(p=>{
+    const card=el("article",undefined,"product");
+    if(p.image_url&&/^https:\/\//i.test(p.image_url)){
+      const img=el("img");
+      img.src=p.image_url;
+      img.alt=p.name;
+      img.loading="lazy";
+      img.onerror=()=>img.replaceWith(el("div","🥐","placeholder"));
+      card.append(img);
+    }else{
+      card.append(el("div","🥐","placeholder"));
+    }
+
+    const body=el("div",undefined,"body");
+    body.append(
+      el("span",p.category,"pill"),
+      el("h3",p.name),
+      el("p",money(p.price),"price"),
+      el("p",p.stock?"剩餘 "+p.stock+" 件":"已售完","muted")
+    );
+
+    const b=el("button",p.stock?"選擇款式 ♡":"已售完");
+    b.disabled=!p.stock;
+    b.onclick=()=>openDetail(p.id);
+    body.append(b);
+    card.append(body);
+    grid.append(card);
+  });
 }
+
+function chooseCollection(term){
+  $("search").value="";
+  const sel=$("category");
+  const match=[...sel.options].find(
+    o=>o.value&&o.value.includes(term)
+  );
+  sel.value=term&&match?match.value:"";
+  renderShop();
+  $("collection-products").scrollIntoView({behavior:"smooth"});
+}
+
 function openDetail(id){
-selected=id;
-const p=products.find(x=>x.id===id);if(!p)return;
-document.getElementById('dName').textContent=p.name;
-document.getElementById('dDesc').textContent=p.desc||'';
-document.getElementById('dPrice').textContent=money(p.price);
-document.getElementById('dStock').textContent='可選數量：1–'+p.stock;
-const sel=document.getElementById('dVariant');
-sel.replaceChildren();
-(p.variants.length?p.variants:['單款']).forEach(v=>sel.add(new Option(v,v)));
-document.getElementById('dQty').value=1;
-document.getElementById('dQty').max=p.stock;
-document.getElementById('detail').showModal()
+  selected=id;
+  const p=products.find(x=>x.id===id);
+  if(!p)return;
+
+  $("dName").textContent=p.name;
+  $("dDesc").textContent=p.description||"";
+  $("dPrice").textContent=money(p.price);
+  $("dStock").textContent="庫存 "+p.stock;
+
+  const sel=$("dVariant");
+  sel.replaceChildren();
+  (p.options?.length?p.options:["單款"])
+    .forEach(x=>sel.add(new Option(x,x)));
+
+  $("dQty").value=1;
+  $("dQty").max=p.stock;
+  $("detail").showModal();
 }
+
 function addCart(){
-const p=products.find(x=>x.id===selected),variant=document.getElementById('dVariant').value,qty=Number(document.getElementById('dQty').value);
-if(!p||!Number.isInteger(qty)||qty<1)return alert('請輸入正確數量');
-const existing=cart.find(x=>x.id===p.id&&x.variant===variant),all=cart.filter(x=>x.id===p.id).reduce((s,x)=>s+x.qty,0);
-if(all+qty>p.stock)return alert('數量超過可用庫存');
-if(existing)existing.qty+=qty;
-else cart.push({id:p.id,variant,qty});
-persist();document.getElementById('detail').close();renderAll();
-alert('已加入喊單清單 ♡')
+  const p=products.find(x=>x.id===selected);
+  const qty=Number($("dQty").value);
+  const option=$("dVariant").value;
+
+  if(!p||!Number.isInteger(qty)||qty<1)
+    return alert("請輸入正確數量");
+
+  const n=cart.filter(x=>x.id===p.id)
+    .reduce((s,x)=>s+x.qty,0);
+
+  if(n+qty>p.stock)return alert("庫存不足");
+
+  const found=cart.find(x=>x.id===p.id&&x.option===option);
+  if(found)found.qty+=qty;
+  else cart.push({id:p.id,option,qty});
+
+  persistCart();
+  $("detail").close();
+  renderCart();
+  alert("已加入喊單清單 ♡");
 }
-function removeCart(i){cart.splice(i,1);persist();renderAll()}
+
 function renderCart(){
-const box=document.getElementById('cartLines');box.replaceChildren();let total=0;
-if(!cart.length)box.append(el('p','目前還沒有喊單商品。'));
-cart.forEach((x,i)=>{
-const p=products.find(p=>p.id===x.id);if(!p)return;
-total+=p.price*x.qty;
-const row=el('div',undefined,'line'),top=el('div',undefined,'row');
-top.append(el('strong',p.name+' · '+x.variant),el('span',money(p.price*x.qty)));
-const bottom=el('div',undefined,'row');
-bottom.append(el('span','數量 '+x.qty));
-const b=el('button','移除','ghost');b.onclick=()=>removeCart(i);
-bottom.append(b);row.append(top,bottom);box.append(row)
-});
-box.append(el('h3','商品小計：'+money(total)));
-box.append(el('p','運費與其他費用將另行確認。','small'));
-document.getElementById('cartCount').textContent=cart.reduce((s,x)=>s+x.qty,0)
-}
-function placeOrder(){
-if(!cart.length)return alert('請先加入商品');
-const name=document.getElementById('customer').value.trim();
-if(!name)return alert('請輸入測試稱呼');
-for(const x of cart){
-const p=products.find(p=>p.id===x.id);
-if(!p||p.stock<cart.filter(y=>y.id===x.id).reduce((s,y)=>s+y.qty,0))return alert('庫存不足，請重新確認')
-}
-const items=cart.map(x=>{
-const p=products.find(p=>p.id===x.id);
-return {id:x.id,name:p.name,variant:x.variant,qty:x.qty,price:p.price}
-});
-for(const p of products)p.stock-=items.filter(x=>x.id===p.id).reduce((s,x)=>s+x.qty,0);
-const order={
-id:'T'+Date.now(),
-date:new Date().toLocaleString('zh-TW'),
-name,
-memo:document.getElementById('memo').value.trim(),
-items,
-total:items.reduce((s,x)=>s+x.qty*x.price,0),
-status:'待確認'
-};
-orders.unshift(order);cart=[];persist();
-document.getElementById('customer').value='';
-document.getElementById('memo').value='';
-renderAll();
-alert('本機測試喊單已建立！尚未送達店主。')
-}
-function resetForm(){
-for(const id of ['editId','pName','pPrice','pCategory','pStock','pVariants','pImage','pDesc'])document.getElementById(id).value='';
-document.getElementById('formTitle').textContent='新增商品'
-}
-function saveProduct(){
-const val=id=>document.getElementById(id).value.trim(),
-name=val('pName'),price=Number(val('pPrice')),stock=Number(val('pStock')),image=val('pImage'),id=val('editId');
-if(!name||val('pPrice')===''||val('pStock')===''||!Number.isFinite(price)||price<0||!Number.isInteger(stock)||stock<0)return alert('請正確填寫名稱、價格和庫存');
-if(image&&!/^https:\/\//i.test(image))return alert('圖片網址必須以 https:// 開頭');
-const p={
-id:id||'p'+Date.now(),name,price,stock,
-category:val('pCategory')||'其他',
-variants:val('pVariants').split(/[,，]/).map(s=>s.trim()).filter(Boolean),
-image,desc:val('pDesc')
-};
-if(id){
-const i=products.findIndex(x=>x.id===id);if(i<0)return;
-products[i]=p
-}else products.push(p);
-persist();resetForm();renderAll();
-alert('商品已儲存（僅此瀏覽器）')
-}
-function editProduct(id){
-const p=products.find(x=>x.id===id);if(!p)return;
-for(const [field,value] of Object.entries({
-editId:p.id,pName:p.name,pPrice:p.price,pStock:p.stock,
-pCategory:p.category,pVariants:p.variants.join(','),
-pImage:p.image,pDesc:p.desc
-}))document.getElementById(field).value=value;
-document.getElementById('formTitle').textContent='編輯商品';
-document.getElementById('formTitle').scrollIntoView({behavior:'smooth'})
-}
-function deleteProduct(id){
-if(!confirm('確定刪除這項商品？'))return;
-products=products.filter(x=>x.id!==id);
-cart=cart.filter(x=>x.id!==id);
-persist();renderAll()
-}
-function renderAdmin(){
-const box=document.getElementById('adminProducts');box.replaceChildren();
-if(!products.length)box.append(el('p','尚無商品'));
-products.forEach(p=>{
-const row=el('div',undefined,'line'),top=el('div',undefined,'row');
-top.append(el('strong',p.name),el('span',money(p.price)+' · 庫存 '+p.stock));
-const actions=el('div',undefined,'bar'),
-edit=el('button','編輯','ghost'),
-del=el('button','刪除','danger');
-edit.onclick=()=>editProduct(p.id);
-del.onclick=()=>deleteProduct(p.id);
-actions.append(edit,del);row.append(top,actions);box.append(row)
-});
-const ob=document.getElementById('orders');ob.replaceChildren();
-if(!orders.length)ob.append(el('p','尚無本機測試訂單'));
-orders.forEach(o=>{
-const row=el('div',undefined,'line');
-row.append(el('strong',o.id+' · '+o.name),el('p',o.date+' · '+money(o.total),'small'));
-o.items.forEach(x=>row.append(el('p',x.name+' / '+x.variant+' × '+x.qty)));
-if(o.memo)row.append(el('p','備註：'+o.memo));
-const select=el('select');
-['待確認','已確認','採購中','已到貨','已完成','已取消'].forEach(s=>select.add(new Option(s,s)));
-select.value=o.status;
-select.onchange=()=>{o.status=select.value;persist()};
-row.append(select);ob.append(row)
-})
-}
-function exportData(){
-const blob=new Blob([JSON.stringify({products,orders},null,2)],{type:'application/json'}),
-url=URL.createObjectURL(blob),a=document.createElement('a');
-a.href=url;a.download='cream-croissant-v6-backup.json';a.click();
-setTimeout(()=>URL.revokeObjectURL(url),1000)
-}
-function renderAll(){renderShop();renderCart();renderAdmin()}
-renderAll();
-</script>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  const box=$("cartLines");
+  box.replaceChildren();
+  let total=0;
 
-<script>
-const SUPABASE_URL = "https://hnrmbcldslljkctlepiz.supabase.co";
+  if(!cart.length)box.append(el("p","尚未加入商品"));
 
-const SUPABASE_KEY = "sb_publishable_zJeAc2z9_lPIj_KG2YUnFw_sgo2BWQA";
+  cart.forEach((x,i)=>{
+    const p=products.find(p=>p.id===x.id);
+    if(!p)return;
 
-const supabaseClient = window.supabase.createClient(
-  SUPABASE_URL,
-  SUPABASE_KEY
-);
-async function memberSignUp(email, password) {
-  const { data, error } = await supabaseClient.auth.signUp({
-    email,
-    password,
-    options: {
-      emailRedirectTo: window.location.origin + window.location.pathname
+    total+=p.price*x.qty;
+    const line=el("div",undefined,"line");
+    const top=el("div",undefined,"row");
+
+    top.append(
+      el("strong",p.name+" / "+x.option),
+      el("span",money(p.price*x.qty))
+    );
+
+    const b=el("button","移除","ghost");
+    b.onclick=()=>{
+      cart.splice(i,1);
+      persistCart();
+      renderCart();
+    };
+
+    line.append(top,el("p","數量 "+x.qty,"muted"),b);
+    box.append(line);
+  });
+
+  box.append(
+    el("h3","商品小計 "+money(total)),
+    el("p","不含運費，實際費用以店主確認為準。","muted")
+  );
+
+  $("cartCount").textContent=
+    cart.reduce((s,x)=>s+x.qty,0);
+}
+
+async function placeOrders(){
+  if(!currentUser){
+    alert("請先登入會員");
+    showPage("member");
+    return;
+  }
+  if(!cart.length)return alert("請先選擇商品");
+
+  const b=$("submitOrder");
+  b.disabled=true;
+  msg("cartMessage","正在送出...");
+  let success=0;
+
+  try{
+    for(const x of [...cart]){
+      const {error}=await db.rpc("place_order",{
+        p_product_id:x.id,
+        p_option:x.option,
+        p_quantity:x.qty,
+        p_note:$("memo").value.trim()
+      });
+      if(error)throw error;
+
+      success++;
+      const i=cart.findIndex(y=>
+        y.id===x.id&&y.option===x.option
+      );
+      if(i>=0)cart.splice(i,1);
+      persistCart();
+    }
+
+    msg("cartMessage","喊單成功！");
+    $("memo").value="";
+    await loadProducts();
+    showPage("orders");
+
+  }catch(e){
+    msg("cartMessage",
+      "已送出 "+success+" 筆；其餘未送出："+e.message,true);
+    await loadProducts();
+  }finally{
+    b.disabled=false;
+  }
+}
+
+async function refreshAuth(){
+  const {data,error}=await db.auth.getUser();
+  currentUser=error?null:data.user;
+  isAdmin=false;
+
+  if(currentUser){
+    const {data:profile,error:profileError}=await db
+      .from("profiles").select("*")
+      .eq("id",currentUser.id).maybeSingle();
+
+    if(profileError){
+      msg("profileMessage",
+        "會員資料讀取失敗："+profileError.message,true);
+    }
+
+    isAdmin=profile?.role==="admin";
+    $("displayName").value=profile?.display_name||"";
+    $("igHandle").value=profile?.ig_handle||"";
+    $("memberPhone").value=profile?.phone||"";
+    $("memberInfo").textContent=
+      "登入帳號："+currentUser.email;
+  }
+
+  $("memberAuth").classList.toggle("hidden",!!currentUser);
+  $("memberProfile").classList.toggle("hidden",!currentUser);
+  $("adminNav").classList.toggle("hidden",!isAdmin);
+
+  if(!isAdmin&&!$("admin").classList.contains("hidden")){
+    showPage("shop");
+  }
+
+  await loadProducts();
+}
+
+async function handleMemberSignup(){
+  const email=$("memberEmail").value.trim();
+  const password=$("memberPassword").value;
+
+  if(!email||password.length<6)
+    return msg("memberMessage",
+      "請輸入 Email 與至少 6 碼密碼",true);
+
+  const {data,error}=await db.auth.signUp({
+    email,password,
+    options:{
+      emailRedirectTo:location.origin+location.pathname
     }
   });
-  if (error) throw error;
-  return data;
+
+  msg("memberMessage",
+    error?"註冊失敗："+error.message:
+    data.session?"註冊成功":"請至信箱確認驗證信",
+    !!error
+  );
+
+  if(!error)await refreshAuth();
 }
 
-async function memberLogin(email, password) {
-  const { data, error } =
-    await supabaseClient.auth.signInWithPassword({
-      email,
-      password
-    });
-  if (error) throw error;
-  return data;
+async function handleMemberLogin(){
+  const {error}=await db.auth.signInWithPassword({
+    email:$("memberEmail").value.trim(),
+    password:$("memberPassword").value
+  });
+
+  $("memberPassword").value="";
+  msg("memberMessage",
+    error?"登入失敗："+error.message:"登入成功",!!error);
+
+  if(!error)await refreshAuth();
 }
 
-async function memberLogout() {
-  const { error } = await supabaseClient.auth.signOut();
-  if (error) throw error;
+async function handleMemberLogout(){
+  const {error}=await db.auth.signOut();
+  if(error)return alert(error.message);
+  await refreshAuth();
+  showPage("member");
 }
 
-async function getCurrentMember() {
-  const { data: sessionData, error: sessionError } =
-    await supabaseClient.auth.getSession();
+async function saveProfile(){
+  if(!currentUser)return;
 
-  if (sessionError) throw sessionError;
+  const {error}=await db.from("profiles")
+    .update({
+      display_name:$("displayName").value.trim(),
+      ig_handle:$("igHandle").value.trim().replace(/^@/,""),
+      phone:$("memberPhone").value.trim()
+    })
+    .eq("id",currentUser.id);
 
-  if (!sessionData.session) {
-    return null;
-  }
-
-  const { data, error } =
-    await supabaseClient.auth.getUser();
-
-  if (error) throw error;
-
-  return data.user;
-}
-  
-function showMemberPage() {
-  showPage('member');
-  refreshMemberUI();
+  msg("profileMessage",
+    error?"儲存失敗："+error.message:"會員資料已儲存",
+    !!error);
 }
 
-async function refreshMemberUI() {
-  const auth = document.getElementById('memberAuth');
-  const profile = document.getElementById('memberProfile');
-  const info = document.getElementById('memberInfo');
+async function loadOrders(){
+  const box=$("myOrders");
+  box.replaceChildren();
 
-  if (!auth || !profile || !info) return;
-
-  try {
-    const user = await getCurrentMember();
-    auth.classList.toggle('hidden', !!user);
-    profile.classList.toggle('hidden', !user);
-    info.textContent = user ? '會員 Email：' + user.email : '';
-  } catch (error) {
-    console.error(error);
-    alert('讀取會員資料失敗：' + error.message);
-  }
-}
-
-async function handleMemberSignUp() {
-  const email = document.getElementById('memberEmail').value.trim();
-  const password = document.getElementById('memberPassword').value;
-
-  if (!email || password.length < 6) {
-    alert('請輸入 Email，密碼至少 6 碼');
+  if(!currentUser){
+    box.append(el("p","請先登入會員"));
     return;
   }
 
-  try {
-    const data = await memberSignUp(email, password);
-    alert(data.session ? '註冊成功！' : '註冊資料已送出，請到信箱確認驗證信。');
-    await refreshMemberUI();
-  } catch (error) {
-    alert('註冊失敗：' + error.message);
+  const {data,error}=await db.from("orders")
+    .select("*,order_items(*)")
+    .eq("user_id",currentUser.id)
+    .order("created_at",{ascending:false});
+
+  if(error){
+    box.append(el("p",error.message));
+    return;
+  }
+  if(!data?.length){
+    box.append(el("p","尚無訂單"));
+    return;
+  }
+  data.forEach(o=>box.append(orderCard(o,false)));
+}
+
+function orderCard(o,admin){
+  const row=el("div",undefined,"line");
+  row.append(
+    el("strong","訂單 "+o.id.slice(0,8)),
+    el("p",new Date(o.created_at).toLocaleString("zh-TW"),"muted")
+  );
+
+  let subtotal=0;
+  (o.order_items||[]).forEach(x=>{
+    subtotal+=x.quantity*x.unit_price;
+    row.append(el("p",
+      x.product_name+" / "+x.selected_option+
+      " × "+x.quantity+" · "+
+      money(x.quantity*x.unit_price)));
+  });
+
+  row.append(el("p",
+    "商品 "+money(subtotal)+
+    " + 運費 "+money(o.shipping_fee)+
+    " = "+money(subtotal+o.shipping_fee)));
+
+  if(o.note)row.append(el("p","備註："+o.note,"muted"));
+  if(o.tracking_number)
+    row.append(el("p","物流單號："+o.tracking_number,"muted"));
+
+  if(admin){
+    const status=el("select");
+    const payment=el("select");
+
+    Object.entries(statusNames).forEach(
+      ([k,v])=>status.add(new Option(v,k))
+    );
+    Object.entries(payNames).forEach(
+      ([k,v])=>payment.add(new Option(v,k))
+    );
+
+    status.value=o.status;
+    payment.value=o.payment_status;
+
+    const shipping=el("input");
+    shipping.type="number";
+    shipping.min=0;
+    shipping.value=o.shipping_fee;
+
+    const tracking=el("input");
+    tracking.value=o.tracking_number;
+    tracking.placeholder="物流單號";
+
+    const save=el("button","儲存訂單狀態");
+    save.onclick=async()=>{
+      const {error}=await db.from("orders")
+        .update({
+          status:status.value,
+          payment_status:payment.value,
+          shipping_fee:Number(shipping.value),
+          tracking_number:tracking.value.trim()
+        }).eq("id",o.id);
+
+      alert(error?"儲存失敗："+error.message:"已儲存");
+      if(!error)loadAdminOrders();
+    };
+
+    row.append(
+      el("label","訂單狀態"),status,
+      el("label","付款狀態"),payment,
+      el("label","運費"),shipping,
+      el("label","物流單號"),tracking,save
+    );
+
+  }else{
+    row.append(el("p",
+      "訂單狀態："+(statusNames[o.status]||o.status)+
+      "｜付款："+(payNames[o.payment_status]||o.payment_status),
+      "muted"));
+
+    if(o.payment_status!=="paid"){
+      const amount=el("input");
+      amount.type="number";
+      amount.min=1;
+      amount.placeholder="匯款金額";
+
+      const last=el("input");
+      last.placeholder="帳號末五碼";
+
+      const note=el("input");
+      note.placeholder="付款備註（選填）";
+
+      const b=el("button","回報匯款");
+      b.onclick=async()=>{
+        const n=Number(amount.value);
+        if(!Number.isInteger(n)||n<=0)
+          return alert("請填寫匯款金額");
+
+        const {error}=await db.from("payment_reports")
+          .insert({
+            order_id:o.id,
+            user_id:currentUser.id,
+            amount:n,
+            last_five:last.value.trim(),
+            note:note.value.trim()
+          });
+
+        alert(error?
+          "回報失敗："+error.message:
+          "匯款已回報，待店主確認");
+
+        if(!error)loadOrders();
+      };
+
+      row.append(
+        el("label","匯款金額"),amount,
+        el("label","帳號末五碼"),last,
+        note,b
+      );
+    }
+  }
+  return row;
+}
+
+function resetForm(){
+  [
+    "editId","pName","pPrice","pCategory",
+    "pStock","pVariants","pImage","pDesc"
+  ].forEach(id=>$(id).value="");
+
+  $("pActive").checked=true;
+  $("formTitle").textContent="新增商品";
+}
+
+async function saveProduct(){
+  if(!isAdmin)return;
+
+  const val=id=>$(id).value.trim();
+  const name=val("pName");
+  const price=Number(val("pPrice"));
+  const stock=Number(val("pStock"));
+  const image=val("pImage");
+
+  if(!name||val("pPrice")===""||val("pStock")===""||
+     !Number.isInteger(price)||price<0||
+     !Number.isInteger(stock)||stock<0)
+    return msg("adminMessage",
+      "請正確填寫名稱、整數價格與庫存",true);
+
+  if(image&&!/^https:\/\//i.test(image))
+    return msg("adminMessage",
+      "圖片網址必須以 https:// 開頭",true);
+
+  const p={
+    name,price,stock,
+    category:val("pCategory")||"日本選物",
+    options:val("pVariants").split(/[,，]/)
+      .map(x=>x.trim()).filter(Boolean),
+    image_url:image,
+    description:val("pDesc"),
+    is_active:$("pActive").checked
+  };
+
+  const id=val("editId");
+  const result=id?
+    await db.from("products").update(p).eq("id",id):
+    await db.from("products").insert(p);
+
+  msg("adminMessage",
+    result.error?"儲存失敗："+result.error.message:
+    "商品已儲存到雲端",!!result.error);
+
+  if(!result.error){
+    resetForm();
+    await loadProducts();
   }
 }
 
-async function handleMemberLogin() {
-  const email = document.getElementById('memberEmail').value.trim();
-  const password = document.getElementById('memberPassword').value;
+function editProduct(id){
+  const p=products.find(x=>x.id===id);
+  if(!p)return;
 
-  try {
-    await memberLogin(email, password);
-    document.getElementById('memberPassword').value = '';
-    alert('登入成功！');
-    await refreshMemberUI();
-  } catch (error) {
-    alert('登入失敗：' + error.message);
-  }
+  const values={
+    editId:p.id,pName:p.name,pPrice:p.price,
+    pStock:p.stock,pCategory:p.category,
+    pVariants:(p.options||[]).join(","),
+    pImage:p.image_url,pDesc:p.description
+  };
+
+  Object.entries(values).forEach(
+    ([k,v])=>$(k).value=v??""
+  );
+
+  $("pActive").checked=p.is_active;
+  $("formTitle").textContent="編輯商品";
+  $("formTitle").scrollIntoView({behavior:"smooth"});
 }
 
-async function handleMemberLogout() {
-  try {
-    await memberLogout();
-    alert('已登出會員');
-    await refreshMemberUI();
-  } catch (error) {
-    alert('登出失敗：' + error.message);
-  }
+async function deleteProduct(id){
+  if(!isAdmin||!confirm("確定刪除商品？"))return;
+
+  const {error}=await db.from("products")
+    .delete().eq("id",id);
+
+  if(error)alert(error.message);
+  else await loadProducts();
 }
 
-supabaseClient.auth.onAuthStateChange(() => {
-  setTimeout(() => refreshMemberUI(), 0);
+function renderAdminProducts(){
+  const box=$("adminProducts");
+  box.replaceChildren();
+
+  if(!products.length)box.append(el("p","尚無商品"));
+
+  products.forEach(p=>{
+    const row=el("div",undefined,"line");
+    const top=el("div",undefined,"row");
+
+    top.append(
+      el("strong",p.name+(p.is_active?"":"（未上架）")),
+      el("span",money(p.price)+" · 庫存 "+p.stock)
+    );
+
+    const actions=el("div",undefined,"bar");
+    const edit=el("button","編輯","ghost");
+    const del=el("button","刪除","danger");
+
+    edit.onclick=()=>editProduct(p.id);
+    del.onclick=()=>deleteProduct(p.id);
+
+    actions.append(edit,del);
+    row.append(top,actions);
+    box.append(row);
+  });
+}
+
+async function loadAdminOrders(){
+  if(!isAdmin)return;
+
+  const box=$("adminOrders");
+  box.replaceChildren();
+
+  const {data,error}=await db.from("orders")
+    .select("*,order_items(*)")
+    .order("created_at",{ascending:false})
+    .limit(100);
+
+  if(error){
+    box.append(el("p",error.message));
+    return;
+  }
+  if(!data?.length){
+    box.append(el("p","尚無訂單"));
+    return;
+  }
+
+  data.forEach(o=>box.append(orderCard(o,true)));
+}
+
+db.auth.onAuthStateChange(()=>{
+  setTimeout(()=>{
+    refreshAuth().catch(console.error);
+  },0);
 });
 
+refreshAuth().catch(e=>{
+  msg("shopMessage","連線錯誤："+e.message,true);
+});
+
+renderCart();
 </script>
 </body>
 </html>
