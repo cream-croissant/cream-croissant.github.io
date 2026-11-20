@@ -1,0 +1,338 @@
+
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>奶油可頌團｜日本連線</title>
+<style>
+:root{--cream:#f7f0e5;--paper:#fffaf2;--coffee:#583b2c;--tan:#b18b6c;--line:#d7c2ab}
+*{box-sizing:border-box}
+body{margin:0;background:var(--cream);color:var(--coffee);font-family:'Klee One','Noto Serif TC','PingFang TC',serif}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer;border:1px solid var(--coffee);border-radius:7px;padding:10px 14px;background:var(--coffee);color:white}
+button.ghost{background:transparent;color:var(--coffee)}
+button:disabled{opacity:.5;cursor:not-allowed}
+input,select,textarea{width:100%;padding:11px;border:1px solid var(--line);border-radius:6px;background:#fffdf9;color:var(--coffee)}
+label{display:block;margin:10px 0 5px;font-size:.92rem}
+header{background:var(--paper);border-bottom:2px solid var(--coffee);padding:18px 16px;text-align:center}
+header .mark{font-size:35px}
+h1{font-size:30px;letter-spacing:3px;margin:5px}
+header p{margin:6px;color:#85654e}
+.nav{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;padding:12px}
+.wrap{max-width:1080px;margin:auto;padding:15px}
+.hero{background:#e8d9c7;border:1px solid var(--coffee);padding:28px;text-align:center;border-radius:10px;margin-bottom:24px}
+.hero h2{font-size:27px;margin:5px}
+.small{font-size:.85rem;color:#806550}
+.bar{display:flex;gap:10px;flex-wrap:wrap;margin:16px 0}
+.bar input{flex:1;min-width:180px}
+.bar select{width:auto}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px}
+.product{background:var(--paper);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.product img,.placeholder{width:100%;height:210px;object-fit:cover;background:#e7d8c7}
+.placeholder{display:grid;place-items:center;font-size:54px}
+.product .body{padding:15px}
+.product h3{margin:4px 0 10px;font-size:1.05rem}
+.price{font-weight:bold;font-size:1.15rem}
+.pill{display:inline-block;padding:4px 9px;border:1px solid var(--line);border-radius:20px;font-size:.8rem;margin:5px 0}
+.panel{background:var(--paper);border:1px solid var(--line);padding:20px;border-radius:10px;margin:15px 0}
+.hidden{display:none!important}
+.row{display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.line{border-bottom:1px dashed var(--line);padding:12px 0}
+.line:last-child{border:0}
+.cols{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.note{background:#efe1d1;padding:12px;border-radius:6px}
+.danger{background:#a3453b;border-color:#a3453b}
+footer{text-align:center;padding:35px 10px;color:#826750}
+dialog{border:1px solid var(--coffee);border-radius:12px;max-width:480px;width:calc(100% - 24px);background:var(--paper);color:var(--coffee)}
+dialog::backdrop{background:#25170db0}
+dialog form{margin:0}
+@media(max-width:600px){
+.cols{grid-template-columns:1fr}
+.hero{padding:20px}
+.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.product img,.placeholder{height:145px}
+.product .body{padding:10px}
+.product h3{font-size:.95rem}
+button{padding:9px}
+}
+</style>
+</head>
+<body>
+<header>
+<div class="mark">🥐</div>
+<h1>奶油可頌團</h1>
+<p>CREAM CROISSANT SHOP · 日本連線</p>
+</header>
+<nav class="nav">
+<button class="ghost" onclick="showPage('shop')">選購商品</button>
+<button class="ghost" onclick="showPage('cart')">我的喊單 <span id="cartCount">0</span></button>
+<button class="ghost" onclick="showPage('admin')">管理後台（測試）</button>
+</nav>
+<main class="wrap">
+<section id="shop">
+<div class="hero">
+<div>✦ JAPAN SELECT ✦</div>
+<h2>日本連線 · 日常小確幸</h2>
+<p>精選童裝、配件與復古可愛雜貨</p>
+<button onclick="document.getElementById('products').scrollIntoView({behavior:'smooth'})">開始逛逛 ♡</button>
+</div>
+<div class="row"><h2>本期選物 ♡</h2><span class="small">奶油私藏的小小日常</span></div>
+<div class="bar">
+<input id="search" placeholder="搜尋商品名稱" oninput="renderShop()">
+<select id="category" onchange="renderShop()"><option value="">所有分類</option></select>
+</div>
+<div class="grid" id="products"></div>
+</section>
+<section id="cart" class="hidden">
+<h2>我的喊單 🥐</h2>
+<div class="panel" id="cartLines"></div>
+<div class="panel">
+<h3>送出喊單（本機測試）</h3>
+<p class="small">此版本送出後只儲存在本裝置，不會傳送給店主。正式上線前請勿收集客人個資。</p>
+<label>稱呼（測試用）</label><input id="customer" placeholder="例如：奶油小姐">
+<label>備註</label><textarea id="memo" rows="3" placeholder="例如：希望合併出貨"></textarea>
+<div class="bar">
+<button onclick="placeOrder()">確認喊單</button>
+<button class="ghost" onclick="showPage('shop')">繼續選購</button>
+</div>
+</div>
+</section>
+<section id="admin" class="hidden">
+<h2>商品與訂單管理（本機測試）</h2>
+<div class="note">⚠️ 這個後台目前是公開的示範介面，沒有登入保護。不要用來處理真實客戶訂單或個人資料。</div>
+<div class="panel">
+<h3 id="formTitle">新增商品</h3>
+<input id="editId" type="hidden">
+<div class="cols">
+<div><label>商品名稱</label><input id="pName" placeholder="例如：復古花朵髮夾"></div>
+<div><label>售價（NT$）</label><input id="pPrice" type="number" min="0" placeholder="380"></div>
+<div><label>分類</label><input id="pCategory" placeholder="童裝／髮飾／雜貨"></div>
+<div><label>庫存</label><input id="pStock" type="number" min="0" placeholder="5"></div>
+<div><label>款式／尺寸（逗號分隔）</label><input id="pVariants" placeholder="米白,咖啡,90碼"></div>
+<div><label>圖片網址（選填，https）</label><input id="pImage" placeholder="https://..."></div>
+</div>
+<label>商品說明</label><textarea id="pDesc" rows="2"></textarea>
+<div class="bar">
+<button onclick="saveProduct()">儲存商品</button>
+<button class="ghost" onclick="resetForm()">清空欄位</button>
+</div>
+</div>
+<div class="panel"><h3>商品清單</h3><div id="adminProducts"></div></div>
+<div class="panel"><h3>本機測試訂單</h3><div id="orders"></div></div>
+<button class="ghost" onclick="exportData()">匯出本機資料 JSON</button>
+</section>
+</main>
+<footer>
+🥐 奶油可頌團 · 日本連線
+<span class="small">日系復古選物｜私訊奶油</span>
+<p><a id="contact" href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer">私訊奶油 ♡（請替換成你的 IG 連結）</a></p>
+</footer>
+<dialog id="detail">
+<form method="dialog">
+<div class="row"><h3 id="dName"></h3><button class="ghost" value="cancel">✕</button></div>
+<p id="dDesc"></p><p class="price" id="dPrice"></p>
+<label>款式／尺寸</label><select id="dVariant"></select>
+<label>數量</label><input id="dQty" type="number" min="1" value="1">
+<p id="dStock" class="small"></p>
+<button type="button" onclick="addCart()">加入喊單 ♡</button>
+</form>
+</dialog>
+<script>
+'use strict';
+const K='cream_croissant_v6_';
+const sample=[
+{id:'demo1',name:'復古花朵髮夾',price:380,category:'髮飾',stock:5,variants:['奶油白','咖啡'],desc:'日常穿搭的小小亮點',image:''},
+{id:'demo2',name:'日系童裝上衣',price:680,category:'童裝',stock:4,variants:['90碼','100碼','110碼'],desc:'柔和大地色系',image:''},
+{id:'demo3',name:'可愛雜貨小物',price:250,category:'雜貨',stock:8,variants:['單款'],desc:'日本連線精選',image:''}
+];
+function read(k,fallback){
+try{const v=JSON.parse(localStorage.getItem(K+k));return v??fallback}catch{return fallback}
+}
+let products=read('products',sample),cart=read('cart',[]),orders=read('orders',[]),selected=null;
+function persist(){
+localStorage.setItem(K+'products',JSON.stringify(products));
+localStorage.setItem(K+'cart',JSON.stringify(cart));
+localStorage.setItem(K+'orders',JSON.stringify(orders))
+}
+function el(tag,txt,cls){
+const e=document.createElement(tag);
+if(txt!==undefined)e.textContent=txt;
+if(cls)e.className=cls;
+return e
+}
+function money(n){return 'NT$ '+Number(n).toLocaleString('zh-TW')}
+function showPage(id){
+for(const s of ['shop','cart','admin'])document.getElementById(s).classList.toggle('hidden',s!==id);
+renderAll();scrollTo(0,0)
+}
+function renderShop(){
+const category=document.getElementById('category'),old=category.value;
+category.replaceChildren(new Option('所有分類',''));
+[...new Set(products.map(p=>p.category))].sort().forEach(c=>category.add(new Option(c,c)));
+category.value=old;
+const q=document.getElementById('search').value.trim().toLowerCase(),grid=document.getElementById('products');
+grid.replaceChildren();
+const filtered=products.filter(p=>(!category.value||p.category===category.value)&&p.name.toLowerCase().includes(q));
+if(!filtered.length)grid.append(el('p','目前沒有符合的商品。'));
+filtered.forEach(p=>{
+const card=el('article',undefined,'product');
+if(p.image&&/^https:\/\//i.test(p.image)){
+const img=el('img');
+img.src=p.image;img.alt=p.name;img.loading='lazy';
+img.onerror=()=>img.replaceWith(el('div','🥐','placeholder'));
+card.append(img)
+}else card.append(el('div','🥐','placeholder'));
+const body=el('div',undefined,'body');
+body.append(el('span',p.category,'pill'),el('h3',p.name),el('p',money(p.price),'price'),el('p',p.stock?'剩餘 '+p.stock+' 件':'已售完','small'));
+const b=el('button',p.stock?'選擇款式 +':'售完');
+b.disabled=!p.stock;b.onclick=()=>openDetail(p.id);
+body.append(b);card.append(body);grid.append(card)
+})
+}
+function openDetail(id){
+selected=id;
+const p=products.find(x=>x.id===id);if(!p)return;
+document.getElementById('dName').textContent=p.name;
+document.getElementById('dDesc').textContent=p.desc||'';
+document.getElementById('dPrice').textContent=money(p.price);
+document.getElementById('dStock').textContent='可選數量：1–'+p.stock;
+const sel=document.getElementById('dVariant');
+sel.replaceChildren();
+(p.variants.length?p.variants:['單款']).forEach(v=>sel.add(new Option(v,v)));
+document.getElementById('dQty').value=1;
+document.getElementById('dQty').max=p.stock;
+document.getElementById('detail').showModal()
+}
+function addCart(){
+const p=products.find(x=>x.id===selected),variant=document.getElementById('dVariant').value,qty=Number(document.getElementById('dQty').value);
+if(!p||!Number.isInteger(qty)||qty<1)return alert('請輸入正確數量');
+const existing=cart.find(x=>x.id===p.id&&x.variant===variant),all=cart.filter(x=>x.id===p.id).reduce((s,x)=>s+x.qty,0);
+if(all+qty>p.stock)return alert('數量超過可用庫存');
+if(existing)existing.qty+=qty;
+else cart.push({id:p.id,variant,qty});
+persist();document.getElementById('detail').close();renderAll();
+alert('已加入喊單清單 ♡')
+}
+function removeCart(i){cart.splice(i,1);persist();renderAll()}
+function renderCart(){
+const box=document.getElementById('cartLines');box.replaceChildren();let total=0;
+if(!cart.length)box.append(el('p','目前還沒有喊單商品。'));
+cart.forEach((x,i)=>{
+const p=products.find(p=>p.id===x.id);if(!p)return;
+total+=p.price*x.qty;
+const row=el('div',undefined,'line'),top=el('div',undefined,'row');
+top.append(el('strong',p.name+' · '+x.variant),el('span',money(p.price*x.qty)));
+const bottom=el('div',undefined,'row');
+bottom.append(el('span','數量 '+x.qty));
+const b=el('button','移除','ghost');b.onclick=()=>removeCart(i);
+bottom.append(b);row.append(top,bottom);box.append(row)
+});
+box.append(el('h3','商品小計：'+money(total)));
+box.append(el('p','運費與其他費用將另行確認。','small'));
+document.getElementById('cartCount').textContent=cart.reduce((s,x)=>s+x.qty,0)
+}
+function placeOrder(){
+if(!cart.length)return alert('請先加入商品');
+const name=document.getElementById('customer').value.trim();
+if(!name)return alert('請輸入測試稱呼');
+for(const x of cart){
+const p=products.find(p=>p.id===x.id);
+if(!p||p.stock<cart.filter(y=>y.id===x.id).reduce((s,y)=>s+y.qty,0))return alert('庫存不足，請重新確認')
+}
+const items=cart.map(x=>{
+const p=products.find(p=>p.id===x.id);
+return {id:x.id,name:p.name,variant:x.variant,qty:x.qty,price:p.price}
+});
+for(const p of products)p.stock-=items.filter(x=>x.id===p.id).reduce((s,x)=>s+x.qty,0);
+const order={
+id:'T'+Date.now(),
+date:new Date().toLocaleString('zh-TW'),
+name,
+memo:document.getElementById('memo').value.trim(),
+items,
+total:items.reduce((s,x)=>s+x.qty*x.price,0),
+status:'待確認'
+};
+orders.unshift(order);cart=[];persist();
+document.getElementById('customer').value='';
+document.getElementById('memo').value='';
+renderAll();
+alert('本機測試喊單已建立！尚未送達店主。')
+}
+function resetForm(){
+for(const id of ['editId','pName','pPrice','pCategory','pStock','pVariants','pImage','pDesc'])document.getElementById(id).value='';
+document.getElementById('formTitle').textContent='新增商品'
+}
+function saveProduct(){
+const val=id=>document.getElementById(id).value.trim(),
+name=val('pName'),price=Number(val('pPrice')),stock=Number(val('pStock')),image=val('pImage'),id=val('editId');
+if(!name||val('pPrice')===''||val('pStock')===''||!Number.isFinite(price)||price<0||!Number.isInteger(stock)||stock<0)return alert('請正確填寫名稱、價格和庫存');
+if(image&&!/^https:\/\//i.test(image))return alert('圖片網址必須以 https:// 開頭');
+const p={
+id:id||'p'+Date.now(),name,price,stock,
+category:val('pCategory')||'其他',
+variants:val('pVariants').split(/[,，]/).map(s=>s.trim()).filter(Boolean),
+image,desc:val('pDesc')
+};
+if(id){
+const i=products.findIndex(x=>x.id===id);if(i<0)return;
+products[i]=p
+}else products.push(p);
+persist();resetForm();renderAll();
+alert('商品已儲存（僅此瀏覽器）')
+}
+function editProduct(id){
+const p=products.find(x=>x.id===id);if(!p)return;
+for(const [field,value] of Object.entries({
+editId:p.id,pName:p.name,pPrice:p.price,pStock:p.stock,
+pCategory:p.category,pVariants:p.variants.join(','),
+pImage:p.image,pDesc:p.desc
+}))document.getElementById(field).value=value;
+document.getElementById('formTitle').textContent='編輯商品';
+document.getElementById('formTitle').scrollIntoView({behavior:'smooth'})
+}
+function deleteProduct(id){
+if(!confirm('確定刪除這項商品？'))return;
+products=products.filter(x=>x.id!==id);
+cart=cart.filter(x=>x.id!==id);
+persist();renderAll()
+}
+function renderAdmin(){
+const box=document.getElementById('adminProducts');box.replaceChildren();
+if(!products.length)box.append(el('p','尚無商品'));
+products.forEach(p=>{
+const row=el('div',undefined,'line'),top=el('div',undefined,'row');
+top.append(el('strong',p.name),el('span',money(p.price)+' · 庫存 '+p.stock));
+const actions=el('div',undefined,'bar'),
+edit=el('button','編輯','ghost'),
+del=el('button','刪除','danger');
+edit.onclick=()=>editProduct(p.id);
+del.onclick=()=>deleteProduct(p.id);
+actions.append(edit,del);row.append(top,actions);box.append(row)
+});
+const ob=document.getElementById('orders');ob.replaceChildren();
+if(!orders.length)ob.append(el('p','尚無本機測試訂單'));
+orders.forEach(o=>{
+const row=el('div',undefined,'line');
+row.append(el('strong',o.id+' · '+o.name),el('p',o.date+' · '+money(o.total),'small'));
+o.items.forEach(x=>row.append(el('p',x.name+' / '+x.variant+' × '+x.qty)));
+if(o.memo)row.append(el('p','備註：'+o.memo));
+const select=el('select');
+['待確認','已確認','採購中','已到貨','已完成','已取消'].forEach(s=>select.add(new Option(s,s)));
+select.value=o.status;
+select.onchange=()=>{o.status=select.value;persist()};
+row.append(select);ob.append(row)
+})
+}
+function exportData(){
+const blob=new Blob([JSON.stringify({products,orders},null,2)],{type:'application/json'}),
+url=URL.createObjectURL(blob),a=document.createElement('a');
+a.href=url;a.download='cream-croissant-v6-backup.json';a.click();
+setTimeout(()=>URL.revokeObjectURL(url),1000)
+}
+function renderAll(){renderShop();renderCart();renderAdmin()}
+renderAll();
+</script>
+</body>
+</html>
