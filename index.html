@@ -345,6 +345,39 @@ const supabaseClient = window.supabase.createClient(
   SUPABASE_URL,
   SUPABASE_KEY
 );
+async function memberSignUp(email, password) {
+  const { data, error } = await supabaseClient.auth.signUp({
+    email,
+    password,
+    options: {
+      emailRedirectTo: window.location.origin + window.location.pathname
+    }
+  });
+  if (error) throw error;
+  return data;
+}
+
+async function memberLogin(email, password) {
+  const { data, error } =
+    await supabaseClient.auth.signInWithPassword({
+      email,
+      password
+    });
+  if (error) throw error;
+  return data;
+}
+
+async function memberLogout() {
+  const { error } = await supabaseClient.auth.signOut();
+  if (error) throw error;
+}
+
+async function getCurrentMember() {
+  const { data, error } = await supabaseClient.auth.getUser();
+  if (error) throw error;
+  return data.user;
+}
+  
 </script>
 </body>
 </html>
