@@ -24,6 +24,7 @@
   --line: #e5d8c8;
   --muted: #95816f;
   --danger: #a64d45;
+  --success: #56765a;
 }
 
 * {
@@ -32,14 +33,11 @@
 
 html {
   scroll-behavior: smooth;
-  width: 100%;
   overflow-x: hidden;
 }
 
 body {
   margin: 0;
-  width: 100%;
-  max-width: 100%;
   overflow-x: hidden;
   background: var(--bg);
   color: var(--coffee);
@@ -61,7 +59,7 @@ button {
 }
 
 button:disabled {
-  opacity: .45;
+  opacity: .5;
   cursor: not-allowed;
 }
 
@@ -73,6 +71,11 @@ button.light {
 button.danger {
   background: var(--danger);
   border-color: var(--danger);
+}
+
+button.saved {
+  background: var(--success);
+  border-color: var(--success);
 }
 
 input, select, textarea {
@@ -123,6 +126,10 @@ a {
 
 .error {
   color: var(--danger);
+}
+
+.success {
+  color: var(--success);
 }
 
 .message {
@@ -204,8 +211,6 @@ a {
   align-items: center;
   gap: 40px;
   padding: 90px 0;
-  width: 100%;
-  min-width: 0;
 }
 
 .hero > * {
@@ -231,8 +236,6 @@ a {
 }
 
 .hero-art {
-  width: 100%;
-  min-width: 0;
   min-height: 370px;
   background: #e9dfd2;
   display: flex;
@@ -250,7 +253,6 @@ a {
   max-width: 300px;
   height: auto;
   object-fit: contain;
-  margin: 0 auto;
 }
 
 .hero-art small {
@@ -445,8 +447,6 @@ dialog::backdrop {
 
 @media (max-width: 650px) {
   .container {
-    width: 100%;
-    max-width: 100%;
     padding-left: 18px;
     padding-right: 18px;
   }
@@ -468,14 +468,9 @@ dialog::backdrop {
   }
 
   .hero {
-    display: grid;
     grid-template-columns: minmax(0, 1fr);
     padding: 45px 0;
     gap: 28px;
-  }
-
-  .hero > * {
-    min-width: 0;
   }
 
   .hero-art {
@@ -484,7 +479,6 @@ dialog::backdrop {
   }
 
   .croissant-image {
-    width: 75%;
     max-width: 230px;
   }
 
@@ -494,7 +488,6 @@ dialog::backdrop {
   }
 
   .categories {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 8px;
   }
 
@@ -512,7 +505,6 @@ dialog::backdrop {
   }
 
   .products {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 10px;
   }
 
@@ -524,10 +516,7 @@ dialog::backdrop {
     font-size: 13px;
   }
 
-  .toolbar {
-    grid-template-columns: minmax(0, 1fr);
-  }
-
+  .toolbar,
   .form-grid {
     grid-template-columns: minmax(0, 1fr);
   }
@@ -547,6 +536,7 @@ dialog::backdrop {
       奶油可頌團
       <small>CREAM CROISSANT SHOP</small>
     </a>
+
     <nav class="top-links">
       <button onclick="showPage('shop')">日本連線</button>
       <button onclick="goAbout()">關於我們</button>
@@ -558,11 +548,18 @@ dialog::backdrop {
 <div class="subnav">
   <div class="container subnav-inner">
     <button onclick="showPage('shop')">商品選購</button>
+
     <button onclick="showPage('cart')">
       我的喊單 (<span id="cartCount">0</span>)
     </button>
+
     <button onclick="showPage('orders')">我的訂單</button>
-    <button id="adminNav" class="hidden" onclick="showPage('admin')">
+
+    <button
+      id="adminNav"
+      class="hidden"
+      onclick="showPage('admin')"
+    >
       管理後台
     </button>
   </div>
@@ -571,6 +568,7 @@ dialog::backdrop {
 <main class="container">
 
 <section id="shop">
+
   <div class="hero">
     <div>
       <div class="eyebrow">JAPAN SELECT SHOP</div>
@@ -622,7 +620,12 @@ dialog::backdrop {
     <p class="muted">本期選物・慢慢挑選喜歡的日常</p>
 
     <div class="toolbar">
-      <input id="search" placeholder="搜尋商品名稱" oninput="renderShop()">
+      <input
+        id="search"
+        placeholder="搜尋商品名稱"
+        oninput="renderShop()"
+      >
+
       <select id="category" onchange="renderShop()">
         <option value="">全部分類</option>
       </select>
@@ -640,10 +643,12 @@ dialog::backdrop {
       用一點點喜歡，收藏平凡日子裡的溫柔。
     </p>
   </div>
+
 </section>
 
 <section id="cart" class="hidden">
   <h2 class="page-title">我的喊單清單</h2>
+
   <div id="cartLines" class="panel"></div>
 
   <div class="panel">
@@ -653,11 +658,20 @@ dialog::backdrop {
     </p>
 
     <label>訂單備註</label>
-    <textarea id="memo" rows="3" placeholder="例如：希望合併出貨"></textarea>
+    <textarea
+      id="memo"
+      rows="3"
+      placeholder="例如：希望合併出貨"
+    ></textarea>
 
     <div class="actions">
-      <button id="submitOrder" onclick="placeOrders()">確認送出喊單</button>
-      <button class="light" onclick="showPage('shop')">繼續選購</button>
+      <button id="submitOrder" onclick="placeOrders()">
+        確認送出喊單
+      </button>
+
+      <button class="light" onclick="showPage('shop')">
+        繼續選購
+      </button>
     </div>
 
     <p id="cartMessage" class="message"></p>
@@ -676,10 +690,18 @@ dialog::backdrop {
     <h3>會員註冊／登入</h3>
 
     <label>Email 電子郵件</label>
-    <input id="memberEmail" type="email" autocomplete="email">
+    <input
+      id="memberEmail"
+      type="email"
+      autocomplete="email"
+    >
 
     <label>密碼</label>
-    <input id="memberPassword" type="password" autocomplete="current-password">
+    <input
+      id="memberPassword"
+      type="password"
+      autocomplete="current-password"
+    >
 
     <div class="actions">
       <button onclick="handleSignup()">註冊會員</button>
@@ -694,21 +716,35 @@ dialog::backdrop {
     <p id="memberInfo" class="muted"></p>
 
     <label>會員名稱</label>
-    <input id="displayName">
+    <input id="displayName" autocomplete="name">
 
     <label>Instagram 帳號</label>
-    <input id="igHandle" placeholder="例如：cream_shop">
+    <input
+      id="igHandle"
+      placeholder="例如：cream_shop"
+      autocapitalize="none"
+    >
 
     <p class="muted">
-      此欄位僅供登記 IG 名稱，不代表已完成 Instagram 官方授權綁定。
+      此欄位僅供登記 IG 名稱，
+      不代表已完成 Instagram 官方授權綁定。
     </p>
 
     <label>聯絡電話</label>
-    <input id="memberPhone" type="tel" autocomplete="tel">
+    <input
+      id="memberPhone"
+      type="tel"
+      autocomplete="tel"
+    >
 
     <div class="actions">
-      <button onclick="saveProfile()">儲存資料</button>
-      <button class="light" onclick="handleLogout()">登出</button>
+      <button id="saveProfileBtn" onclick="saveProfile()">
+        儲存資料
+      </button>
+
+      <button class="light" onclick="handleLogout()">
+        登出
+      </button>
     </div>
 
     <p id="profileMessage" class="message"></p>
@@ -719,8 +755,8 @@ dialog::backdrop {
   <h2 class="page-title">管理後台</h2>
 
   <div class="note">
-    管理後台僅限具備管理員權限的會員。
-    實際資料安全由資料庫 RLS 控制。
+    僅管理員可以新增、修改、下架商品及管理訂單。
+    一般會員不會看到管理後台。
   </div>
 
   <div class="panel">
@@ -728,9 +764,10 @@ dialog::backdrop {
     <input id="editId" type="hidden">
 
     <div class="form-grid">
+
       <div>
         <label>商品名稱</label>
-        <input id="pName">
+        <input id="pName" placeholder="例如：日系復古花卉上衣">
       </div>
 
       <div>
@@ -740,7 +777,10 @@ dialog::backdrop {
 
       <div>
         <label>商品分類</label>
-        <input id="pCategory" placeholder="童裝／髮飾／雜貨">
+        <input
+          id="pCategory"
+          placeholder="童裝／髮飾／雜貨"
+        >
       </div>
 
       <div>
@@ -750,13 +790,21 @@ dialog::backdrop {
 
       <div>
         <label>款式／尺寸（逗號分隔）</label>
-        <input id="pVariants" placeholder="米白90,咖啡90,米白100">
+        <input
+          id="pVariants"
+          placeholder="米白90,咖啡90,米白100"
+        >
       </div>
 
       <div>
         <label>商品圖片網址</label>
-        <input id="pImage" type="url" placeholder="https://...">
+        <input
+          id="pImage"
+          type="url"
+          placeholder="https://..."
+        >
       </div>
+
     </div>
 
     <label>商品說明</label>
@@ -768,8 +816,13 @@ dialog::backdrop {
     </label>
 
     <div class="actions">
-      <button onclick="saveProduct()">儲存商品</button>
-      <button class="light" onclick="resetForm()">清空欄位</button>
+      <button id="saveProductBtn" onclick="saveProduct()">
+        儲存商品
+      </button>
+
+      <button class="light" onclick="resetForm()">
+        清空欄位
+      </button>
     </div>
 
     <p id="adminMessage" class="message"></p>
@@ -794,10 +847,16 @@ dialog::backdrop {
     alt="奶油可頌團手繪可頌"
     class="footer-croissant"
   >
+
   <div>奶油可頌團</div>
   <p>CREAM CROISSANT SHOP · JAPAN SELECT</p>
   <p>日常裡的溫柔小選物</p>
-  <a href="https://ig.me/m/creamoosin" target="_blank" rel="noopener noreferrer">
+
+  <a
+    href="https://ig.me/m/creamoosin"
+    target="_blank"
+    rel="noopener noreferrer"
+  >
     私訊奶油
   </a>
 </footer>
@@ -805,7 +864,12 @@ dialog::backdrop {
 <dialog id="detail">
   <div class="line-top">
     <h3 id="dName"></h3>
-    <button class="light" onclick="document.getElementById('detail').close()">✕</button>
+    <button
+      class="light"
+      onclick="document.getElementById('detail').close()"
+    >
+      ✕
+    </button>
   </div>
 
   <p id="dDesc" class="muted"></p>
@@ -818,6 +882,7 @@ dialog::backdrop {
   <input id="dQty" type="number" min="1" value="1">
 
   <p id="dStock" class="muted"></p>
+
   <button onclick="addCart()">加入喊單</button>
 </dialog>
 
@@ -844,22 +909,34 @@ const money = n =>
 
 function message(id, text, error = false) {
   const node = $(id);
+  if (!node) return;
+
   node.textContent = text;
   node.classList.toggle("error", error);
+  node.classList.toggle("success", !error && !!text);
 }
 
 function element(tag, text, className) {
   const node = document.createElement(tag);
-  if (text !== undefined) node.textContent = text;
-  if (className) node.className = className;
+
+  if (text !== undefined) {
+    node.textContent = text;
+  }
+
+  if (className) {
+    node.className = className;
+  }
+
   return node;
 }
 
 function croissantPlaceholder() {
   const box = element("div", undefined, "placeholder");
   const img = element("img");
+
   img.src = "./croissant.png";
   img.alt = "奶油可頌團手繪可頌";
+
   box.append(img);
   return box;
 }
@@ -885,17 +962,27 @@ let selectedProduct = null;
 let currentUser = null;
 let isAdmin = false;
 
+let profileSavedValues = null;
+let profileSaving = false;
+let profileLoadVersion = 0;
+
 try {
   cart = JSON.parse(
     localStorage.getItem("cream_v9_cart") || "[]"
   );
-  if (!Array.isArray(cart)) cart = [];
+
+  if (!Array.isArray(cart)) {
+    cart = [];
+  }
 } catch {
   cart = [];
 }
 
 function saveCart() {
-  localStorage.setItem("cream_v9_cart", JSON.stringify(cart));
+  localStorage.setItem(
+    "cream_v9_cart",
+    JSON.stringify(cart)
+  );
 }
 
 function showPage(page) {
@@ -908,30 +995,44 @@ function showPage(page) {
     $(id).classList.toggle("hidden", id !== page);
   });
 
-  if (page === "orders") loadOrders();
-  if (page === "admin") loadAdminOrders();
+  if (page === "orders") {
+    loadOrders();
+  }
+
+  if (page === "admin") {
+    loadAdminOrders();
+  }
 
   window.scrollTo(0, 0);
 }
 
 function goAbout() {
   showPage("shop");
+
   setTimeout(() => {
-    $("about").scrollIntoView({ behavior: "smooth" });
+    $("about").scrollIntoView({
+      behavior: "smooth"
+    });
   }, 50);
 }
 
 function scrollProducts() {
-  $("collection").scrollIntoView({ behavior: "smooth" });
+  $("collection").scrollIntoView({
+    behavior: "smooth"
+  });
 }
 
 function chooseCategory(term) {
   $("search").value = "";
+
   const select = $("category");
+
   const option = [...select.options].find(
     x => x.value && x.value.includes(term)
   );
+
   select.value = term && option ? option.value : "";
+
   renderShop();
   scrollProducts();
 }
@@ -940,37 +1041,58 @@ async function loadProducts() {
   const { data, error } = await db
     .from("products")
     .select("*")
-    .order("created_at", { ascending: false });
+    .order("created_at", {
+      ascending: false
+    });
 
   if (error) {
-    message("shopMessage", "商品讀取失敗：" + error.message, true);
+    message(
+      "shopMessage",
+      "商品讀取失敗：" + error.message,
+      true
+    );
     return;
   }
 
   products = data || [];
+
   message("shopMessage", "");
+
   renderShop();
   renderCart();
 
-  if (isAdmin) renderAdminProducts();
+  if (isAdmin) {
+    renderAdminProducts();
+  }
 }
 
 function renderShop() {
   const select = $("category");
   const previous = select.value;
 
-  select.replaceChildren(new Option("全部分類", ""));
+  select.replaceChildren(
+    new Option("全部分類", "")
+  );
 
   const categories = [
     ...new Set(
-      products.filter(p => p.is_active).map(p => p.category)
+      products
+        .filter(p => p.is_active)
+        .map(p => p.category)
     )
   ].filter(Boolean).sort();
 
-  categories.forEach(c => select.add(new Option(c, c)));
-  select.value = previous;
+  categories.forEach(c => {
+    select.add(new Option(c, c));
+  });
 
-  const keyword = $("search").value.trim().toLowerCase();
+  if ([...select.options].some(x => x.value === previous)) {
+    select.value = previous;
+  }
+
+  const keyword =
+    $("search").value.trim().toLowerCase();
+
   const grid = $("products");
   grid.replaceChildren();
 
@@ -981,34 +1103,57 @@ function renderShop() {
   );
 
   if (!visible.length) {
-    grid.append(element("p", "目前沒有符合的商品。"));
+    grid.append(
+      element("p", "目前沒有符合的商品。")
+    );
     return;
   }
 
   visible.forEach(p => {
-    const card = element("article", undefined, "product");
+    const card = element(
+      "article",
+      undefined,
+      "product"
+    );
 
-    if (p.image_url && /^https:\/\//i.test(p.image_url)) {
+    if (
+      p.image_url &&
+      /^https:\/\//i.test(p.image_url)
+    ) {
       const img = element("img");
+
       img.src = p.image_url;
       img.alt = p.name;
       img.loading = "lazy";
-      img.onerror = () =>
+
+      img.onerror = () => {
         img.replaceWith(croissantPlaceholder());
+      };
+
       card.append(img);
     } else {
       card.append(croissantPlaceholder());
     }
 
-    const body = element("div", undefined, "product-body");
+    const body = element(
+      "div",
+      undefined,
+      "product-body"
+    );
 
     body.append(
-      element("span", p.category || "日本選物", "muted"),
+      element(
+        "span",
+        p.category || "日本選物",
+        "muted"
+      ),
       element("h3", p.name),
       element("p", money(p.price), "price"),
       element(
         "p",
-        p.stock > 0 ? "庫存 " + p.stock + " 件" : "已售完",
+        p.stock > 0
+          ? "庫存 " + p.stock + " 件"
+          : "已售完",
         "muted"
       )
     );
@@ -1019,7 +1164,10 @@ function renderShop() {
     );
 
     button.disabled = p.stock <= 0;
-    button.onclick = () => openDetail(p.id);
+
+    button.onclick = () => {
+      openDetail(p.id);
+    };
 
     body.append(button);
     card.append(body);
@@ -1029,6 +1177,7 @@ function renderShop() {
 
 function openDetail(id) {
   const p = products.find(x => x.id === id);
+
   if (!p) return;
 
   selectedProduct = id;
@@ -1036,13 +1185,18 @@ function openDetail(id) {
   $("dName").textContent = p.name;
   $("dDesc").textContent = p.description || "";
   $("dPrice").textContent = money(p.price);
-  $("dStock").textContent = "庫存 " + p.stock + " 件";
+  $("dStock").textContent =
+    "庫存 " + p.stock + " 件";
 
   const select = $("dVariant");
   select.replaceChildren();
 
-  const variants = p.options?.length ? p.options : ["單款"];
-  variants.forEach(v => select.add(new Option(v, v)));
+  const variants =
+    p.options?.length ? p.options : ["單款"];
+
+  variants.forEach(v => {
+    select.add(new Option(v, v));
+  });
 
   $("dQty").value = 1;
   $("dQty").max = p.stock;
@@ -1051,18 +1205,28 @@ function openDetail(id) {
 }
 
 function addCart() {
-  const p = products.find(x => x.id === selectedProduct);
+  const p = products.find(
+    x => x.id === selectedProduct
+  );
+
   const qty = Number($("dQty").value);
   const option = $("dVariant").value;
 
-  if (!p || !Number.isInteger(qty) || qty < 1) {
+  if (
+    !p ||
+    !Number.isInteger(qty) ||
+    qty < 1
+  ) {
     alert("請輸入正確數量");
     return;
   }
 
   const existingQty = cart
     .filter(x => x.id === p.id)
-    .reduce((sum, x) => sum + x.qty, 0);
+    .reduce(
+      (sum, x) => sum + x.qty,
+      0
+    );
 
   if (existingQty + qty > p.stock) {
     alert("庫存不足");
@@ -1070,18 +1234,24 @@ function addCart() {
   }
 
   const found = cart.find(
-    x => x.id === p.id && x.option === option
+    x => x.id === p.id &&
+         x.option === option
   );
 
   if (found) {
     found.qty += qty;
   } else {
-    cart.push({ id: p.id, option, qty });
+    cart.push({
+      id: p.id,
+      option,
+      qty
+    });
   }
 
   saveCart();
   $("detail").close();
   renderCart();
+
   alert("已加入喊單清單");
 }
 
@@ -1092,24 +1262,48 @@ function renderCart() {
   let total = 0;
 
   if (!cart.length) {
-    box.append(element("p", "目前沒有喊單商品。"));
+    box.append(
+      element("p", "目前沒有喊單商品。")
+    );
   }
 
   cart.forEach((item, index) => {
-    const p = products.find(x => x.id === item.id);
+    const p = products.find(
+      x => x.id === item.id
+    );
+
     if (!p) return;
 
     total += p.price * item.qty;
 
-    const line = element("div", undefined, "line");
-    const top = element("div", undefined, "line-top");
-
-    top.append(
-      element("strong", p.name + " / " + item.option),
-      element("span", money(p.price * item.qty))
+    const line = element(
+      "div",
+      undefined,
+      "line"
     );
 
-    const remove = element("button", "移除", "light");
+    const top = element(
+      "div",
+      undefined,
+      "line-top"
+    );
+
+    top.append(
+      element(
+        "strong",
+        p.name + " / " + item.option
+      ),
+      element(
+        "span",
+        money(p.price * item.qty)
+      )
+    );
+
+    const remove = element(
+      "button",
+      "移除",
+      "light"
+    );
 
     remove.onclick = () => {
       cart.splice(index, 1);
@@ -1119,7 +1313,11 @@ function renderCart() {
 
     line.append(
       top,
-      element("p", "數量：" + item.qty, "muted"),
+      element(
+        "p",
+        "數量：" + item.qty,
+        "muted"
+      ),
       remove
     );
 
@@ -1127,13 +1325,22 @@ function renderCart() {
   });
 
   box.append(
-    element("h3", "商品小計：" + money(total)),
-    element("p", "尚未包含運費。", "muted")
+    element(
+      "h3",
+      "商品小計：" + money(total)
+    ),
+    element(
+      "p",
+      "尚未包含運費。",
+      "muted"
+    )
   );
 
-  $("cartCount").textContent = cart.reduce(
-    (sum, x) => sum + x.qty, 0
-  );
+  $("cartCount").textContent =
+    cart.reduce(
+      (sum, x) => sum + x.qty,
+      0
+    );
 }
 
 async function placeOrders() {
@@ -1152,30 +1359,47 @@ async function placeOrders() {
   button.disabled = true;
 
   let success = 0;
-  message("cartMessage", "正在送出喊單...");
+
+  message(
+    "cartMessage",
+    "正在送出喊單..."
+  );
 
   try {
     for (const item of [...cart]) {
-      const { error } = await db.rpc("place_order", {
-        p_product_id: item.id,
-        p_option: item.option,
-        p_quantity: item.qty,
-        p_note: $("memo").value.trim()
-      });
+      const { error } = await db.rpc(
+        "place_order",
+        {
+          p_product_id: item.id,
+          p_option: item.option,
+          p_quantity: item.qty,
+          p_note: $("memo").value.trim()
+        }
+      );
 
       if (error) throw error;
 
       success++;
 
       const index = cart.findIndex(
-        x => x.id === item.id && x.option === item.option
+        x => x.id === item.id &&
+             x.option === item.option
       );
 
-      if (index >= 0) cart.splice(index, 1);
+      if (index >= 0) {
+        cart.splice(index, 1);
+      }
+
       saveCart();
     }
 
-    message("cartMessage", "喊單成功！共 " + success + " 筆訂單。");
+    message(
+      "cartMessage",
+      "喊單成功！共 " +
+      success +
+      " 筆訂單。"
+    );
+
     $("memo").value = "";
 
     await loadProducts();
@@ -1184,7 +1408,10 @@ async function placeOrders() {
   } catch (error) {
     message(
       "cartMessage",
-      "已送出 " + success + " 筆；其他商品失敗：" + error.message,
+      "已送出 " +
+      success +
+      " 筆；其他商品失敗：" +
+      error.message,
       true
     );
 
@@ -1196,10 +1423,88 @@ async function placeOrders() {
   }
 }
 
-async function refreshAuth() {
-  const { data, error } = await db.auth.getUser();
+/* ==========================
+   會員資料儲存狀態
+========================== */
 
-  currentUser = error ? null : data.user;
+function readProfileFields() {
+  return {
+    display_name: $("displayName").value.trim(),
+    ig_handle: $("igHandle")
+      .value.trim()
+      .replace(/^@/, ""),
+    phone: $("memberPhone").value.trim()
+  };
+}
+
+function profileFieldsMatch(a, b) {
+  if (!a || !b) return false;
+
+  return (
+    a.display_name === b.display_name &&
+    a.ig_handle === b.ig_handle &&
+    a.phone === b.phone
+  );
+}
+
+function updateProfileSaveState() {
+  const button = $("saveProfileBtn");
+
+  if (profileSaving) {
+    button.textContent = "儲存中...";
+    button.disabled = true;
+    button.classList.remove("saved");
+    return;
+  }
+
+  const saved = profileFieldsMatch(
+    readProfileFields(),
+    profileSavedValues
+  );
+
+  button.textContent =
+    saved ? "✓ 已存檔" : "儲存資料";
+
+  button.classList.toggle("saved", saved);
+  button.disabled = false;
+}
+
+function onProfileInput() {
+  updateProfileSaveState();
+
+  if (
+    !profileFieldsMatch(
+      readProfileFields(),
+      profileSavedValues
+    )
+  ) {
+    message("profileMessage", "");
+  }
+}
+
+["displayName", "igHandle", "memberPhone"].forEach(id => {
+  $(id).addEventListener(
+    "input",
+    onProfileInput
+  );
+});
+
+async function refreshAuth() {
+  const version = ++profileLoadVersion;
+
+  const { data, error } =
+    await db.auth.getUser();
+
+  if (version !== profileLoadVersion) {
+    return;
+  }
+
+  const nextUser = error ? null : data.user;
+  const previousId = currentUser?.id || null;
+  const nextId = nextUser?.id || null;
+  const userChanged = previousId !== nextId;
+
+  currentUser = nextUser;
   isAdmin = false;
 
   if (currentUser) {
@@ -1209,31 +1514,91 @@ async function refreshAuth() {
       .eq("id", currentUser.id)
       .maybeSingle();
 
+    if (version !== profileLoadVersion) {
+      return;
+    }
+
+    if (result.error) {
+      message(
+        "profileMessage",
+        "會員資料讀取失敗：" +
+        result.error.message,
+        true
+      );
+    }
+
     const profile = result.data;
 
     isAdmin = profile?.role === "admin";
 
-    $("displayName").value = profile?.display_name || "";
-    $("igHandle").value = profile?.ig_handle || "";
-    $("memberPhone").value = profile?.phone || "";
+    const serverFields = {
+      display_name: profile?.display_name || "",
+      ig_handle: profile?.ig_handle || "",
+      phone: profile?.phone || ""
+    };
+
+    /*
+      不在儲存期間覆蓋輸入框，
+      避免正在輸入的文字突然消失。
+    */
+    const hasUnsavedChanges =
+      profileSavedValues &&
+      !profileFieldsMatch(
+        readProfileFields(),
+        profileSavedValues
+      );
+
+    if (
+      userChanged ||
+      (!profileSaving && !hasUnsavedChanges)
+    ) {
+      $("displayName").value =
+        serverFields.display_name;
+
+      $("igHandle").value =
+        serverFields.ig_handle;
+
+      $("memberPhone").value =
+        serverFields.phone;
+
+      profileSavedValues = serverFields;
+    }
 
     $("memberInfo").textContent =
       "登入帳號：" + currentUser.email;
+
+  } else {
+    profileSavedValues = null;
+
+    $("displayName").value = "";
+    $("igHandle").value = "";
+    $("memberPhone").value = "";
+    $("memberInfo").textContent = "";
+
+    message("profileMessage", "");
   }
 
   $("memberAuth").classList.toggle(
-    "hidden", !!currentUser
+    "hidden",
+    !!currentUser
   );
 
   $("memberProfile").classList.toggle(
-    "hidden", !currentUser
+    "hidden",
+    !currentUser
   );
 
   $("adminNav").classList.toggle(
-    "hidden", !isAdmin
+    "hidden",
+    !isAdmin
   );
 
-  if (!isAdmin && !$("admin").classList.contains("hidden")) {
+  updateProfileSaveState();
+
+  if (
+    !isAdmin &&
+    !$("admin").classList.contains("hidden")
+  ) {
     showPage("shop");
   }
 
@@ -1241,8 +1606,11 @@ async function refreshAuth() {
 }
 
 async function handleSignup() {
-  const email = $("memberEmail").value.trim();
-  const password = $("memberPassword").value;
+  const email =
+    $("memberEmail").value.trim();
+
+  const password =
+    $("memberPassword").value;
 
   if (!email || password.length < 6) {
     message(
@@ -1253,13 +1621,15 @@ async function handleSignup() {
     return;
   }
 
-  const { data, error } = await db.auth.signUp({
-    email,
-    password,
-    options: {
-      emailRedirectTo: location.origin + location.pathname
-    }
-  });
+  const { data, error } =
+    await db.auth.signUp({
+      email,
+      password,
+      options: {
+        emailRedirectTo:
+          location.origin + location.pathname
+      }
+    });
 
   message(
     "memberMessage",
@@ -1271,63 +1641,157 @@ async function handleSignup() {
     !!error
   );
 
-  if (!error) await refreshAuth();
+  if (!error) {
+    await refreshAuth();
+  }
 }
 
 async function handleLogin() {
-  const { error } = await db.auth.signInWithPassword({
-    email: $("memberEmail").value.trim(),
-    password: $("memberPassword").value
-  });
+  const { error } =
+    await db.auth.signInWithPassword({
+      email:
+        $("memberEmail").value.trim(),
+      password:
+        $("memberPassword").value
+    });
 
   $("memberPassword").value = "";
 
   message(
     "memberMessage",
-    error ? "登入失敗：" + error.message : "登入成功",
+    error
+      ? "登入失敗：" + error.message
+      : "登入成功",
     !!error
   );
 
-  if (!error) await refreshAuth();
+  if (!error) {
+    await refreshAuth();
+  }
 }
 
 async function handleLogout() {
-  const { error } = await db.auth.signOut();
+  const { error } =
+    await db.auth.signOut();
 
   if (error) {
     alert(error.message);
     return;
   }
 
+  profileSavedValues = null;
+
   await refreshAuth();
   showPage("member");
 }
 
 async function saveProfile() {
-  if (!currentUser) return;
+  if (!currentUser || profileSaving) {
+    return;
+  }
 
-  const { error } = await db
-    .from("profiles")
-    .update({
-      display_name: $("displayName").value.trim(),
-      ig_handle: $("igHandle").value.trim().replace(/^@/, ""),
-      phone: $("memberPhone").value.trim()
-    })
-    .eq("id", currentUser.id);
+  const fields = readProfileFields();
+
+  if (
+    profileFieldsMatch(
+      fields,
+      profileSavedValues
+    )
+  ) {
+    message(
+      "profileMessage",
+      "會員資料已存檔"
+    );
+    updateProfileSaveState();
+    return;
+  }
+
+  const savingUserId = currentUser.id;
+
+  profileSaving = true;
+  updateProfileSaveState();
 
   message(
     "profileMessage",
-    error ? "儲存失敗：" + error.message : "會員資料已儲存",
-    !!error
+    "正在儲存會員資料..."
   );
+
+  try {
+    const { data, error } = await db
+      .from("profiles")
+      .update(fields)
+      .eq("id", savingUserId)
+      .select(
+        "display_name,ig_handle,phone"
+      )
+      .single();
+
+    if (error) throw error;
+
+    if (
+      !currentUser ||
+      currentUser.id !== savingUserId
+    ) {
+      return;
+    }
+
+    profileSavedValues = {
+      display_name: data.display_name || "",
+      ig_handle: data.ig_handle || "",
+      phone: data.phone || ""
+    };
+
+    /*
+      儲存成功後不清空任何輸入框。
+      若儲存期間又修改了資料，
+      仍顯示「儲存資料」提醒再次存檔。
+    */
+    if (
+      profileFieldsMatch(
+        readProfileFields(),
+        fields
+      )
+    ) {
+      $("displayName").value =
+        profileSavedValues.display_name;
+
+      $("igHandle").value =
+        profileSavedValues.ig_handle;
+
+      $("memberPhone").value =
+        profileSavedValues.phone;
+    }
+
+    message(
+      "profileMessage",
+      "✓ 會員資料已成功存檔"
+    );
+
+  } catch (error) {
+    message(
+      "profileMessage",
+      "儲存失敗：" + error.message,
+      true
+    );
+
+  } finally {
+    profileSaving = false;
+    updateProfileSaveState();
+  }
 }
+
+/* ==========================
+   會員訂單
+========================== */
 
 async function loadOrders() {
   const box = $("myOrders");
   box.replaceChildren();
 
   if (!currentUser) {
-    box.append(element("p", "請先登入會員。"));
+    box.append(
+      element("p", "請先登入會員。")
+    );
     return;
   }
 
@@ -1335,31 +1799,51 @@ async function loadOrders() {
     .from("orders")
     .select("*,order_items(*)")
     .eq("user_id", currentUser.id)
-    .order("created_at", { ascending: false });
+    .order("created_at", {
+      ascending: false
+    });
 
   if (error) {
-    box.append(element("p", "讀取失敗：" + error.message));
+    box.append(
+      element(
+        "p",
+        "讀取失敗：" + error.message
+      )
+    );
     return;
   }
 
   if (!data?.length) {
-    box.append(element("p", "目前尚無訂單。"));
+    box.append(
+      element("p", "目前尚無訂單。")
+    );
     return;
   }
 
   data.forEach(order => {
-    box.append(renderOrder(order, false));
+    box.append(
+      renderOrder(order, false)
+    );
   });
 }
 
 function renderOrder(order, admin) {
-  const line = element("div", undefined, "line");
+  const line = element(
+    "div",
+    undefined,
+    "line"
+  );
 
   line.append(
-    element("strong", "訂單 #" + order.id.slice(0, 8)),
+    element(
+      "strong",
+      "訂單 #" + order.id.slice(0, 8)
+    ),
     element(
       "p",
-      new Date(order.created_at).toLocaleString("zh-TW"),
+      new Date(
+        order.created_at
+      ).toLocaleString("zh-TW"),
       "muted"
     )
   );
@@ -1367,34 +1851,47 @@ function renderOrder(order, admin) {
   let subtotal = 0;
 
   (order.order_items || []).forEach(item => {
-    const amount = item.quantity * item.unit_price;
+    const amount =
+      item.quantity * item.unit_price;
+
     subtotal += amount;
 
     line.append(
       element(
         "p",
-        item.product_name + " / " +
+        item.product_name +
+        " / " +
         (item.selected_option || "單款") +
-        " × " + item.quantity +
-        " · " + money(amount)
+        " × " +
+        item.quantity +
+        " · " +
+        money(amount)
       )
     );
   });
 
-  const shipping = Number(order.shipping_fee || 0);
+  const shipping =
+    Number(order.shipping_fee || 0);
 
   line.append(
     element(
       "p",
-      "商品 " + money(subtotal) +
-      " + 運費 " + money(shipping) +
-      " = " + money(subtotal + shipping)
+      "商品 " +
+      money(subtotal) +
+      " + 運費 " +
+      money(shipping) +
+      " = " +
+      money(subtotal + shipping)
     )
   );
 
   if (order.note) {
     line.append(
-      element("p", "備註：" + order.note, "muted")
+      element(
+        "p",
+        "備註：" + order.note,
+        "muted"
+      )
     );
   }
 
@@ -1402,7 +1899,8 @@ function renderOrder(order, admin) {
     line.append(
       element(
         "p",
-        "物流單號：" + order.tracking_number,
+        "物流單號：" +
+        order.tracking_number,
         "muted"
       )
     );
@@ -1412,12 +1910,20 @@ function renderOrder(order, admin) {
     const status = element("select");
     const payment = element("select");
 
-    Object.entries(orderStatuses).forEach(([key, label]) => {
-      status.add(new Option(label, key));
+    Object.entries(
+      orderStatuses
+    ).forEach(([key, label]) => {
+      status.add(
+        new Option(label, key)
+      );
     });
 
-    Object.entries(paymentStatuses).forEach(([key, label]) => {
-      payment.add(new Option(label, key));
+    Object.entries(
+      paymentStatuses
+    ).forEach(([key, label]) => {
+      payment.add(
+        new Option(label, key)
+      );
     });
 
     status.value = order.status;
@@ -1429,27 +1935,53 @@ function renderOrder(order, admin) {
     fee.value = shipping;
 
     const tracking = element("input");
-    tracking.value = order.tracking_number || "";
-    tracking.placeholder = "物流單號";
+    tracking.value =
+      order.tracking_number || "";
 
-    const save = element("button", "儲存訂單");
+    tracking.placeholder =
+      "物流單號";
+
+    const save = element(
+      "button",
+      "儲存訂單"
+    );
 
     save.onclick = async () => {
+      const newFee = Number(fee.value);
+
+      if (
+        !Number.isInteger(newFee) ||
+        newFee < 0
+      ) {
+        alert("請輸入正確運費");
+        return;
+      }
+
+      save.disabled = true;
+      save.textContent = "儲存中...";
+
       const { error } = await db
         .from("orders")
         .update({
           status: status.value,
           payment_status: payment.value,
-          shipping_fee: Number(fee.value),
-          tracking_number: tracking.value.trim()
+          shipping_fee: newFee,
+          tracking_number:
+            tracking.value.trim()
         })
         .eq("id", order.id);
 
-      alert(
-        error ? "儲存失敗：" + error.message : "訂單已儲存"
-      );
-
-      if (!error) loadAdminOrders();
+      if (error) {
+        alert(
+          "儲存失敗：" + error.message
+        );
+        save.disabled = false;
+        save.textContent = "儲存訂單";
+      } else {
+        save.textContent = "✓ 已存檔";
+        save.classList.add("saved");
+        await loadAdminOrders();
+      }
     };
 
     line.append(
@@ -1469,41 +2001,68 @@ function renderOrder(order, admin) {
       element(
         "p",
         "訂單：" +
-        (orderStatuses[order.status] || order.status) +
+        (
+          orderStatuses[order.status] ||
+          order.status
+        ) +
         "｜付款：" +
-        (paymentStatuses[order.payment_status] ||
-          order.payment_status),
+        (
+          paymentStatuses[
+            order.payment_status
+          ] ||
+          order.payment_status
+        ),
         "status"
       )
     );
 
-    if (order.payment_status !== "paid") {
+    if (
+      order.payment_status !== "paid"
+    ) {
       const amount = element("input");
       amount.type = "number";
       amount.min = 1;
       amount.placeholder = "匯款金額";
 
       const lastFive = element("input");
-      lastFive.placeholder = "匯款帳號後五碼";
+      lastFive.placeholder =
+        "匯款帳號後五碼";
+
       lastFive.maxLength = 5;
 
       const note = element("input");
-      note.placeholder = "匯款備註（選填）";
+      note.placeholder =
+        "匯款備註（選填）";
 
-      const report = element("button", "回報匯款");
+      const report = element(
+        "button",
+        "回報匯款"
+      );
 
       report.onclick = async () => {
-        const value = Number(amount.value);
+        const value =
+          Number(amount.value);
 
-        if (!Number.isInteger(value) || value <= 0) {
+        if (
+          !Number.isInteger(value) ||
+          value <= 0
+        ) {
           alert("請填寫正確匯款金額");
           return;
         }
 
-        if (!/^\d{5}$/.test(lastFive.value.trim())) {
-          alert("請填寫五位數匯款帳號後五碼");
+        if (
+          !/^\d{5}$/.test(
+            lastFive.value.trim()
+          )
+        ) {
+          alert(
+            "請填寫五位數匯款帳號後五碼"
+          );
           return;
         }
+
+        report.disabled = true;
 
         const { error } = await db
           .from("payment_reports")
@@ -1511,23 +2070,31 @@ function renderOrder(order, admin) {
             order_id: order.id,
             user_id: currentUser.id,
             amount: value,
-            last_five: lastFive.value.trim(),
+            last_five:
+              lastFive.value.trim(),
             note: note.value.trim()
           });
 
-        alert(
-          error
-            ? "回報失敗：" + error.message
-            : "已回報匯款，等待店主確認"
-        );
-
-        if (!error) loadOrders();
+        if (error) {
+          alert(
+            "回報失敗：" + error.message
+          );
+          report.disabled = false;
+        } else {
+          alert(
+            "已回報匯款，等待店主確認"
+          );
+          loadOrders();
+        }
       };
 
       line.append(
         element("label", "匯款金額"),
         amount,
-        element("label", "匯款帳號後五碼"),
+        element(
+          "label",
+          "匯款帳號後五碼"
+        ),
         lastFive,
         note,
         report
@@ -1538,26 +2105,54 @@ function renderOrder(order, admin) {
   return line;
 }
 
+/* ==========================
+   管理員商品管理
+========================== */
+
 function resetForm() {
   [
-    "editId", "pName", "pPrice", "pCategory",
-    "pStock", "pVariants", "pImage", "pDesc"
+    "editId",
+    "pName",
+    "pPrice",
+    "pCategory",
+    "pStock",
+    "pVariants",
+    "pImage",
+    "pDesc"
   ].forEach(id => {
     $(id).value = "";
   });
 
   $("pActive").checked = true;
-  $("formTitle").textContent = "新增商品";
+  $("formTitle").textContent =
+    "新增商品";
+
+  $("saveProductBtn").textContent =
+    "儲存商品";
+
+  $("saveProductBtn").classList.remove(
+    "saved"
+  );
+
+  message("adminMessage", "");
 }
 
 async function saveProduct() {
-  if (!isAdmin) return;
+  if (!isAdmin) {
+    alert("沒有管理員權限");
+    return;
+  }
 
-  const value = id => $(id).value.trim();
+  const value = id =>
+    $(id).value.trim();
 
   const name = value("pName");
-  const price = Number(value("pPrice"));
-  const stock = Number(value("pStock"));
+  const price = Number(
+    value("pPrice")
+  );
+  const stock = Number(
+    value("pStock")
+  );
   const image = value("pImage");
 
   if (
@@ -1577,7 +2172,10 @@ async function saveProduct() {
     return;
   }
 
-  if (image && !/^https:\/\//i.test(image)) {
+  if (
+    image &&
+    !/^https:\/\//i.test(image)
+  ) {
     message(
       "adminMessage",
       "圖片網址必須以 https:// 開頭。",
@@ -1590,38 +2188,86 @@ async function saveProduct() {
     name,
     price,
     stock,
-    category: value("pCategory") || "日本選物",
+    category:
+      value("pCategory") || "日本選物",
     description: value("pDesc"),
     image_url: image,
     options: value("pVariants")
       .split(/[,，]/)
       .map(x => x.trim())
       .filter(Boolean),
-    is_active: $("pActive").checked
+    is_active:
+      $("pActive").checked
   };
 
   const id = value("editId");
+  const button = $("saveProductBtn");
 
-  const result = id
-    ? await db.from("products").update(product).eq("id", id)
-    : await db.from("products").insert(product);
+  button.disabled = true;
+  button.textContent = "儲存中...";
 
-  message(
-    "adminMessage",
-    result.error
-      ? "儲存失敗：" + result.error.message
-      : "商品已儲存",
-    !!result.error
-  );
+  try {
+    const result = id
+      ? await db
+          .from("products")
+          .update(product)
+          .eq("id", id)
+          .select("id")
+          .single()
+      : await db
+          .from("products")
+          .insert(product)
+          .select("id")
+          .single();
 
-  if (!result.error) {
-    resetForm();
+    if (result.error) {
+      throw result.error;
+    }
+
+    if (!result.data?.id) {
+      throw new Error(
+        "沒有確認商品儲存結果"
+      );
+    }
+
+    message(
+      "adminMessage",
+      "✓ 商品已成功存檔"
+    );
+
+    button.textContent = "✓ 已存檔";
+    button.classList.add("saved");
+
+    /*
+      儲存後保留商品欄位，
+      方便繼續修改價格、庫存及說明。
+    */
+    $("editId").value = result.data.id;
+    $("formTitle").textContent =
+      "編輯商品";
+
     await loadProducts();
+
+  } catch (error) {
+    message(
+      "adminMessage",
+      "儲存失敗：" + error.message,
+      true
+    );
+
+    button.textContent = "儲存商品";
+    button.classList.remove("saved");
+
+  } finally {
+    button.disabled = false;
   }
 }
 
 function editProduct(id) {
-  const p = products.find(x => x.id === id);
+  const p = products.find(
+    x => x.id === id
+  );
+
   if (!p) return;
 
   const fields = {
@@ -1630,25 +2276,48 @@ function editProduct(id) {
     pPrice: p.price,
     pCategory: p.category,
     pStock: p.stock,
-    pVariants: (p.options || []).join(","),
+    pVariants:
+      (p.options || []).join(","),
     pImage: p.image_url || "",
     pDesc: p.description || ""
   };
 
-  Object.entries(fields).forEach(([id, value]) => {
-    $(id).value = value ?? "";
+  Object.entries(fields).forEach(
+    ([id, value]) => {
+      $(id).value = value ?? "";
+    }
+  );
+
+  $("pActive").checked =
+    !!p.is_active;
+
+  $("formTitle").textContent =
+    "編輯商品";
+
+  $("saveProductBtn").textContent =
+    "儲存商品";
+
+  $("saveProductBtn").classList.remove(
+    "saved"
+  );
+
+  message("adminMessage", "");
+
+  $("formTitle").scrollIntoView({
+    behavior: "smooth"
   });
-
-  $("pActive").checked = !!p.is_active;
-  $("formTitle").textContent = "編輯商品";
-
-  $("formTitle").scrollIntoView({ behavior: "smooth" });
 }
 
 async function deleteProduct(id) {
   if (!isAdmin) return;
 
-  if (!confirm("確定刪除這項商品嗎？")) return;
+  if (
+    !confirm(
+      "確定刪除這項商品嗎？已有訂單的商品建議改成下架。"
+    )
+  ) {
+    return;
+  }
 
   const { error } = await db
     .from("products")
@@ -1656,7 +2325,34 @@ async function deleteProduct(id) {
     .eq("id", id);
 
   if (error) {
-    alert("刪除失敗：" + error.message);
+    alert(
+      "刪除失敗：" + error.message
+    );
+  } else {
+    await loadProducts();
+  }
+}
+
+async function toggleProductActive(id) {
+  if (!isAdmin) return;
+
+  const p = products.find(
+    x => x.id === id
+  );
+
+  if (!p) return;
+
+  const { error } = await db
+    .from("products")
+    .update({
+      is_active: !p.is_active
+    })
+    .eq("id", id);
+
+  if (error) {
+    alert(
+      "更新失敗：" + error.message
+    );
   } else {
     await loadProducts();
   }
@@ -1667,38 +2363,93 @@ function renderAdminProducts() {
   box.replaceChildren();
 
   if (!products.length) {
-    box.append(element("p", "尚無商品。"));
+    box.append(
+      element("p", "尚無商品。")
+    );
     return;
   }
 
   products.forEach(p => {
-    const line = element("div", undefined, "line");
-    const top = element("div", undefined, "line-top");
+    const line = element(
+      "div",
+      undefined,
+      "line"
+    );
+
+    const top = element(
+      "div",
+      undefined,
+      "line-top"
+    );
 
     top.append(
       element(
         "strong",
-        p.name + (p.is_active ? "" : "（未上架）")
+        p.name +
+        (
+          p.is_active
+            ? "（上架中）"
+            : "（已下架）"
+        )
       ),
       element(
         "span",
-        money(p.price) + "｜庫存 " + p.stock
+        money(p.price) +
+        "｜庫存 " +
+        p.stock
       )
     );
 
-    const actions = element("div", undefined, "actions");
+    const actions = element(
+      "div",
+      undefined,
+      "actions"
+    );
 
-    const edit = element("button", "編輯", "light");
-    const remove = element("button", "刪除", "danger");
+    const edit = element(
+      "button",
+      "編輯",
+      "light"
+    );
 
-    edit.onclick = () => editProduct(p.id);
-    remove.onclick = () => deleteProduct(p.id);
+    const toggle = element(
+      "button",
+      p.is_active ? "下架" : "重新上架",
+      "light"
+    );
 
-    actions.append(edit, remove);
+    const remove = element(
+      "button",
+      "刪除",
+      "danger"
+    );
+
+    edit.onclick = () => {
+      editProduct(p.id);
+    };
+
+    toggle.onclick = () => {
+      toggleProductActive(p.id);
+    };
+
+    remove.onclick = () => {
+      deleteProduct(p.id);
+    };
+
+    actions.append(
+      edit,
+      toggle,
+      remove
+    );
+
     line.append(top, actions);
     box.append(line);
   });
 }
+
+/* ==========================
+   管理員訂單管理
+========================== */
 
 async function loadAdminOrders() {
   if (!isAdmin) return;
@@ -1709,41 +2460,62 @@ async function loadAdminOrders() {
   const { data, error } = await db
     .from("orders")
     .select("*,order_items(*)")
-    .order("created_at", { ascending: false })
+    .order("created_at", {
+      ascending: false
+    })
     .limit(100);
 
   if (error) {
     box.append(
-      element("p", "訂單讀取失敗：" + error.message)
+      element(
+        "p",
+        "訂單讀取失敗：" +
+        error.message
+      )
     );
     return;
   }
 
   if (!data?.length) {
-    box.append(element("p", "目前沒有訂單。"));
+    box.append(
+      element(
+        "p",
+        "目前沒有訂單。"
+      )
+    );
     return;
   }
 
   data.forEach(order => {
-    box.append(renderOrder(order, true));
+    box.append(
+      renderOrder(order, true)
+    );
   });
 }
 
+/* ==========================
+   網站初始化
+========================== */
+
 db.auth.onAuthStateChange(() => {
   setTimeout(() => {
-    refreshAuth().catch(console.error);
+    refreshAuth().catch(error => {
+      console.error(error);
+    });
   }, 0);
 });
 
 refreshAuth().catch(error => {
   message(
     "shopMessage",
-    "網站連線失敗：" + error.message,
+    "網站連線失敗：" +
+    error.message,
     true
   );
 });
 
 renderCart();
 </script>
+
 </body>
 </html>
