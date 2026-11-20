@@ -334,5 +334,17 @@ setTimeout(()=>URL.revokeObjectURL(url),1000)
 function renderAll(){renderShop();renderCart();renderAdmin()}
 renderAll();
 </script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+const SUPABASE_URL = "https://hnrmbcldslljkctlepiz.supabase.co";
+
+const SUPABASE_KEY = "const SUPABASE_KEY = "sb_publishable_zJeAc2z9_lPIj_KG2YUnFw_sgo2BWQA";
+
+const supabaseClient = window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY
+);
+</script>
 </body>
 </html>
