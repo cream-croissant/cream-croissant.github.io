@@ -9,18 +9,10 @@
 <meta name="description" content="奶油可頌團｜日本連線、童裝與生活選物。">
 
 <style>
-
 @font-face {
   font-family: CreamHand;
   src: url("./cream-font.ttf") format("truetype");
   font-display: swap;
-}
-
-.brand,
-.hero h1,
-.section h2,
-.page-title {
-  font-family: CreamHand, "Noto Serif TC", serif;
 }
 
 :root {
@@ -34,19 +26,30 @@
   --danger: #a64d45;
 }
 
-* { box-sizing: border-box; }
+* {
+  box-sizing: border-box;
+}
 
-html { scroll-behavior: smooth; }
+html {
+  scroll-behavior: smooth;
+  width: 100%;
+  overflow-x: hidden;
+}
 
 body {
   margin: 0;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
   background: var(--bg);
   color: var(--coffee);
   font-family: "Noto Sans TC", "PingFang TC", system-ui, sans-serif;
   line-height: 1.7;
 }
 
-button, input, select, textarea { font: inherit; }
+button, input, select, textarea {
+  font: inherit;
+}
 
 button {
   cursor: pointer;
@@ -74,6 +77,7 @@ button.danger {
 
 input, select, textarea {
   width: 100%;
+  min-width: 0;
   padding: 11px;
   border: 1px solid var(--line);
   border-radius: 3px;
@@ -81,7 +85,9 @@ input, select, textarea {
   color: var(--coffee);
 }
 
-input[type="checkbox"] { width: auto; }
+input[type="checkbox"] {
+  width: auto;
+}
 
 label {
   display: block;
@@ -89,25 +95,35 @@ label {
   font-size: 13px;
 }
 
-h1, h2, h3, p { overflow-wrap: anywhere; }
+h1, h2, h3, p {
+  overflow-wrap: anywhere;
+}
 
-h1, h2, .brand {
+h1, h2, .brand, .page-title {
   font-family: CreamHand, "Noto Serif TC", serif;
   font-weight: 400;
 }
 
-h2 { font-size: 29px; }
+h2 {
+  font-size: 29px;
+}
 
-a { color: inherit; }
+a {
+  color: inherit;
+}
 
-.hidden { display: none !important; }
+.hidden {
+  display: none !important;
+}
 
 .muted {
   color: var(--muted);
   font-size: 13px;
 }
 
-.error { color: var(--danger); }
+.error {
+  color: var(--danger);
+}
 
 .message {
   min-height: 22px;
@@ -115,8 +131,9 @@ a { color: inherit; }
 }
 
 .container {
+  width: 100%;
   max-width: 1120px;
-  margin: auto;
+  margin: 0 auto;
   padding: 0 20px;
 }
 
@@ -183,10 +200,16 @@ a { color: inherit; }
 
 .hero {
   display: grid;
-  grid-template-columns: 1.1fr .9fr;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, .9fr);
   align-items: center;
   gap: 40px;
   padding: 90px 0;
+  width: 100%;
+  min-width: 0;
+}
+
+.hero > * {
+  min-width: 0;
 }
 
 .eyebrow {
@@ -208,6 +231,8 @@ a { color: inherit; }
 }
 
 .hero-art {
+  width: 100%;
+  min-width: 0;
   min-height: 370px;
   background: #e9dfd2;
   display: flex;
@@ -215,13 +240,23 @@ a { color: inherit; }
   justify-content: center;
   align-items: center;
   gap: 20px;
+  padding: 24px;
+  overflow: hidden;
 }
 
-.hero-art .emoji { font-size: 95px; }
+.croissant-image {
+  display: block;
+  width: 75%;
+  max-width: 300px;
+  height: auto;
+  object-fit: contain;
+  margin: 0 auto;
+}
 
 .hero-art small {
   font-family: Georgia, serif;
   letter-spacing: 3px;
+  text-align: center;
 }
 
 .section {
@@ -229,16 +264,19 @@ a { color: inherit; }
   border-top: 1px solid var(--line);
 }
 
-.section h2 { margin: 0 0 8px; }
+.section h2 {
+  margin: 0 0 8px;
+}
 
 .categories {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 16px;
   margin-top: 30px;
 }
 
 .category {
+  min-width: 0;
   min-height: 170px;
   border: 0;
   background: var(--milk);
@@ -250,12 +288,18 @@ a { color: inherit; }
   gap: 10px;
 }
 
-.category .symbol { font-size: 34px; }
-.category small { color: var(--brown); font-size: 10px; }
+.category .symbol {
+  font-size: 34px;
+}
+
+.category small {
+  color: var(--brown);
+  font-size: 10px;
+}
 
 .toolbar {
   display: grid;
-  grid-template-columns: 1fr 200px;
+  grid-template-columns: minmax(0, 1fr) 200px;
   gap: 12px;
   margin: 24px 0;
 }
@@ -267,12 +311,14 @@ a { color: inherit; }
 }
 
 .product {
+  min-width: 0;
   background: var(--paper);
   border: 1px solid var(--line);
   overflow: hidden;
 }
 
-.product img, .placeholder {
+.product img,
+.placeholder {
   width: 100%;
   aspect-ratio: 1 / 1;
   object-fit: cover;
@@ -282,10 +328,18 @@ a { color: inherit; }
 .placeholder {
   display: grid;
   place-items: center;
-  font-size: 48px;
 }
 
-.product-body { padding: 15px; }
+.placeholder img {
+  width: 65%;
+  height: 65%;
+  object-fit: contain;
+  background: transparent;
+}
+
+.product-body {
+  padding: 15px;
+}
 
 .product h3 {
   font-size: 15px;
@@ -298,7 +352,9 @@ a { color: inherit; }
   font-weight: 650;
 }
 
-.product button { width: 100%; }
+.product button {
+  width: 100%;
+}
 
 .panel {
   background: var(--paper);
@@ -307,11 +363,13 @@ a { color: inherit; }
   margin: 20px 0;
 }
 
-.page-title { margin-top: 45px; }
+.page-title {
+  margin-top: 45px;
+}
 
 .form-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 12px 18px;
 }
 
@@ -327,7 +385,9 @@ a { color: inherit; }
   padding: 18px 0;
 }
 
-.line:last-child { border-bottom: 0; }
+.line:last-child {
+  border-bottom: 0;
+}
 
 .line-top {
   display: flex;
@@ -355,6 +415,14 @@ footer {
   font-size: 13px;
 }
 
+.footer-croissant {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+  display: block;
+  margin: 0 auto 10px;
+}
+
 dialog {
   width: min(460px, calc(100% - 24px));
   max-height: 90vh;
@@ -365,40 +433,109 @@ dialog {
   background: var(--paper);
 }
 
-dialog::backdrop { background: #24180fa8; }
-
-@media(max-width: 800px) {
-  .products { grid-template-columns: repeat(2, 1fr); }
+dialog::backdrop {
+  background: #24180fa8;
 }
 
-@media(max-width: 650px) {
-  .header-inner { min-height: 75px; }
-  .brand { font-size: 18px; }
-  .top-links { gap: 4px; }
-  .top-links button { font-size: 11px; }
-  .hero {
-    grid-template-columns: 1fr;
-    padding: 55px 0;
-    gap: 30px;
+@media (max-width: 800px) {
+  .products {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
-  .hero-art { min-height: 250px; }
-  .hero-art .emoji { font-size: 72px; }
-  .categories { gap: 8px; }
-  .category { min-height: 130px; padding: 8px; }
-  .category strong { font-size: 13px; }
-  .category small { font-size: 9px; }
-  .products { gap: 10px; }
-  .product-body { padding: 10px; }
-  .product h3 { font-size: 13px; }
-  .toolbar { grid-template-columns: 1fr; }
-  .form-grid { grid-template-columns: 1fr; }
-  .panel { padding: 16px; }
 }
-  •croissant-image { width: 75%; max-width: 340px;
-height: auto;
-object-fit: contain;
-display: block; margin: 0 auto;
-｝
+
+@media (max-width: 650px) {
+  .container {
+    width: 100%;
+    max-width: 100%;
+    padding-left: 18px;
+    padding-right: 18px;
+  }
+
+  .header-inner {
+    min-height: 75px;
+  }
+
+  .brand {
+    font-size: 18px;
+  }
+
+  .top-links {
+    gap: 4px;
+  }
+
+  .top-links button {
+    font-size: 11px;
+  }
+
+  .hero {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    padding: 45px 0;
+    gap: 28px;
+  }
+
+  .hero > * {
+    min-width: 0;
+  }
+
+  .hero-art {
+    min-height: 240px;
+    padding: 20px;
+  }
+
+  .croissant-image {
+    width: 75%;
+    max-width: 230px;
+  }
+
+  .hero-art small {
+    font-size: 10px;
+    letter-spacing: 2px;
+  }
+
+  .categories {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .category {
+    min-height: 130px;
+    padding: 8px;
+  }
+
+  .category strong {
+    font-size: 13px;
+  }
+
+  .category small {
+    font-size: 9px;
+  }
+
+  .products {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+
+  .product-body {
+    padding: 10px;
+  }
+
+  .product h3 {
+    font-size: 13px;
+  }
+
+  .toolbar {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .form-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .panel {
+    padding: 16px;
+  }
+}
 </style>
 </head>
 
@@ -434,7 +571,6 @@ display: block; margin: 0 auto;
 <main class="container">
 
 <section id="shop">
-
   <div class="hero">
     <div>
       <div class="eyebrow">JAPAN SELECT SHOP</div>
@@ -447,17 +583,11 @@ display: block; margin: 0 auto;
     </div>
 
     <div class="hero-art">
-   
-
-<img
-
-  src="./croissant.png"
-
-  alt="奶油可頌團手繪可頌"
-
-  class="croissant-image"
-
->
+      <img
+        src="./croissant.png"
+        alt="奶油可頌團手繪可頌"
+        class="croissant-image"
+      >
       <small>little things, lovely days.</small>
     </div>
   </div>
@@ -472,11 +602,13 @@ display: block; margin: 0 auto;
         <strong>童裝選物</strong>
         <small>KIDS WEAR</small>
       </button>
+
       <button class="category" onclick="chooseCategory('雜貨')">
         <span class="symbol">✿</span>
         <strong>生活雜貨</strong>
         <small>LIFESTYLE</small>
       </button>
+
       <button class="category" onclick="chooseCategory('')">
         <span class="symbol">♡</span>
         <strong>日本連線</strong>
@@ -508,12 +640,10 @@ display: block; margin: 0 auto;
       用一點點喜歡，收藏平凡日子裡的溫柔。
     </p>
   </div>
-
 </section>
 
 <section id="cart" class="hidden">
   <h2 class="page-title">我的喊單清單</h2>
-
   <div id="cartLines" class="panel"></div>
 
   <div class="panel">
@@ -574,7 +704,7 @@ display: block; margin: 0 auto;
     </p>
 
     <label>聯絡電話</label>
-    <input id="memberPhone" type="tel">
+    <input id="memberPhone" type="tel" autocomplete="tel">
 
     <div class="actions">
       <button onclick="saveProfile()">儲存資料</button>
@@ -589,7 +719,7 @@ display: block; margin: 0 auto;
   <h2 class="page-title">管理後台</h2>
 
   <div class="note">
-    管理後台僅限具備 cream croissant 權限的會員。
+    管理後台僅限具備管理員權限的會員。
     實際資料安全由資料庫 RLS 控制。
   </div>
 
@@ -659,10 +789,15 @@ display: block; margin: 0 auto;
 </main>
 
 <footer>
-  <div>🥐 奶油可頌團</div>
+  <img
+    src="./croissant.png"
+    alt="奶油可頌團手繪可頌"
+    class="footer-croissant"
+  >
+  <div>奶油可頌團</div>
   <p>CREAM CROISSANT SHOP · JAPAN SELECT</p>
   <p>日常裡的溫柔小選物</p>
-  <a href="https://www.instagram.com/" target="_blank" rel="noopener">
+  <a href="https://ig.me/m/creamoosin" target="_blank" rel="noopener noreferrer">
     私訊奶油
   </a>
 </footer>
@@ -683,7 +818,6 @@ display: block; margin: 0 auto;
   <input id="dQty" type="number" min="1" value="1">
 
   <p id="dStock" class="muted"></p>
-
   <button onclick="addCart()">加入喊單</button>
 </dialog>
 
@@ -692,8 +826,6 @@ display: block; margin: 0 auto;
 <script>
 "use strict";
 
-// Supabase 公開連線設定
-// 請勿將 service_role 或 secret key 放入網頁。
 const SUPABASE_URL =
   "https://hnrmbcldslljkctlepiz.supabase.co";
 
@@ -721,6 +853,15 @@ function element(tag, text, className) {
   if (text !== undefined) node.textContent = text;
   if (className) node.className = className;
   return node;
+}
+
+function croissantPlaceholder() {
+  const box = element("div", undefined, "placeholder");
+  const img = element("img");
+  img.src = "./croissant.png";
+  img.alt = "奶油可頌團手繪可頌";
+  box.append(img);
+  return box;
 }
 
 const orderStatuses = {
@@ -853,13 +994,14 @@ function renderShop() {
       img.alt = p.name;
       img.loading = "lazy";
       img.onerror = () =>
-        img.replaceWith(element("div", "🥐", "placeholder"));
+        img.replaceWith(croissantPlaceholder());
       card.append(img);
     } else {
-      card.append(element("div", "🥐", "placeholder"));
+      card.append(croissantPlaceholder());
     }
 
     const body = element("div", undefined, "product-body");
+
     body.append(
       element("span", p.category || "日本選物", "muted"),
       element("h3", p.name),
@@ -1010,7 +1152,6 @@ async function placeOrders() {
   button.disabled = true;
 
   let success = 0;
-
   message("cartMessage", "正在送出喊單...");
 
   try {
@@ -1035,7 +1176,6 @@ async function placeOrders() {
     }
 
     message("cartMessage", "喊單成功！共 " + success + " 筆訂單。");
-
     $("memo").value = "";
 
     await loadProducts();
@@ -1589,7 +1729,6 @@ async function loadAdminOrders() {
   });
 }
 
-// 保留既有 Supabase Auth 登入狀態。
 db.auth.onAuthStateChange(() => {
   setTimeout(() => {
     refreshAuth().catch(console.error);
