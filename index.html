@@ -68,6 +68,7 @@ button{padding:9px}
 <button class="ghost" onclick="showPage('shop')">選購商品</button>
 <button class="ghost" onclick="showPage('cart')">我的喊單 <span id="cartCount">0</span></button>
 <button class="ghost" onclick="showPage('admin')">管理後台（測試）</button>
+<button class="ghost" onclick="showMemberPage()">會員中心 ♡</button>
 </nav>
 <main class="wrap">
 <section id="shop">
@@ -121,6 +122,39 @@ button{padding:9px}
 <div class="panel"><h3>商品清單</h3><div id="adminProducts"></div></div>
 <div class="panel"><h3>本機測試訂單</h3><div id="orders"></div></div>
 <button class="ghost" onclick="exportData()">匯出本機資料 JSON</button>
+</section>
+
+<section id="member" class="hidden">
+  <h2>🥐 奶油可頌團｜會員中心</h2>
+
+  <div class="panel" id="memberAuth">
+    <h3>會員註冊／登入</h3>
+    <label>Email 電子郵件</label>
+    <input id="memberEmail" type="email"
+      placeholder="請輸入電子郵件">
+
+    <label>密碼</label>
+    <input id="memberPassword" type="password"
+      placeholder="請輸入密碼">
+
+    <div class="bar">
+      <button onclick="handleMemberSignup()">
+        註冊會員
+      </button>
+      <button onclick="handleMemberLogin()">
+        會員登入
+      </button>
+    </div>
+    <p id="memberMessage"></p>
+  </div>
+
+  <div class="panel hidden" id="memberProfile">
+    <h3>♡ 我的會員資料</h3>
+    <p id="memberInfo"></p>
+    <button onclick="handleMemberLogout()">
+      登出會員
+    </button>
+  </div>
 </section>
 </main>
 <footer>
