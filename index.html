@@ -75,3 +75,14 @@ function renderAdminProducts(){const box=$('adminProducts');box.replaceChildren(
 async function loadAdminOrders(){if(!isAdmin)return;const box=$('adminOrders');box.replaceChildren();const {data,error}=await db.from('orders').select('*,order_items(*)').order('created_at',{ascending:false}).limit(100);if(error){box.append(element('p','訂單讀取失敗：'+error.message));return}if(!data?.length){box.append(element('p','目前沒有訂單'));return}data.forEach(o=>box.append(renderOrder(o,true)))}
 resetForm();db.auth.onAuthStateChange(()=>setTimeout(()=>refreshAuth().catch(console.error),0));refreshAuth().catch(e=>message('shopMessage','網站連線失敗：'+e.message,true));renderCart();
 </script></body></html>
+
+/* 奶油可頌團 Logo 顏色修正 */
+header a,
+header a:visited,
+.logo,
+.logo:visited,
+.brand,
+.brand:visited {
+  color: #4B362B !important;
+  text-decoration: none !important;
+}
