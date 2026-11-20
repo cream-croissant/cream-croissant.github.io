@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#faf7f1">
-<title>奶油可頌團｜Cream Croissant Shop</title>
+<title>奶油可頌團 V15｜Cream Croissant Shop</title>
 <style>
 @font-face{font-family:CreamHand;src:url('./cream-font.ttf') format('truetype');font-display:swap}
 :root{--bg:#faf7f1;--paper:#fffdf9;--coffee:#49362b;--brown:#785b47;--milk:#efe5d8;--line:#e5d8c8;--muted:#95816f;--danger:#a64d45;--success:#56765a}
@@ -81,15 +81,6 @@ footer img{width:48px}
 a,a:link,a:visited,a:hover,a:active{color:var(--coffee);text-decoration:none}
 .brand,.brand:link,.brand:visited,.brand:hover,.brand:active,.brand small{color:#49362b!important;text-decoration:none!important}
 footer a,footer a:link,footer a:visited,footer a:hover,footer a:active{color:#785b47!important;text-decoration:underline;text-underline-offset:4px}
-/* V11.1：前台商品名稱改為 Cream 手寫字體；後台維持原樣 */
-.product-body .shop-product-title,
-#detail #dName{
-  font-family:CreamHand, 'PingFang TC', cursive;
-  font-weight:400;
-  color:var(--coffee);
-  line-height:1.55;
-}
-.product-body .shop-product-title{font-size:clamp(17px,2vw,22px)}
 </style>
 </head>
 <body>
@@ -102,13 +93,13 @@ footer a,footer a:link,footer a:visited,footer a:hover,footer a:active{color:#78
 <div class="section" id="collection"><h2>Japan Select</h2><p class="muted">本期選物・慢慢挑選喜歡的日常</p><div class="toolbar"><input id="search" placeholder="搜尋商品名稱" oninput="renderShop()"><select id="category" onchange="renderShop()"><option value="">全部分類</option></select></div><p id="shopMessage" class="message"></p><div id="products" class="products"></div></div>
 <div class="section" id="about"><h2>About us</h2><p>奶油可頌團 Cream Croissant Shop<br>從日本帶回每一件值得收藏的小美好。<br>用一點點喜歡，收藏平凡日子裡的溫柔。</p></div>
 </section>
-<section id="cart" class="hidden"><h2 class="page-title">我的喊單清單</h2><div id="cartLines" class="panel"></div><div class="panel"><p class="muted">請先登入會員。價格及庫存以正式送出時為準；多項商品會分別建立訂單。</p><label>訂單備註</label><textarea id="memo" rows="3" placeholder="例如：希望合併出貨"></textarea><div class="actions"><button id="submitOrder" onclick="placeOrders()">確認送出喊單</button><button class="light" onclick="showPage('shop')">繼續選購</button></div><p id="cartMessage" class="message"></p></div></section>
+<section id="cart" class="hidden"><h2 class="page-title">我的喊單清單</h2><p id="cartCampaign" class="note">正在確認本期日本連線...</p><div id="cartLines" class="panel"></div><div class="panel"><p class="muted">請先登入會員。價格及庫存以正式送出時為準；同一場日本連線的多項商品會合併在同一張訂單；結單後不再追加。</p><label>訂單備註</label><textarea id="memo" rows="3" placeholder="例如：希望合併出貨"></textarea><div class="actions"><button id="submitOrder" onclick="placeOrders()">確認送出喊單</button><button class="light" onclick="showPage('shop')">繼續選購</button></div><p id="cartMessage" class="message"></p></div></section>
 <section id="orders" class="hidden"><h2 class="page-title">我的訂單</h2><div id="myOrders" class="panel"></div></section>
-<section id="member" class="hidden"><h2 class="page-title">會員中心</h2><div id="memberAuth" class="panel"><h3>會員註冊／登入</h3><label>Email 電子郵件</label><input id="memberEmail" type="email" autocomplete="email"><label>密碼</label><input id="memberPassword" type="password" autocomplete="current-password"><div class="actions"><button onclick="handleSignup()">註冊會員</button><button class="light" onclick="handleLogin()">會員登入</button></div><p id="memberMessage" class="message"></p></div><div id="memberProfile" class="panel hidden"><h3>我的會員資料</h3><p id="memberInfo" class="muted"></p><label>會員名稱</label><input id="displayName"><label>Instagram 帳號</label><input id="igHandle" placeholder="例如：cream_shop"><p class="muted">僅登記 IG 名稱，並非 Instagram 官方授權綁定。</p><label>聯絡電話</label><input id="memberPhone" type="tel"><div class="actions"><button id="saveProfileBtn" onclick="saveProfile()">儲存資料</button><button class="light" onclick="handleLogout()">登出</button></div><p id="profileMessage" class="message"></p></div></section>
-<section id="admin" class="hidden"><h2 class="page-title">管理後台</h2><div class="note">只有管理員能管理商品與訂單。每個顏色／款式／尺寸組合有獨立庫存。</div><div class="panel"><h3 id="formTitle">新增商品</h3><input id="editId" type="hidden"><div class="form-grid"><div><label>商品名稱</label><input id="pName" placeholder="例如：日系復古花卉上衣"></div><div><label>售價 NT$</label><input id="pPrice" type="number" min="0"></div><div><label>商品分類</label><input id="pCategory" placeholder="童裝／髮飾／雜貨"></div><div><label>商品照片（手機相簿）</label><input id="pImageFile" type="file" accept="image/*" onchange="previewProductImage()"><p class="muted">單張上限 10MB，支援 JPG／PNG／WebP；編輯時不選新照片會保留原圖。</p><img id="pImagePreview" class="preview hidden" alt="照片預覽"><p id="pImageMessage" class="message"></p></div></div><label>商品說明</label><textarea id="pDesc" rows="3"></textarea><h3>商品規格與獨立庫存</h3><p class="muted">每列是一個可購買組合。無顏色或尺寸可填「單色」「單一尺寸」。同商品內不能重複相同組合。</p><div id="variantRows"></div><div class="actions"><button type="button" class="light" onclick="addVariantRow()">＋ 新增規格</button></div><label><input id="pActive" type="checkbox" checked> 商品上架中</label><div class="actions"><button id="saveProductBtn" onclick="saveProduct()">儲存商品</button><button class="light" onclick="resetForm()">清空欄位</button></div><p id="adminMessage" class="message"></p></div><div class="panel"><h3>商品管理</h3><div id="adminProducts"></div></div><div class="panel"><h3>真實訂單管理</h3><p class="muted">以下數據直接來自 Supabase，沒有示範訂單。</p><div id="orderStats" class="order-stats"></div><div class="actions"><button class="light" onclick="loadAdminOrders()">重新整理訂單</button></div><p id="orderAdminMessage" class="message"></p><div id="adminOrders"></div></div></section>
+<section id="member" class="hidden"><h2 class="page-title">會員中心</h2><div id="memberAuth" class="panel"><h3>會員註冊／登入</h3><label>Email 電子郵件</label><input id="memberEmail" type="email" autocomplete="email"><label>密碼</label><input id="memberPassword" type="password" autocomplete="current-password"><div class="actions"><button onclick="handleSignup()">註冊會員</button><button class="light" onclick="handleLogin()">會員登入</button><button type="button" class="light" onclick="handleGoogleLogin()">使用 Google 帳號登入</button></div><p id="memberMessage" class="message"></p></div><div id="memberProfile" class="panel hidden"><h3>我的會員資料</h3><p id="memberInfo" class="muted"></p><label>會員名稱</label><input id="displayName"><label>Instagram 帳號</label><input id="igHandle" placeholder="例如：cream_shop"><p class="muted">僅登記 IG 名稱，並非 Instagram 官方授權綁定。</p><label>聯絡電話</label><input id="memberPhone" type="tel"><div class="actions"><button id="saveProfileBtn" onclick="saveProfile()">儲存資料</button><button class="light" onclick="handleLogout()">登出</button></div><p id="profileMessage" class="message"></p></div></section>
+<section id="admin" class="hidden"><h2 class="page-title">管理後台</h2><div class="note">只有管理員能管理商品與訂單。每個顏色／款式／尺寸組合有獨立庫存。</div><div class="panel"><h3 id="formTitle">新增商品</h3><input id="editId" type="hidden"><div class="form-grid"><div><label>商品名稱</label><input id="pName" placeholder="例如：日系復古花卉上衣"></div><div><label>售價 NT$</label><input id="pPrice" type="number" min="0"></div><div><label>商品分類</label><input id="pCategory" placeholder="童裝／髮飾／雜貨"></div><div><label>商品照片（手機相簿）</label><input id="pImageFile" type="file" accept="image/*" onchange="previewProductImage()"><p class="muted">單張上限 10MB，支援 JPG／PNG／WebP；編輯時不選新照片會保留原圖。</p><img id="pImagePreview" class="preview hidden" alt="照片預覽"><p id="pImageMessage" class="message"></p></div></div><label>商品說明</label><textarea id="pDesc" rows="3"></textarea><h3>商品規格與獨立庫存</h3><p class="muted">每列是一個可購買組合。無顏色或尺寸可填「單色」「單一尺寸」。同商品內不能重複相同組合。</p><div id="variantRows"></div><div class="actions"><button type="button" class="light" onclick="addVariantRow()">＋ 新增規格</button></div><label><input id="pActive" type="checkbox" checked> 商品上架中</label><div class="actions"><button id="saveProductBtn" onclick="saveProduct()">儲存商品</button><button class="light" onclick="resetForm()">清空欄位</button></div><p id="adminMessage" class="message"></p></div><div class="panel"><h3>商品管理</h3><div id="adminProducts"></div></div><div class="panel"><h3>本期日本連線</h3><p id="campaignInfo" class="note">正在讀取...</p><label>新連線名稱</label><input id="campaignName" placeholder="例如：2026年11月日本連線"><div class="actions"><button onclick="startCampaign()">開啟新連線（前期自動結束）</button><button class="light" onclick="closeCampaign()">結束目前連線</button></div><p id="campaignMessage" class="message"></p></div><div class="panel"><h3>真實訂單管理</h3><p class="muted">以下數據直接來自 Supabase；已合併的來源訂單保留在資料庫稽核紀錄，不重複計入統計。</p><div id="orderStats" class="order-stats"></div><div class="actions"><label for="adminOrderFilter">訂單篩選</label><select id="adminOrderFilter" onchange="renderAdminOrderList()"><option value="all">全部訂單</option><option value="active">有效訂單</option><option value="cancelled">已取消</option><option value="completed">已完成（已出貨）</option><option value="unpaid">待付款（未取消）</option></select><button class="light" onclick="loadAdminOrders()">重新整理訂單</button></div><p id="orderAdminMessage" class="message"></p><div id="adminOrders"></div></div></section>
 </main>
 <footer><img src="./croissant.png" alt="可頌"><div>奶油可頌團</div><p>CREAM CROISSANT SHOP · JAPAN SELECT</p><a href="https://ig.me/m/creamoosin" target="_blank" rel="noopener noreferrer">私訊奶油</a></footer>
-<dialog id="detail"><div class="line-top"><h3 id="dName"></h3><button class="light" onclick="$('detail').close()">✕</button></div><p id="dDesc" class="muted"></p><p id="dPrice" class="price"></p><label>顏色</label><select id="dColor" onchange="updateVariantChoices()"></select><label>款式</label><select id="dStyle" onchange="updateVariantChoices()"></select><label>尺寸</label><select id="dSize" onchange="updateVariantStock()"></select><label>數量</label><input id="dQty" type="number" min="1" value="1"><p id="dStock" class="muted hidden"></p><button id="addCartBtn" onclick="addCart()">加入喊單</button></dialog>
+<dialog id="detail"><div class="line-top"><h3 id="dName"></h3><button class="light" onclick="$('detail').close()">✕</button></div><p id="dDesc" class="muted"></p><p id="dPrice" class="price"></p><label>顏色</label><select id="dColor" onchange="updateVariantChoices()"></select><label>款式</label><select id="dStyle" onchange="updateVariantChoices()"></select><label>尺寸</label><select id="dSize" onchange="updateVariantStock()"></select><label>數量</label><input id="dQty" type="number" min="1" value="1"><p id="dStock" class="muted"></p><button id="addCartBtn" onclick="addCart()">加入喊單</button></dialog>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 'use strict';
@@ -122,10 +113,11 @@ function element(tag,text,cls){const n=document.createElement(tag);if(text!==und
 function placeholder(){const d=element('div',undefined,'placeholder'),i=element('img');i.src='./croissant.png';d.append(i);return d}
 const orderStatuses={pending:'待確認',confirmed:'已確認',purchasing:'採購中',arrived:'已到貨',shipped:'已出貨',cancelled:'已取消'};
 const paymentStatuses={unpaid:'未付款',submitted:'已回報',paid:'已付款'};
-let products=[],variants=[],cart=[],selectedProduct=null,currentUser=null,isAdmin=false,profileSavedValues=null,profileSaving=false,profileLoadVersion=0,existingProductImage='',previewUrl=null;
+let activeCampaign=null;
+let products=[],variants=[],cart=[],selectedProduct=null,currentUser=null,isAdmin=false,profileRowExists=false,profileSavedValues=null,profileSaving=false,profileLoadVersion=0,existingProductImage='',previewUrl=null;
 try{cart=JSON.parse(localStorage.getItem('cream_v10_cart')||'null')||JSON.parse(localStorage.getItem('cream_v9_cart')||'[]');if(!Array.isArray(cart))cart=[];cart=cart.filter(x=>x.variant_id)}catch{cart=[]}
 function saveCart(){localStorage.setItem('cream_v10_cart',JSON.stringify(cart))}
-function showPage(page){if(page==='admin'&&!isAdmin){alert('僅管理員可進入後台');return}['shop','cart','orders','member','admin'].forEach(id=>$(id).classList.toggle('hidden',id!==page));if(page==='orders')loadOrders();if(page==='admin')loadAdminOrders();window.scrollTo(0,0)}
+function showPage(page){if(page==='admin'&&!isAdmin){alert('僅管理員可進入後台');return}['shop','cart','orders','member','admin'].forEach(id=>$(id).classList.toggle('hidden',id!==page));if(page==='orders')loadOrders();if(page==='cart')loadCampaign();if(page==='admin'){loadCampaign();loadAdminOrders();}window.scrollTo(0,0)}
 function goAbout(){showPage('shop');setTimeout(()=>$('about').scrollIntoView({behavior:'smooth'}),50)}
 function scrollProducts(){$('collection').scrollIntoView({behavior:'smooth'})}
 function chooseCategory(term){$('search').value='';const s=$('category'),o=[...s.options].find(x=>x.value&&x.value.includes(term));s.value=term&&o?o.value:'';renderShop();scrollProducts()}
@@ -133,28 +125,90 @@ function variantsOf(id){return variants.filter(v=>String(v.product_id)===String(
 function variantStock(v){return Number(v?.stock||0)}
 function totalStock(id){return variantsOf(id).reduce((n,v)=>n+variantStock(v),0)}
 async function loadProducts(){const [a,b]=await Promise.all([db.from('products').select('*').order('created_at',{ascending:false}),db.from('product_variants').select('*').order('id',{ascending:true})]);if(a.error||b.error){message('shopMessage','商品讀取失敗：'+(a.error||b.error).message,true);return}products=a.data||[];variants=b.data||[];message('shopMessage','');renderShop();renderCart();if(isAdmin)renderAdminProducts()}
-function renderShop(){const s=$('category'),old=s.value;s.replaceChildren(new Option('全部分類',''));[...new Set(products.filter(p=>p.is_active).map(p=>p.category).filter(Boolean))].sort().forEach(x=>s.add(new Option(x,x)));if([...s.options].some(x=>x.value===old))s.value=old;const q=$('search').value.trim().toLowerCase(),grid=$('products');grid.replaceChildren();const visible=products.filter(p=>p.is_active&&(!s.value||p.category===s.value)&&String(p.name).toLowerCase().includes(q));if(!visible.length){grid.append(element('p','目前沒有符合的商品。'));return}visible.forEach(p=>{const card=element('article',undefined,'product');if(p.image_url&&/^https:\/\//i.test(p.image_url)){const img=element('img');img.src=p.image_url;img.alt=p.name;img.loading='lazy';img.onerror=()=>img.replaceWith(placeholder());card.append(img)}else card.append(placeholder());const body=element('div',undefined,'product-body'),stock=totalStock(p.id);body.append(element('span',p.category||'日本選物','muted'),element('h3',p.name,'shop-product-title'),element('p',money(p.price),'price'),...(stock?[]:[element('p','已售完','muted')]));const btn=element('button',stock?'選擇顏色／款式／尺寸':'已售完');btn.disabled=!stock;btn.onclick=()=>openDetail(p.id);body.append(btn);card.append(body);grid.append(card)})}
+function renderShop(){const s=$('category'),old=s.value;s.replaceChildren(new Option('全部分類',''));[...new Set(products.filter(p=>p.is_active).map(p=>p.category).filter(Boolean))].sort().forEach(x=>s.add(new Option(x,x)));if([...s.options].some(x=>x.value===old))s.value=old;const q=$('search').value.trim().toLowerCase(),grid=$('products');grid.replaceChildren();const visible=products.filter(p=>p.is_active&&(!s.value||p.category===s.value)&&String(p.name).toLowerCase().includes(q));if(!visible.length){grid.append(element('p','目前沒有符合的商品。'));return}visible.forEach(p=>{const card=element('article',undefined,'product');if(p.image_url&&/^https:\/\//i.test(p.image_url)){const img=element('img');img.src=p.image_url;img.alt=p.name;img.loading='lazy';img.onerror=()=>img.replaceWith(placeholder());card.append(img)}else card.append(placeholder());const body=element('div',undefined,'product-body'),stock=totalStock(p.id);body.append(element('span',p.category||'日本選物','muted'),element('h3',p.name),element('p',money(p.price),'price'),element('p',stock?'總庫存 '+stock+' 件':'已售完','muted'));const btn=element('button',stock?'選擇顏色／款式／尺寸':'已售完');btn.disabled=!stock;btn.onclick=()=>openDetail(p.id);body.append(btn);card.append(body);grid.append(card)})}
 function fillSelect(select,values,preferred){select.replaceChildren();values.forEach(v=>select.add(new Option(v,v)));if(values.includes(preferred))select.value=preferred}
 function availableVariants(){return variantsOf(selectedProduct).filter(v=>variantStock(v)>0)}
 function openDetail(id){const p=products.find(x=>String(x.id)===String(id));if(!p)return;selectedProduct=p.id;$('dName').textContent=p.name;$('dDesc').textContent=p.description||'';$('dPrice').textContent=money(p.price);fillSelect($('dColor'),[...new Set(availableVariants().map(v=>v.color))]);updateVariantChoices();$('dQty').value=1;$('detail').showModal()}
 function updateVariantChoices(){const vs=availableVariants(),color=$('dColor').value,styles=[...new Set(vs.filter(v=>v.color===color).map(v=>v.style))];fillSelect($('dStyle'),styles,$('dStyle').value);const sizes=[...new Set(vs.filter(v=>v.color===color&&v.style===$('dStyle').value).map(v=>v.size))];fillSelect($('dSize'),sizes,$('dSize').value);updateVariantStock()}
-function updateVariantStock(){const vs=availableVariants(),color=$('dColor').value,style=$('dStyle').value,sizes=[...new Set(vs.filter(v=>v.color===color&&v.style===style).map(v=>v.size))];fillSelect($('dSize'),sizes,$('dSize').value);const v=selectedVariant();$('dStock').textContent='';$('dQty').max=variantStock(v);$('addCartBtn').disabled=!v}
+function updateVariantStock(){const vs=availableVariants(),color=$('dColor').value,style=$('dStyle').value,sizes=[...new Set(vs.filter(v=>v.color===color&&v.style===style).map(v=>v.size))];fillSelect($('dSize'),sizes,$('dSize').value);const v=selectedVariant();$('dStock').textContent='此規格庫存 '+variantStock(v)+' 件';$('dQty').max=variantStock(v);$('addCartBtn').disabled=!v}
 function selectedVariant(){return availableVariants().find(v=>v.color===$('dColor').value&&v.style===$('dStyle').value&&v.size===$('dSize').value)}
 function addCart(){const v=selectedVariant(),qty=Number($('dQty').value);if(!v||!Number.isInteger(qty)||qty<1){alert('請選擇正確規格與數量');return}const existing=cart.filter(x=>String(x.variant_id)===String(v.id)).reduce((n,x)=>n+x.qty,0);if(existing+qty>v.stock){alert('此規格庫存不足');return}const found=cart.find(x=>String(x.variant_id)===String(v.id));if(found)found.qty+=qty;else cart.push({variant_id:v.id,qty});saveCart();$('detail').close();renderCart();alert('已加入喊單清單')}
-function renderCart(){const box=$('cartLines');box.replaceChildren();let total=0;if(!cart.length)box.append(element('p','目前沒有喊單商品。'));cart.forEach((item,index)=>{const v=variants.find(x=>String(x.id)===String(item.variant_id)),p=v&&products.find(x=>String(x.id)===String(v.product_id));if(!p)return;total+=Number(p.price)*item.qty;const line=element('div',undefined,'line'),top=element('div',undefined,'line-top');top.append(element('strong',p.name+'／'+v.color+'／'+v.style+'／'+v.size),element('span',money(p.price*item.qty)));const remove=element('button','移除','light');remove.onclick=()=>{cart.splice(index,1);saveCart();renderCart()};line.append(top,element('p','數量：'+item.qty,'muted'),remove);box.append(line)});box.append(element('h3','商品小計：'+money(total)),element('p','尚未包含運費。','muted'));$('cartCount').textContent=cart.reduce((n,x)=>n+x.qty,0)}
-async function placeOrders(){if(!currentUser){alert('請先登入會員');showPage('member');return}if(!cart.length){alert('請先加入商品');return}const button=$('submitOrder');button.disabled=true;let success=0;message('cartMessage','正在送出喊單...');try{for(const item of [...cart]){const {error}=await db.rpc('place_order_variant',{p_variant_id:item.variant_id,p_quantity:item.qty,p_note:$('memo').value.trim()});if(error)throw error;success++;const i=cart.findIndex(x=>String(x.variant_id)===String(item.variant_id));if(i>=0)cart.splice(i,1);saveCart()}message('cartMessage','喊單成功，共 '+success+' 筆');$('memo').value='';await loadProducts();showPage('orders')}catch(e){message('cartMessage','已送出 '+success+' 筆，其餘失敗：'+e.message,true);await loadProducts()}finally{button.disabled=false;renderCart()}}
+function renderCart(){const box=$('cartLines');box.replaceChildren();let total=0;if(!cart.length)box.append(element('p','目前沒有喊單商品。'));cart.forEach((item,index)=>{const v=variants.find(x=>String(x.id)===String(item.variant_id)),p=v&&products.find(x=>String(x.id)===String(v.product_id));if(!p)return;total+=Number(p.price)*item.qty;const line=element('div',undefined,'line'),top=element('div',undefined,'line-top');top.append(element('strong',p.name+'／'+v.color+'／'+v.style+'／'+v.size),element('span',money(p.price*item.qty)));const remove=element('button','移除','light');remove.onclick=()=>{cart.splice(index,1);saveCart();renderCart()};line.append(top,element('p','數量：'+item.qty+'（剩餘 '+v.stock+'）','muted'),remove);box.append(line)});box.append(element('h3','商品小計：'+money(total)),element('p','尚未包含運費。','muted'));$('cartCount').textContent=cart.reduce((n,x)=>n+x.qty,0)}
+async function loadCampaign(){
+  const {data,error}=await db.from('shopping_campaigns').select('id,name,is_active').eq('is_active',true).limit(1).maybeSingle();
+  activeCampaign=error?null:data;
+  const label=error?'連線資料讀取失敗：'+error.message:data?'本期連線：'+data.name+'（同會員自動合併）':'目前沒有開放中的日本連線，暫停接單';
+  $('cartCampaign').textContent=label;
+  $('campaignInfo').textContent=label;
+  $('submitOrder').disabled=!!error||!data;
+  return !error&&!!data;
+}
+async function startCampaign(){
+  if(!isAdmin)return;
+  const name=$('campaignName').value.trim();
+  if(!name){message('campaignMessage','請先輸入新連線名稱',true);return}
+  if(!confirm('確定開啟「'+name+'」？原本的連線會結束，但歷史訂單不會刪除。'))return;
+  const {error}=await db.rpc('v14_start_campaign',{p_name:name});
+  message('campaignMessage',error?'操作失敗：'+error.message:'已開啟新連線',!!error);
+  if(!error){$('campaignName').value='';await loadCampaign();await loadAdminOrders()}
+}
+async function closeCampaign(){
+  if(!isAdmin||!confirm('確定結束本期連線？結束後會員無法再追加此期訂單。'))return;
+  const {error}=await db.rpc('v14_close_campaign');
+  message('campaignMessage',error?'操作失敗：'+error.message:'已結束本期連線',!!error);
+  if(!error)await loadCampaign();
+}
+async function placeOrders(){
+  if(!currentUser){alert('請先登入會員');showPage('member');return}
+  if(!cart.length){alert('請先加入商品');return}
+  if(!await loadCampaign()){message('cartMessage','目前沒有開放中的日本連線，暫時無法喊單',true);return}
+  const {data:memberRow,error:memberErr}=await db.from('profiles').select('ig_handle').eq('id',currentUser.id).maybeSingle();
+  if(memberErr||!memberRow?.ig_handle){alert('請先到會員中心儲存 Instagram 帳號，才能送出喊單');showPage('member');return}
+  const button=$('submitOrder');button.disabled=true;let success=0;
+  message('cartMessage','正在合併至本期日本連線訂單...');
+  try{
+    for(const item of [...cart]){
+      const {error}=await db.rpc('v14_place_order_variant',{p_variant_id:item.variant_id,p_quantity:item.qty,p_note:$('memo').value.trim()});
+      if(error)throw error;
+      success++;
+      const i=cart.findIndex(x=>String(x.variant_id)===String(item.variant_id));
+      if(i>=0)cart.splice(i,1);saveCart();
+    }
+    message('cartMessage','喊單成功，已加入本期合併訂單，共 '+success+' 個規格');
+    $('memo').value='';await loadProducts();showPage('orders');
+  }catch(e){message('cartMessage','已成功加入 '+success+' 個規格，其餘失敗：'+e.message,true);await loadProducts()}
+  finally{button.disabled=false;renderCart();await loadCampaign()}
+}
 function readProfile(){return{display_name:$('displayName').value.trim(),ig_handle:$('igHandle').value.trim().replace(/^@/,''),phone:$('memberPhone').value.trim()}}
 function sameProfile(a,b){return!!a&&!!b&&Object.keys(a).every(k=>a[k]===b[k])}
-function updateProfileButton(){const b=$('saveProfileBtn'),saved=sameProfile(readProfile(),profileSavedValues);b.textContent=profileSaving?'儲存中...':saved?'✓ 已存檔':'儲存資料';b.disabled=profileSaving;b.classList.toggle('saved',saved&&!profileSaving)}
+function updateProfileButton(){const b=$('saveProfileBtn'),saved=profileRowExists&&sameProfile(readProfile(),profileSavedValues);b.textContent=profileSaving?'儲存中...':saved?'✓ 已存檔':'儲存資料';b.disabled=profileSaving;b.classList.toggle('saved',saved&&!profileSaving)}
 ['displayName','igHandle','memberPhone'].forEach(id=>$(id).addEventListener('input',()=>{updateProfileButton();message('profileMessage','')}));
-async function refreshAuth(){const version=++profileLoadVersion;const {data,error}=await db.auth.getUser();if(version!==profileLoadVersion)return;const next=error?null:data.user,changed=currentUser?.id!==next?.id;currentUser=next;isAdmin=false;if(currentUser){const r=await db.from('profiles').select('*').eq('id',currentUser.id).maybeSingle();if(version!==profileLoadVersion)return;if(r.error)message('profileMessage','會員資料讀取失敗：'+r.error.message,true);isAdmin=r.data?.role==='admin';const f={display_name:r.data?.display_name||'',ig_handle:r.data?.ig_handle||'',phone:r.data?.phone||''};if(changed||(!profileSaving&&(!profileSavedValues||sameProfile(readProfile(),profileSavedValues)))){Object.entries({displayName:f.display_name,igHandle:f.ig_handle,memberPhone:f.phone}).forEach(([id,v])=>$(id).value=v);profileSavedValues=f}$('memberInfo').textContent='登入帳號：'+currentUser.email}else{profileSavedValues=null;['displayName','igHandle','memberPhone'].forEach(id=>$(id).value='');$('memberInfo').textContent='';message('profileMessage','')}$('memberAuth').classList.toggle('hidden',!!currentUser);$('memberProfile').classList.toggle('hidden',!currentUser);$('adminNav').classList.toggle('hidden',!isAdmin);updateProfileButton();if(!isAdmin&&!$('admin').classList.contains('hidden'))showPage('shop');await loadProducts()}
+async function refreshAuth(){const version=++profileLoadVersion;const {data,error}=await db.auth.getUser();if(version!==profileLoadVersion)return;const next=error?null:data.user,changed=currentUser?.id!==next?.id;currentUser=next;isAdmin=false;if(currentUser){const r=await db.from('profiles').select('*').eq('id',currentUser.id).maybeSingle();if(version!==profileLoadVersion)return;profileRowExists=!!r.data&&!r.error;if(r.error)message('profileMessage','會員資料讀取失敗：'+r.error.message,true);else if(!r.data)message('profileMessage','尚未建立會員資料，請填寫 IG 並按儲存資料。');isAdmin=r.data?.role==='admin';const f={display_name:r.data?.display_name||'',ig_handle:r.data?.ig_handle||'',phone:r.data?.phone||''};if(changed||(!profileSaving&&(!profileSavedValues||sameProfile(readProfile(),profileSavedValues)))){Object.entries({displayName:f.display_name,igHandle:f.ig_handle,memberPhone:f.phone}).forEach(([id,v])=>$(id).value=v);profileSavedValues=f}$('memberInfo').textContent='登入帳號：'+currentUser.email}else{profileRowExists=false;profileSavedValues=null;['displayName','igHandle','memberPhone'].forEach(id=>$(id).value='');$('memberInfo').textContent='';message('profileMessage','')}$('memberAuth').classList.toggle('hidden',!!currentUser);$('memberProfile').classList.toggle('hidden',!currentUser);$('adminNav').classList.toggle('hidden',!isAdmin);updateProfileButton();if(!isAdmin&&!$('admin').classList.contains('hidden'))showPage('shop');await loadProducts()}
 async function handleSignup(){const email=$('memberEmail').value.trim(),password=$('memberPassword').value;if(!email||password.length<6){message('memberMessage','請輸入 Email 與至少六碼密碼',true);return}const {data,error}=await db.auth.signUp({email,password,options:{emailRedirectTo:location.origin+location.pathname}});message('memberMessage',error?'註冊失敗：'+error.message:data.session?'註冊成功':'請至信箱確認驗證信',!!error);if(!error)await refreshAuth()}
+async function handleGoogleLogin(){const {error}=await db.auth.signInWithOAuth({provider:'google',options:{redirectTo:location.origin+location.pathname}});if(error)message('memberMessage','Google 登入失敗：'+error.message,true)}
 async function handleLogin(){const {error}=await db.auth.signInWithPassword({email:$('memberEmail').value.trim(),password:$('memberPassword').value});$('memberPassword').value='';message('memberMessage',error?'登入失敗：'+error.message:'登入成功',!!error);if(!error)await refreshAuth()}
 async function handleLogout(){const {error}=await db.auth.signOut();if(error){alert(error.message);return}profileSavedValues=null;await refreshAuth();showPage('member')}
-async function saveProfile(){if(!currentUser||profileSaving)return;const f=readProfile();if(sameProfile(f,profileSavedValues)){message('profileMessage','會員資料已存檔');return}profileSaving=true;updateProfileButton();message('profileMessage','儲存中...');try{const {data,error}=await db.from('profiles').update(f).eq('id',currentUser.id).select('display_name,ig_handle,phone').single();if(error)throw error;profileSavedValues={display_name:data.display_name||'',ig_handle:data.ig_handle||'',phone:data.phone||''};message('profileMessage','✓ 會員資料已存檔')}catch(e){message('profileMessage','儲存失敗：'+e.message,true)}finally{profileSaving=false;updateProfileButton()}}
-async function loadOrders(){const box=$('myOrders');box.replaceChildren();if(!currentUser){box.append(element('p','請先登入會員'));return}const {data,error}=await db.from('orders').select('*,order_items(*)').eq('user_id',currentUser.id).order('created_at',{ascending:false});if(error){box.append(element('p','讀取失敗：'+error.message));return}if(!data?.length){box.append(element('p','目前尚無訂單'));return}data.forEach(o=>box.append(renderOrder(o,false)))}
+async function saveProfile(){
+ if(!currentUser||profileSaving)return;
+ const f=readProfile();
+ if(!f.ig_handle||!/^[A-Za-z0-9._]{1,30}$/.test(f.ig_handle)){message('profileMessage','請填寫有效的 Instagram ID（不含 @）',true);return}
+ if(profileRowExists&&sameProfile(f,profileSavedValues)){message('profileMessage','會員資料已存檔');return}
+ profileSaving=true;updateProfileButton();message('profileMessage','儲存中...');
+ try{
+  // upsert can create the missing profile instead of silently updating zero rows.
+  // Database must permit authenticated users to insert/update their own profile.
+  const {data,error}=await db.from('profiles').upsert({id:currentUser.id,...f},{onConflict:'id'}).select('display_name,ig_handle,phone').single();
+  if(error)throw error;
+  profileSavedValues={display_name:data.display_name||'',ig_handle:data.ig_handle||'',phone:data.phone||''};
+  profileRowExists=true;
+  if(!sameProfile(f,profileSavedValues))throw Error('資料庫回傳內容與輸入不一致');
+  message('profileMessage','✓ 已儲存至 Supabase');
+ }catch(e){profileRowExists=false;message('profileMessage','儲存失敗：'+e.message+'（請確認 profiles 欄位及 RLS）',true)}
+ finally{profileSaving=false;updateProfileButton()}
+}
+async function loadOrders(){const box=$('myOrders');box.replaceChildren();if(!currentUser){box.append(element('p','請先登入會員'));return}const {data,error}=await db.from('orders').select('*,order_items(*)').eq('user_id',currentUser.id).is('merged_into_order_id',null).order('created_at',{ascending:false});if(error){box.append(element('p','讀取失敗：'+error.message));return}if(!data?.length){box.append(element('p','目前尚無訂單'));return}data.forEach(o=>box.append(renderOrder(o,false)))}
 async function showMemberContact(o,box){box.replaceChildren(element('p','正在讀取會員資料...'));const {data,error}=await db.rpc('v11_admin_member_contact',{p_user_id:o.user_id});box.replaceChildren();if(error){box.append(element('p','讀取失敗：'+error.message,'error'));return}const m=data?.[0];if(!m){box.append(element('p','找不到會員資料'));return}box.append(element('p','會員名稱：'+(m.display_name||'未填寫')),element('p','電話：'+(m.phone||'未填寫')));const ig=(m.ig_handle||'').replace(/^@/,'');if(/^[a-zA-Z0-9._]{1,30}$/.test(ig)){const a=element('a','查看 @'+ig+' 的 Instagram');a.href='https://www.instagram.com/'+encodeURIComponent(ig)+'/';a.target='_blank';a.rel='noopener noreferrer';box.append(a)}else box.append(element('p','尚未填寫有效 IG 帳號'))}
-function renderOrder(o,admin){const line=element('div',undefined,'line');line.append(element('strong','訂單 #'+String(o.id).slice(0,8)),element('p',new Date(o.created_at).toLocaleString('zh-TW'),'muted'));let subtotal=0;(o.order_items||[]).forEach(i=>{const amount=i.quantity*i.unit_price;subtotal+=amount;line.append(element('p',i.product_name+'／'+(i.selected_option||'單款')+' × '+i.quantity+' · '+money(amount)))});const shipping=Number(o.shipping_fee||0);line.append(element('p','商品 '+money(subtotal)+' + 運費 '+money(shipping)+' = '+money(subtotal+shipping)));if(o.note)line.append(element('p','備註：'+o.note,'muted'));if(o.tracking_number)line.append(element('p','物流單號：'+o.tracking_number,'muted'));if(admin){const status=element('select'),payment=element('select');Object.entries(orderStatuses).forEach(([k,v])=>status.add(new Option(v,k)));Object.entries(paymentStatuses).forEach(([k,v])=>payment.add(new Option(v,k)));status.value=o.status;payment.value=o.payment_status;const fee=element('input');fee.type='number';fee.min=0;fee.value=shipping;const tracking=element('input');tracking.value=o.tracking_number||'';tracking.placeholder='物流單號';const save=element('button','儲存訂單');save.onclick=async()=>{const n=Number(fee.value);if(!Number.isInteger(n)||n<0){alert('運費不正確');return}save.disabled=true;const {error}=await db.from('orders').update({status:status.value,payment_status:payment.value,shipping_fee:n,tracking_number:tracking.value.trim()}).eq('id',o.id);if(error){alert('儲存失敗：'+error.message);save.disabled=false}else await loadAdminOrders()};line.append(element('label','訂單狀態'),status,element('label','付款狀態'),payment,element('label','運費'),fee,element('label','物流單號'),tracking,save)}else{line.append(element('p','訂單：'+(orderStatuses[o.status]||o.status)+'｜付款：'+(paymentStatuses[o.payment_status]||o.payment_status),'muted'));if(o.payment_status!=='paid'){const amount=element('input'),last=element('input'),note=element('input');amount.type='number';amount.placeholder='匯款金額';last.placeholder='匯款帳號後五碼';last.maxLength=5;note.placeholder='匯款備註（選填）';const report=element('button','回報匯款');report.onclick=async()=>{const n=Number(amount.value);if(!Number.isInteger(n)||n<=0||!/^[0-9]{5}$/.test(last.value.trim())){alert('請填正確匯款金額及帳號後五碼');return}report.disabled=true;const {error}=await db.from('payment_reports').insert({order_id:o.id,user_id:currentUser.id,amount:n,last_five:last.value.trim(),note:note.value.trim()});if(error){alert('回報失敗：'+error.message);report.disabled=false}else{alert('已回報匯款');loadOrders()}};line.append(element('label','匯款金額'),amount,element('label','匯款帳號後五碼'),last,note,report)}}return line}
+function renderOrder(o,admin){const line=element('div',undefined,'line');line.append(element('strong','訂單 #'+String(o.id).slice(0,8)),element('p',new Date(o.created_at).toLocaleString('zh-TW'),'muted'));let subtotal=0;(o.order_items||[]).forEach(i=>{const amount=i.quantity*i.unit_price;subtotal+=amount;line.append(element('p',i.product_name+'／'+(i.selected_option||'單款')+' × '+i.quantity+' · '+money(amount)))});const shipping=Number(o.shipping_fee||0);line.append(element('p','商品 '+money(subtotal)+' + 運費 '+money(shipping)+' = '+money(subtotal+shipping)));if(o.campaign_id)line.append(element('p','連線編號：'+o.campaign_id,'muted'));if(o.note)line.append(element('p','備註：'+o.note,'muted'));if(o.tracking_number)line.append(element('p','物流單號：'+o.tracking_number,'muted'));if(admin){const status=element('select'),payment=element('select');Object.entries(orderStatuses).forEach(([k,v])=>status.add(new Option(v,k)));Object.entries(paymentStatuses).forEach(([k,v])=>payment.add(new Option(v,k)));status.value=o.status;payment.value=o.payment_status;const fee=element('input');fee.type='number';fee.min=0;fee.value=shipping;const tracking=element('input');tracking.value=o.tracking_number||'';tracking.placeholder='物流單號';const save=element('button','儲存訂單');save.onclick=async()=>{const n=Number(fee.value);if(!Number.isInteger(n)||n<0){alert('運費不正確');return}save.disabled=true;const {error}=await db.from('orders').update({status:status.value,payment_status:payment.value,shipping_fee:n,tracking_number:tracking.value.trim()}).eq('id',o.id);if(error){alert('儲存失敗：'+error.message);save.disabled=false}else await loadAdminOrders()};line.append(element('label','訂單狀態'),status,element('label','付款狀態'),payment,element('label','運費'),fee,element('label','物流單號'),tracking,save)}else{line.append(element('p','訂單：'+(orderStatuses[o.status]||o.status)+'｜付款：'+(paymentStatuses[o.payment_status]||o.payment_status),'muted'));if(o.payment_status!=='paid'){const amount=element('input'),last=element('input'),note=element('input');amount.type='number';amount.placeholder='匯款金額';last.placeholder='匯款帳號後五碼';last.maxLength=5;note.placeholder='匯款備註（選填）';const report=element('button','回報匯款');report.onclick=async()=>{const n=Number(amount.value);if(!Number.isInteger(n)||n<=0||!/^[0-9]{5}$/.test(last.value.trim())){alert('請填正確匯款金額及帳號後五碼');return}report.disabled=true;const {error}=await db.from('payment_reports').insert({order_id:o.id,user_id:currentUser.id,amount:n,last_five:last.value.trim(),note:note.value.trim()});if(error){alert('回報失敗：'+error.message);report.disabled=false}else{alert('已回報匯款');loadOrders()}};line.append(element('label','匯款金額'),amount,element('label','匯款帳號後五碼'),last,note,report)}}return line}
 function addVariantRow(v={}){const row=element('div',undefined,'variant-row');row.dataset.id=v.id||'';[['顏色','color',v.color||''],['款式','style',v.style||''],['尺寸','size',v.size||''],['庫存','stock',v.stock??0]].forEach(([label,key,value])=>{const wrap=element('div'),l=element('label',label),input=element('input');input.dataset.field=key;input.value=value;if(key==='stock'){input.type='number';input.min='0';input.step='1'}else input.placeholder=key==='color'?'粉色':key==='style'?'一般款':'90';wrap.append(l,input);row.append(wrap)});const remove=element('button','移除此列','light');remove.type='button';remove.onclick=()=>row.remove();row.append(remove);$('variantRows').append(row)}
 function readVariantRows(){const rows=[...$('variantRows').children].map(row=>{const get=k=>row.querySelector('[data-field="'+k+'"]').value.trim();return{id:row.dataset.id||null,color:get('color')||'單色',style:get('style')||'一般款',size:get('size')||'單一尺寸',stock:Number(get('stock')),rawStock:get('stock')}});if(!rows.length)throw Error('請至少新增一個商品規格');const keys=new Set();rows.forEach(v=>{if(v.rawStock===''||!Number.isInteger(v.stock)||v.stock<0)throw Error('每個規格的庫存必須是 0 以上整數');const key=JSON.stringify([v.color,v.style,v.size]);if(keys.has(key))throw Error('顏色／款式／尺寸組合不能重複：'+v.color+'／'+v.style+'／'+v.size);keys.add(key)});return rows}
 function clearPreview(){if(previewUrl){URL.revokeObjectURL(previewUrl);previewUrl=null}}
@@ -167,18 +221,12 @@ function editProduct(id){const p=products.find(x=>String(x.id)===String(id));if(
 async function deleteProduct(id){if(!isAdmin||!confirm('確定刪除商品？已有訂單建議改下架。'))return;const {error}=await db.from('products').delete().eq('id',id);if(error)alert('刪除失敗：'+error.message);else await loadProducts()}
 async function toggleProductActive(id){const p=products.find(x=>String(x.id)===String(id));if(!isAdmin||!p)return;const {error}=await db.from('products').update({is_active:!p.is_active}).eq('id',id);if(error)alert('更新失敗：'+error.message);else await loadProducts()}
 function renderAdminProducts(){const box=$('adminProducts');box.replaceChildren();if(!products.length){box.append(element('p','尚無商品'));return}products.forEach(p=>{const line=element('div',undefined,'line'),top=element('div',undefined,'line-top');top.append(element('strong',p.name+(p.is_active?'（上架中）':'（已下架）')),element('span',money(p.price)+'｜總庫存 '+totalStock(p.id)));const detail=element('p',variantsOf(p.id).map(v=>v.color+'／'+v.style+'／'+v.size+'：'+v.stock).join('　'),'muted'),actions=element('div',undefined,'actions'),edit=element('button','編輯','light'),toggle=element('button',p.is_active?'下架':'重新上架','light'),remove=element('button','刪除','danger');edit.onclick=()=>editProduct(p.id);toggle.onclick=()=>toggleProductActive(p.id);remove.onclick=()=>deleteProduct(p.id);actions.append(edit,toggle,remove);line.append(top,detail,actions);box.append(line)})}
-async function loadAdminOrders(){
-  if(!isAdmin)return;
-  const box=$('adminOrders'),stats=$('orderStats');
-  box.replaceChildren();stats.replaceChildren();
-  message('orderAdminMessage','正在讀取真實訂單...');
-  const {data,error}=await db.from('orders').select('*,order_items(*)').order('created_at',{ascending:false}).limit(100);
-  if(error){message('orderAdminMessage','訂單讀取失敗：'+error.message,true);return}
-  const orders=data||[];
-  const summaries=[['已載入訂單',orders.length],['待確認',orders.filter(o=>o.status==='pending').length],['待付款',orders.filter(o=>o.payment_status==='unpaid').length],['待出貨',orders.filter(o=>o.status==='arrived').length]];
-  summaries.forEach(([name,count])=>{const card=element('div',undefined,'order-stat');card.append(element('strong',String(count)),element('span',name));stats.append(card)});
-  message('orderAdminMessage',orders.length===100?'目前顯示最新 100 筆訂單；統計僅計算已載入的 100 筆。':'已載入 '+orders.length+' 筆真實訂單');
-  if(!orders.length){box.append(element('p','目前沒有訂單，客人完成喊單後會出現在這裡。'));return}
+let adminAllOrders=[];
+function renderAdminOrderList(){
+  const box=$('adminOrders');box.replaceChildren();
+  const filter=$('adminOrderFilter').value;
+  const orders=adminAllOrders.filter(o=>filter==='all'||(filter==='active'&&o.status!=='cancelled')||(filter==='cancelled'&&o.status==='cancelled')||(filter==='completed'&&o.status==='shipped')||(filter==='unpaid'&&o.status!=='cancelled'&&o.payment_status==='unpaid'));
+  if(!orders.length){box.append(element('p','此分類目前沒有訂單。'));return}
   orders.forEach(o=>{
     const card=element('article',undefined,'order-card');
     const head=element('div',undefined,'line-top');
@@ -188,13 +236,44 @@ async function loadAdminOrders(){
     contact.append(element('p','會員資料：點下方按鈕查看 IG 與聯絡方式','muted'));
     const view=element('button','查看會員 Instagram／聯絡資料','light');
     view.onclick=()=>showMemberContact(o,contact);
-    card.append(view,contact);
-    const detail=renderOrder(o,true);
-    card.append(detail);box.append(card);
+    card.append(view,contact,renderOrder(o,true));box.append(card);
   });
 }
+async function loadAdminOrders(){
+  if(!isAdmin)return;
+  const box=$('adminOrders'),stats=$('orderStats');
+  box.replaceChildren();stats.replaceChildren();
+  message('orderAdminMessage','正在讀取所有真實訂單...');
+  const all=[];const pageSize=500;let failure=null;
+  // 分頁讀取，不只計算最新 100 筆。若任何頁失敗，停止並不顯示不完整統計。
+  for(let offset=0;offset<100000;offset+=pageSize){
+    const {data,error}=await db.from('orders').select('*,order_items(*)').is('merged_into_order_id',null).order('created_at',{ascending:false}).range(offset,offset+pageSize-1);
+    if(error){failure=error;break}
+    all.push(...(data||[]));
+    if(!data||data.length<pageSize)break;
+    if(offset+pageSize>=100000){failure=new Error('訂單超過目前安全讀取上限，請改用資料庫彙總');break}
+  }
+  if(failure){message('orderAdminMessage','訂單讀取未完成，未更新統計：'+failure.message,true);return}
+  adminAllOrders=all;
+  const active=all.filter(o=>o.status!=='cancelled');
+  const totalOf=o=>Number(o.shipping_fee||0)+(o.order_items||[]).reduce((n,i)=>n+Number(i.quantity||0)*Number(i.unit_price||0),0);
+  const summaries=[
+    ['累計訂單（含取消）',all.length],
+    ['有效訂單',active.length],
+    ['已取消',all.filter(o=>o.status==='cancelled').length],
+    ['待確認',active.filter(o=>o.status==='pending').length],
+    ['待付款',active.filter(o=>o.payment_status==='unpaid').length],
+    ['待出貨',active.filter(o=>o.status==='arrived').length],
+    ['已出貨',active.filter(o=>o.status==='shipped').length],
+    ['有效訂單金額',money(active.reduce((n,o)=>n+totalOf(o),0))],
+    ['取消訂單金額',money(all.filter(o=>o.status==='cancelled').reduce((n,o)=>n+totalOf(o),0))]
+  ];
+  summaries.forEach(([name,count])=>{const card=element('div',undefined,'order-stat');card.append(element('strong',String(count)),element('span',name));stats.append(card)});
+  message('orderAdminMessage','已統計 '+all.length+' 筆真實訂單（含取消），金額為訂單應收總額，非實際入帳。');
+  renderAdminOrderList();
+}
 
-resetForm();db.auth.onAuthStateChange(()=>setTimeout(()=>refreshAuth().catch(console.error),0));refreshAuth().catch(e=>message('shopMessage','網站連線失敗：'+e.message,true));renderCart();
+loadCampaign().catch(console.error);resetForm();db.auth.onAuthStateChange(()=>setTimeout(()=>refreshAuth().catch(console.error),0));refreshAuth().catch(e=>message('shopMessage','網站連線失敗：'+e.message,true));renderCart();
 </script>
 </body>
 </html>
