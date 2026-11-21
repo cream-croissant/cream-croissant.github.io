@@ -118,16 +118,54 @@ footer a,footer a:link,footer a:visited,footer a:hover,footer a:active{color:#78
 <section id="cart" class="hidden"><h2 class="page-title">我的喊單清單</h2><p id="activeSessionCart" class="session-label">目前場次：載入中...</p><div id="cartLines" class="panel"></div><div class="panel"><p class="muted">請先登入會員。價格及庫存以正式送出時為準；同會員同月份且尚未付款／出貨的訂單會自動合併；付款或出貨後再喊單會開新單。</p><h3>下單者資料</h3><p class="muted">會自動帶入會員資料；如未帶入請自行填寫。姓名、IG ID、電話為必填。</p><label>姓名 *</label><input id="checkoutName" autocomplete="name" maxlength="80"><label>Instagram ID *</label><input id="checkoutIg" maxlength="40" placeholder="@your_ig"><label>電話 *</label><input id="checkoutPhone" type="tel" maxlength="30" autocomplete="tel"><label>LINE ID（選填）</label><input id="checkoutLine" maxlength="80"><label>訂單留言板</label><textarea id="memo" rows="3" maxlength="500" placeholder="每次喊單的留言都會獨立保存"></textarea><div class="actions"><button id="submitOrder" onclick="placeOrders()">確認送出喊單</button><button class="light" onclick="showPage('shop')">繼續選購</button></div><p id="cartMessage" class="message"></p></div></section>
 <section id="orders" class="hidden"><h2 class="page-title">我的訂單</h2><p class="muted">同會員同月份的未付款、未出貨訂單會持續累積商品；付款或出貨後另開新單。</p><div id="myOrders" class="panel"></div></section>
 <section id="member" class="hidden"><h2 class="page-title">會員中心</h2><div id="memberAuth" class="panel"><h3>會員註冊／登入</h3><label>Email 電子郵件</label><input id="memberEmail" type="email" autocomplete="email"><label>密碼</label><input id="memberPassword" type="password" autocomplete="current-password"><div class="actions"><button onclick="handleSignup()">註冊會員</button><button class="light" onclick="handleLogin()">會員登入</button></div><p id="memberMessage" class="message"></p></div><div id="memberProfile" class="panel hidden"><h3>我的會員資料</h3><p id="memberInfo" class="muted"></p><label>會員名稱</label><input id="displayName"><label>Instagram 帳號</label><input id="igHandle" placeholder="例如：cream_shop"><p class="muted">僅登記 IG 名稱，並非 Instagram 官方授權綁定。</p><label>聯絡電話</label><input id="memberPhone" type="tel"><label>LINE ID（選填）</label><input id="memberLine" maxlength="80"><div class="actions"><button id="saveProfileBtn" onclick="saveProfile()">儲存資料</button><button class="light" onclick="handleLogout()">登出</button></div><p id="profileMessage" class="message"></p></div></section>
-<section id="admin" class="hidden"><h2 class="page-title">管理後台</h2><div class="admin-tabs" role="tablist" aria-label="管理後台功能"><button id="adminTabOrders" role="tab" aria-selected="true" onclick="switchAdminTab('orders')">訂單管理</button><button id="adminTabSessions" role="tab" aria-selected="false" onclick="switchAdminTab('sessions')">日本連線場次</button><button id="adminTabProducts" role="tab" aria-selected="false" onclick="switchAdminTab('products')">商品管理</button></div><div id="adminPaneProducts" class="admin-pane hidden" role="tabpanel"><div class="note">只有管理員能管理商品與訂單。每個顏色／款式／尺寸組合有獨立庫存。</div><div class="panel"><h3 id="formTitle">新增商品</h3><input id="editId" type="hidden"><div class="form-grid"><div><label>商品名稱</label><input id="pName" placeholder="例如：日系復古花卉上衣"></div><div><label>售價 NT$</label><input id="pPrice" type="number" min="0"></div><div><label>商品分類</label><input id="pCategory" placeholder="童裝／髮飾／雜貨"></div><div><label>商品照片（手機相簿）</label><input id="pImageFile" type="file" accept="image/*" onchange="previewProductImage()"><p class="muted">單張上限 10MB，支援 JPG／PNG／WebP；編輯時不選新照片會保留原圖。</p><img id="pImagePreview" class="preview hidden" alt="照片預覽"><p id="pImageMessage" class="message"></p></div></div><label>商品說明</label><textarea id="pDesc" rows="3"></textarea><h3>商品規格與獨立庫存</h3><p class="muted">每列是一個可購買組合。無顏色或尺寸可填「單色」「單一尺寸」。同商品內不能重複相同組合。</p><div id="variantRows"></div><div class="actions"><button type="button" class="light" onclick="addVariantRow()">＋ 新增規格</button></div><label><input id="pActive" type="checkbox" checked> 商品上架中</label><div class="actions"><button id="saveProductBtn" onclick="saveProduct()">儲存商品</button><button class="light" onclick="resetForm()">清空欄位</button></div><p id="adminMessage" class="message"></p></div><div class="panel"><h3>商品管理</h3><div id="adminProducts"></div></div></div><div id="adminPaneSessions" class="admin-pane hidden" role="tabpanel"><div class="panel"><h3>日本連線場次</h3><p class="muted">每次開始新連線，請先設定新場次名稱；舊場次的訂單會保留。</p><p id="activeSessionAdmin" class="session-label">目前場次：載入中...</p><label>建立／切換日本連線場次</label><input id="newSessionName" maxlength="80" placeholder="例如：2026年12月日本連線"><div class="actions"><button onclick="startNewSession()">啟用新場次</button></div><p id="sessionAdminMessage" class="message"></p></div></div><div id="adminPaneOrders" class="admin-pane" role="tabpanel"><div class="panel"><h3>真實訂單管理</h3><p class="muted">以下數據直接來自 Supabase，沒有示範訂單。</p><div id="orderStats" class="order-stats"></div><div class="actions"><button class="light" onclick="loadAdminOrders()">重新整理訂單</button><button class="light" onclick="exportV125Orders()">匯出訂單 CSV</button><button class="light" onclick="exportV125Items()">匯出商品統計 CSV</button></div><div id="v125CategoryStats" class="panel"></div><p id="orderAdminMessage" class="message"></p><div id="adminOrders"></div></div></div></section>
+<section id="admin" class="hidden"><h2 class="page-title">管理後台</h2><div class="admin-tabs" role="tablist" aria-label="管理後台功能"><button id="adminTabOrders" role="tab" aria-selected="true" onclick="switchAdminTab('orders')">訂單管理</button><button id="adminTabSessions" role="tab" aria-selected="false" onclick="switchAdminTab('sessions')">日本連線場次</button><button id="adminTabProducts" role="tab" aria-selected="false" onclick="switchAdminTab('products')">商品管理</button></div><div id="adminPaneProducts" class="admin-pane hidden" role="tabpanel"><div class="note">只有管理員能管理商品與訂單。每個顏色／款式／尺寸組合有獨立庫存。</div><div class="panel"><h3 id="formTitle">新增商品</h3><input id="editId" type="hidden"><div class="form-grid"><div><label>商品名稱</label><input id="pName" placeholder="例如：日系復古花卉上衣"></div><div><label>售價 NT$</label><input id="pPrice" type="number" min="0"></div><div><label>商品分類</label><input id="pCategory" placeholder="童裝／髮飾／雜貨"></div><div><label>商品照片（手機相簿）</label><input id="pImageFile" type="file" accept="image/*" onchange="previewProductImage()"><p class="muted">單張上限 10MB，支援 JPG／PNG／WebP；編輯時不選新照片會保留原圖。</p><img id="pImagePreview" class="preview hidden" alt="照片預覽"><p id="pImageMessage" class="message"></p></div></div><label>商品說明</label><textarea id="pDesc" rows="3"></textarea><h3>商品規格與獨立庫存</h3><p class="muted">每列是一個可購買組合。無顏色或尺寸可填「單色」「單一尺寸」。同商品內不能重複相同組合。</p><div id="variantRows"></div><div class="actions"><button type="button" class="light" onclick="addVariantRow()">＋ 新增規格</button></div><label><input id="pActive" type="checkbox" checked> 商品上架中</label><div class="actions"><button id="saveProductBtn" onclick="saveProduct()">儲存商品</button><button class="light" onclick="resetForm()">清空欄位</button></div><p id="adminMessage" class="message"></p></div><div class="panel"><h3>商品管理</h3><div id="adminProducts"></div></div></div><div id="adminPaneSessions" class="admin-pane hidden" role="tabpanel"><div class="panel"><h3>日本連線場次</h3><p class="muted">每次開始新連線，請先設定新場次名稱；舊場次的訂單會保留。</p><p id="activeSessionAdmin" class="session-label">目前場次：載入中...</p><label>建立／切換日本連線場次</label><input id="newSessionName" maxlength="80" placeholder="例如：2026年12月日本連線"><div class="actions"><button onclick="startNewSession()">啟用新場次</button></div><p id="sessionAdminMessage" class="message"></p></div></div><div id="adminPaneOrders" class="admin-pane" role="tabpanel"><div class="panel"><h3>真實訂單管理</h3><p class="muted">以下數據直接來自 Supabase，沒有示範訂單。</p><div id="orderStats" class="order-stats"></div><div class="actions"><button class="light" onclick="loadAdminOrders()">重新整理訂單</button><button class="light" onclick="exportV125Orders()">匯出訂單 CSV</button><button class="light" onclick="exportV125Items()">匯出商品統計 CSV</button></div><div id="v125CategoryStats" class="panel"></div><div class="panel"><h3>手動合併訂單</h3><p class="muted">僅可合併同會員、同月份、未付款、未出貨、未取消、沒有匯款回報的訂單。保留原始訂單與合併對照紀錄。</p><label>主訂單（保留編號）</label><select id="v126Target"><option value="">請先載入訂單</option></select><label>要合併進去的訂單</label><select id="v126Source"><option value="">請先載入訂單</option></select><div class="actions"><button onclick="v126Merge()">確認手動合併</button></div><p id="v126MergeMessage" class="message"></p></div><div class="panel"><h3>管理員代客下單</h3><p class="muted">僅管理員可操作。搜尋已註冊會員後，選擇商品規格與數量；同月未付款未出貨的訂單會自動累積。</p><label>搜尋會員（姓名／IG／電話）</label><input id="v126MemberSearch" placeholder="輸入關鍵字" oninput="v126FilterMembers()"><label>選擇會員</label><select id="v126Member" onchange="v126SelectMember()"><option value="">請先載入會員</option></select><label>姓名 *</label><input id="v126Name" maxlength="80"><label>Instagram ID *</label><input id="v126Ig" maxlength="40"><label>電話 *</label><input id="v126Phone" type="tel" maxlength="30"><label>LINE ID</label><input id="v126Line" maxlength="80"><label>商品／規格</label><select id="v126Variant"></select><label>數量</label><input id="v126Qty" type="number" min="1" max="100" value="1"><div class="actions"><button class="light" onclick="v126AddItem()">＋ 加入代客清單</button></div><div id="v126Draft"></div><label>代客下單留言</label><textarea id="v126Note" maxlength="500" placeholder="例如：IG 私訊代喊"></textarea><div class="actions"><button onclick="v126Submit()">確認代客下單</button></div><p id="v126SubmitMessage" class="message"></p></div><div class="panel"><h3>手動商品入單（不必先上架）</h3><p class="muted">管理員選擇會員既有訂單，直接輸入商品名稱、款式、單價與數量。僅可追加至未付款、未出貨、未取消的訂單；不會更動商品庫存。</p><label>選擇要追加的訂單</label><select id="v126ManualOrder"><option value="">請先載入訂單</option></select><label>商品名稱 *</label><input id="v126ManualName" maxlength="160" placeholder="例如：日本手工天鵝髮夾"><label>顏色／款式／尺寸</label><input id="v126ManualOption" maxlength="160" placeholder="例如：白色／左款"><div class="form-grid"><div><label>單價 NT$ *</label><input id="v126ManualPrice" type="number" min="0" max="10000000" step="1"></div><div><label>數量 *</label><input id="v126ManualQty" type="number" min="1" max="100" value="1"></div></div><label>商品備註</label><textarea id="v126ManualNote" maxlength="500" placeholder="例如：IG 私訊追加"></textarea><div class="actions"><button onclick="v126ManualAdd()">確認追加商品</button></div><p id="v126ManualMessage" class="message"></p></div><div class="panel"><h3>會員累積消費統計</h3><p class="muted">所有有效訂單商品金額（包含尚未付款），取消訂單不計入，運費獨立計算。以目前可讀取的完整訂單明細計算。</p><div class="actions"><button class="light" onclick="v126LoadMemberTotals()">查看會員累積統計</button><button class="light" onclick="v126ExportMemberTotals()">匯出會員累積 CSV</button></div><p id="v126TotalsMessage" class="message"></p><div id="v126MemberTotals"></div></div><p id="orderAdminMessage" class="message"></p><div id="adminOrders"></div></div></div></section>
 </main>
-<footer><p id="buildVersion" class="muted" style="font-size:11px">網站版本 V12.5 · 2026-11-21</p><img src="./croissant.png" alt="可頌"><div>奶油可頌團</div><p>CREAM CROISSANT SHOP · JAPAN SELECT</p><a href="https://ig.me/m/creamoosin" target="_blank" rel="noopener noreferrer">私訊奶油</a></footer>
+<footer><p id="buildVersion" class="muted" style="font-size:11px">網站版本 V12.6 · 2026-11-21</p><img src="./croissant.png" alt="可頌"><div>奶油可頌團</div><p>CREAM CROISSANT SHOP · JAPAN SELECT</p><a href="https://ig.me/m/creamoosin" target="_blank" rel="noopener noreferrer">私訊奶油</a></footer>
 <dialog id="detail"><div class="line-top"><h3 id="dName"></h3><button class="light" onclick="$('detail').close()">✕</button></div><p id="dDesc" class="muted"></p><p id="dPrice" class="price"></p><label>顏色</label><select id="dColor" onchange="updateVariantChoices()"></select><label>款式</label><select id="dStyle" onchange="updateVariantChoices()"></select><label>尺寸</label><select id="dSize" onchange="updateVariantStock()"></select><label>數量</label><input id="dQty" type="number" min="1" value="1"><p id="dStock" class="muted hidden"></p><button id="addCartBtn" onclick="addCart()">加入喊單</button></dialog>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
+// V12.6 enhanced: manual line items and lifetime member totals.
+let v126MemberTotalsCache=null;
+function v126RenderManualOptions(orders){
+ const s=$('v126ManualOrder');if(!s)return;const old=s.value;
+ s.replaceChildren(new Option('請選擇會員訂單',''));
+ orders.filter(v126Eligible).forEach(o=>s.add(new Option('#'+String(o.id).slice(0,8)+'｜會員 '+String(o.user_id).slice(0,8)+'｜'+v126Month(o),o.id)));
+ if([...s.options].some(x=>x.value===old))s.value=old;
+}
+async function v126ManualAdd(){
+ if(!isAdmin)return;const order=$('v126ManualOrder').value,name=$('v126ManualName').value.trim(),option=$('v126ManualOption').value.trim(),price=Number($('v126ManualPrice').value),qty=Number($('v126ManualQty').value),note=$('v126ManualNote').value.trim();
+ if(!order||!name||!$('v126ManualPrice').value||!Number.isSafeInteger(price)||price<0||price>10000000||!Number.isInteger(qty)||qty<1||qty>100){message('v126ManualMessage','請選訂單並填寫正確的商品名稱、單價與數量',true);return}
+ if(!confirm('確認新增 '+name+' × '+qty+'，小計 '+money(price*qty)+' 至所選訂單？'))return;
+ message('v126ManualMessage','正在儲存...');
+ const {data,error}=await db.rpc('v126_admin_add_manual_item',{p_order_id:order,p_name:name,p_option:option,p_price:price,p_quantity:qty,p_note:note,p_request_id:crypto.randomUUID()});
+ if(error){message('v126ManualMessage','入單失敗：'+error.message,true);return}
+ message('v126ManualMessage','✓ 已加入訂單 #'+String(data).slice(0,8));$('v126ManualName').value='';$('v126ManualOption').value='';$('v126ManualPrice').value='';$('v126ManualQty').value='1';$('v126ManualNote').value='';v126MemberTotalsCache=null;await loadAdminOrders();
+}
+async function v126GetMemberTotals(){
+ if(!isAdmin)throw Error('僅管理員可讀取');
+ const orders=await v125AllOrders();const map=new Map();
+ for(const o of orders){if(o.status==='cancelled')continue;
+ const v=map.get(o.user_id)||{id:o.user_id,orders:0,items:0,amount:0,types:new Set(),months:new Map()};v.orders++;
+ let sub=0;for(const i of o.order_items||[]){const q=Number(i.quantity)||0,a=q*(Number(i.unit_price)||0);v.items+=q;sub+=a;v.types.add(JSON.stringify([i.product_name,i.selected_option]));}
+ v.amount+=sub;const month=o.order_month||new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Taipei',year:'numeric',month:'2-digit'}).format(new Date(o.created_at));v.months.set(month,(v.months.get(month)||0)+sub);map.set(o.user_id,v);
+ }
+ return [...map.values()].sort((a,b)=>b.amount-a.amount);
+}
+async function v126LoadMemberTotals(){
+ message('v126TotalsMessage','正在計算所有有效訂單...');
+ try{v126MemberTotalsCache=await v126GetMemberTotals();const box=$('v126MemberTotals');box.replaceChildren();
+ for(const v of v126MemberTotalsCache){const p=v126Members.find(p=>p.id===v.id),line=element('div',undefined,'line');line.append(element('strong',(p?.display_name||p?.ig_handle||v.id.slice(0,8))+'｜'+money(v.amount)),element('p','有效訂單 '+v.orders+' 筆｜商品 '+v.items+' 件｜種類 '+v.types.size+' 種','muted'),element('p',[...v.months].map(([m,a])=>m+'：'+money(a)).join('　'),'muted'));box.append(line)}
+ message('v126TotalsMessage','已統計 '+v126MemberTotalsCache.length+' 位會員（不含取消訂單）');
+ }catch(e){message('v126TotalsMessage','統計失敗：'+e.message,true)}
+}
+async function v126ExportMemberTotals(){
+ try{const rows=await v126GetMemberTotals();v125Download('奶油可頌團_會員累積消費_'+new Date().toISOString().slice(0,10)+'.csv',[['會員ID','姓名','IG','有效訂單數','商品總件數','商品種類數','累積有效商品金額','月份明細'],...rows.map(v=>{const p=v126Members.find(p=>p.id===v.id);return[v.id,p?.display_name||'',p?.ig_handle||p?.instagram_id||'',v.orders,v.items,v.types.size,v.amount,[...v.months].map(([m,a])=>m+':'+a).join('; ')]})]);}catch(e){alert('匯出失敗：'+e.message)}
+}
+</script>
 <script>
 'use strict';
 const SUPABASE_URL='https://hnrmbcldslljkctlepiz.supabase.co';
 const SUPABASE_KEY='sb_publishable_zJeAc2z9_lPIj_KG2YUnFw_sgo2BWQA';
-const BUILD_VERSION='V12.2';
+const BUILD_VERSION='V12.6';
 const db=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
 console.info('[Cream Croissant Shop]',BUILD_VERSION,'session table: public.shopping_sessions');
 const $=id=>document.getElementById(id);
@@ -152,7 +190,7 @@ function switchAdminTab(tab){
     if(pane)pane.classList.toggle('hidden',key!==tab);
     if(button)button.setAttribute('aria-selected',String(key===tab));
   }
-  if(tab==='orders')loadAdminOrders();
+  if(tab==='orders'){loadAdminOrders();v126LoadMembers();v126LoadVariants();}
   if(tab==='sessions')loadActiveSession();
 }
 function showPage(page){if(page==='admin'&&!isAdmin){alert('僅管理員可進入後台');return}['shop','cart','orders','member','admin'].forEach(id=>$(id).classList.toggle('hidden',id!==page));if(page==='orders')loadOrders();if(page==='admin')switchAdminTab(currentAdminTab);if(page==='cart')loadActiveSession();window.scrollTo(0,0)}
@@ -162,7 +200,7 @@ function chooseCategory(term){$('search').value='';const s=$('category'),o=[...s
 function variantsOf(id){return variants.filter(v=>String(v.product_id)===String(id))}
 function variantStock(v){return Number(v?.stock||0)}
 function totalStock(id){return variantsOf(id).reduce((n,v)=>n+variantStock(v),0)}
-async function loadProducts(){const [a,b]=await Promise.all([db.from('products').select('*').order('created_at',{ascending:false}),db.from('product_variants').select('*').order('id',{ascending:true})]);if(a.error||b.error){message('shopMessage','商品讀取失敗：'+(a.error||b.error).message,true);return}products=a.data||[];variants=b.data||[];message('shopMessage','');renderShop();renderCart();if(isAdmin)renderAdminProducts()}
+async function loadProducts(){const [a,b]=await Promise.all([db.from('products').select('*').order('created_at',{ascending:false}),db.from('product_variants').select('*').order('id',{ascending:true})]);if(a.error||b.error){message('shopMessage','商品讀取失敗：'+(a.error||b.error).message,true);return}products=a.data||[];variants=b.data||[];message('shopMessage','');renderShop();renderCart();if(isAdmin){renderAdminProducts();v126LoadVariants()}}
 function renderShop(){const s=$('category'),old=s.value;s.replaceChildren(new Option('全部分類',''));[...new Set(products.filter(p=>p.is_active).map(p=>p.category).filter(Boolean))].sort().forEach(x=>s.add(new Option(x,x)));if([...s.options].some(x=>x.value===old))s.value=old;const q=$('search').value.trim().toLowerCase(),grid=$('products');grid.replaceChildren();const visible=products.filter(p=>p.is_active&&(!s.value||p.category===s.value)&&String(p.name).toLowerCase().includes(q));if(!visible.length){grid.append(element('p','目前沒有符合的商品。'));return}visible.forEach(p=>{const card=element('article',undefined,'product');if(p.image_url&&/^https:\/\//i.test(p.image_url)){const img=element('img');img.src=p.image_url;img.alt=p.name;img.loading='lazy';img.onerror=()=>img.replaceWith(placeholder());card.append(img)}else card.append(placeholder());/* V12.1: stock is used only to enable/disable ordering, never shown as a number on public product cards. */const body=element('div',undefined,'product-body'),stock=totalStock(p.id);body.append(element('span',p.category||'日本選物','muted'),element('h3',p.name,'shop-product-title'),element('p',money(p.price),'price'),...(stock?[]:[element('p','已售完','muted')]));const btn=element('button',stock?'選擇顏色／款式／尺寸':'已售完');btn.disabled=!stock;btn.onclick=()=>openDetail(p.id);body.append(btn);card.append(body);grid.append(card)})}
 function fillSelect(select,values,preferred){select.replaceChildren();values.forEach(v=>select.add(new Option(v,v)));if(values.includes(preferred))select.value=preferred}
 function availableVariants(){return variantsOf(selectedProduct).filter(v=>variantStock(v)>0)}
@@ -253,7 +291,8 @@ async function loadAdminOrders(){
   message('orderAdminMessage','正在讀取真實訂單...');
   const {data,error}=await db.from('orders').select('*,order_items(*),shopping_sessions(name)').order('created_at',{ascending:false}).limit(100);
   if(error){message('orderAdminMessage','訂單讀取失敗：'+error.message,true);return}
-  const orders=data||[];
+  const orders=(data||[]).filter(o=>!o.v126_merged_into);
+  v126RenderMergeOptions(orders);v126RenderManualOptions(orders);
   const valid=orders.filter(o=>o.status!=='cancelled');const allItems=valid.flatMap(o=>o.order_items||[]);const categoryBox=$('v125CategoryStats');categoryBox.replaceChildren(element('h3','訂單商品統計（目前載入範圍）'),element('p','有效訂單：'+valid.length+' 筆｜商品種類：'+new Set(allItems.map(i=>i.product_name+'／'+i.selected_option)).size+' 種｜商品總件數：'+allItems.reduce((s,i)=>s+Number(i.quantity),0)+' 件'));const summaries=[['已載入訂單',orders.length],['待確認',orders.filter(o=>o.status==='pending').length],['待付款',orders.filter(o=>o.payment_status==='unpaid').length],['待出貨',orders.filter(o=>o.status==='arrived').length]];
   summaries.forEach(([name,count])=>{const card=element('div',undefined,'order-stat');card.append(element('strong',String(count)),element('span',name));stats.append(card)});
   message('orderAdminMessage',orders.length===100?'目前顯示最新 100 筆訂單；統計僅計算已載入的 100 筆。':'已載入 '+orders.length+' 筆真實訂單');
@@ -277,7 +316,7 @@ async function loadAdminOrders(){
 async function v125AllOrders(){
  if(!isAdmin)throw Error('僅管理員可匯出');
  let all=[];for(let from=0;from<100000;from+=500){
- const {data,error}=await db.from('orders').select('*,order_items(*)').order('created_at',{ascending:true}).range(from,from+499);
+ const {data,error}=await db.from('orders').select('*,order_items(*)').is('v126_merged_into',null).order('created_at',{ascending:true}).range(from,from+499);
  if(error)throw error;all.push(...(data||[]));if(!data||data.length<500)return all;
  }throw Error('超過 100000 筆，請分批匯出');
 }
@@ -285,6 +324,74 @@ function v125Csv(rows){const q=v=>'"'+String(v??'').replace(/^[=+@\-\t\r]/,m=>'\
 function v125Download(name,rows){const blob=new Blob([v125Csv(rows)],{type:'text/csv;charset=utf-8'});const u=URL.createObjectURL(blob),a=document.createElement('a');a.href=u;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(u),3000)}
 async function exportV125Orders(){try{const os=await v125AllOrders();v125Download('奶油可頌團_訂單_'+new Date().toISOString().slice(0,10)+'.csv',[['訂單ID','會員ID','月份','姓名','IG','電話','LINE','訂單狀態','付款狀態','商品種類','商品件數','商品小計','運費','訂單總額','物流單號','備註','建立時間'],...os.map(o=>{const items=o.order_items||[],sum=items.reduce((s,i)=>s+Number(i.quantity)*Number(i.unit_price),0);return[o.id,o.user_id,o.order_month,o.contact_name,o.contact_ig,o.contact_phone,o.contact_line,o.status,o.payment_status,items.length,items.reduce((s,i)=>s+Number(i.quantity),0),sum,o.shipping_fee,sum+Number(o.shipping_fee||0),o.tracking_number,o.note,o.created_at]})])}catch(e){alert('匯出失敗：'+e.message)}}
 async function exportV125Items(){try{const os=await v125AllOrders(),rows=[['商品名稱','規格','訂單數','商品件數','金額小計']];const agg=new Map();os.filter(o=>o.status!=='cancelled').forEach(o=>(o.order_items||[]).forEach(i=>{const key=JSON.stringify([i.product_name,i.selected_option]),v=agg.get(key)||{name:i.product_name,opt:i.selected_option,orders:new Set(),qty:0,amount:0};v.orders.add(o.id);v.qty+=Number(i.quantity);v.amount+=Number(i.quantity)*Number(i.unit_price);agg.set(key,v)}));agg.forEach(v=>rows.push([v.name,v.opt,v.orders.size,v.qty,v.amount]));v125Download('奶油可頌團_商品統計_'+new Date().toISOString().slice(0,10)+'.csv',rows)}catch(e){alert('匯出失敗：'+e.message)}}
+
+
+// V12.6: admin-only manual merge and proxy checkout; server-side RPC verifies authorization.
+let v126Members=[],v126Draft=[],v126MergeOrders=[];
+function v126Month(o){return o.order_month||new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Taipei',year:'numeric',month:'2-digit'}).format(new Date(o.created_at))+'-01'}
+function v126Eligible(o){return o&&!o.v126_merged_into&&o.payment_status==='unpaid'&&!['cancelled','shipped'].includes(o.status)&&!o.tracking_number}
+function v126RenderMergeOptions(orders){
+ v126MergeOrders=orders.filter(v126Eligible);
+ for(const id of ['v126Target','v126Source']){
+  const select=$(id);if(!select)continue;const old=select.value;select.replaceChildren(new Option('請選擇訂單',''));
+  v126MergeOrders.forEach(o=>select.add(new Option('#'+o.id.slice(0,8)+'｜會員 '+o.user_id.slice(0,8)+'｜'+v126Month(o),o.id)));
+  select.value=v126MergeOrders.some(o=>o.id===old)?old:'';
+ }
+}
+async function v126Merge(){
+ if(!isAdmin)return;
+ const target=$('v126Target').value,source=$('v126Source').value;
+ if(!target||!source||target===source){message('v126MergeMessage','請選擇兩筆不同的訂單',true);return}
+ const a=v126MergeOrders.find(o=>o.id===target),b=v126MergeOrders.find(o=>o.id===source);
+ if(!a||!b||a.user_id!==b.user_id||v126Month(a)!==v126Month(b)){message('v126MergeMessage','必須是同會員、同月份',true);return}
+ if(!confirm('確認將 #'+source.slice(0,8)+' 的商品合併至 #'+target.slice(0,8)+'？原訂單會保留合併對照，無法在畫面直接復原。'))return;
+ message('v126MergeMessage','正在合併...');
+ const {data,error}=await db.rpc('v126_admin_merge_orders',{p_target:target,p_source:source});
+ message('v126MergeMessage',error?'合併失敗：'+error.message:'已合併至 #'+String(data).slice(0,8),!!error);
+ if(!error)await loadAdminOrders();
+}
+async function v126LoadMembers(){
+ if(!isAdmin)return;
+ const {data,error}=await db.from('profiles').select('id,display_name,ig_handle,instagram_id,phone,line_id').order('created_at',{ascending:false}).limit(1000);
+ if(error){message('v126SubmitMessage','會員讀取失敗：'+error.message,true);return}
+ v126Members=data||[];v126FilterMembers();
+}
+function v126FilterMembers(){
+ const q=$('v126MemberSearch').value.trim().toLowerCase(),select=$('v126Member'),old=select.value;
+ select.replaceChildren(new Option('請選擇已註冊會員',''));
+ v126Members.filter(p=>[p.display_name,p.ig_handle,p.instagram_id,p.phone].some(v=>String(v||'').toLowerCase().includes(q))).forEach(p=>select.add(new Option([p.display_name,p.ig_handle||p.instagram_id,p.phone].filter(Boolean).join('｜')||p.id.slice(0,8),p.id)));
+ select.value=v126Members.some(p=>p.id===old)?old:'';
+}
+function v126SelectMember(){
+ const p=v126Members.find(x=>x.id===$('v126Member').value);if(!p)return;
+ $('v126Name').value=p.display_name||'';$('v126Ig').value=(p.ig_handle||p.instagram_id||'').replace(/^@/,'');$('v126Phone').value=p.phone||'';$('v126Line').value=p.line_id||'';
+}
+function v126LoadVariants(){
+ const s=$('v126Variant');if(!s)return;s.replaceChildren(new Option('請選擇商品規格',''));
+ variants.forEach(v=>{const p=products.find(p=>String(p.id)===String(v.product_id));if(p?.is_active&&Number(v.stock)>0)s.add(new Option(p.name+'｜'+[v.color,v.style,v.size].join('／')+'｜'+money(p.price)+'｜庫存 '+v.stock,v.id))});
+}
+function v126AddItem(){
+ const id=Number($('v126Variant').value),qty=Number($('v126Qty').value),v=variants.find(x=>Number(x.id)===id),p=v&&products.find(x=>String(x.id)===String(v.product_id));
+ if(!v||!p||!Number.isInteger(qty)||qty<1||qty>100){message('v126SubmitMessage','請選擇商品規格與正確數量',true);return}
+ const existing=v126Draft.find(x=>x.variant_id===id),total=qty+(existing?.quantity||0);
+ if(total>Number(v.stock)){message('v126SubmitMessage','庫存不足',true);return}
+ if(existing)existing.quantity=total;else v126Draft.push({variant_id:id,quantity:qty});v126RenderDraft();message('v126SubmitMessage','');
+}
+function v126RenderDraft(){
+ const box=$('v126Draft');box.replaceChildren();v126Draft.forEach((x,i)=>{const v=variants.find(v=>Number(v.id)===x.variant_id),p=v&&products.find(p=>String(p.id)===String(v.product_id)),r=element('div',undefined,'line'),del=element('button','移除','light');del.onclick=()=>{v126Draft.splice(i,1);v126RenderDraft()};r.append(element('span',(p?.name||'商品')+' × '+x.quantity+'｜'+money((p?.price||0)*x.quantity)),del);box.append(r)})
+}
+async function v126Submit(){
+ if(!isAdmin)return;const user=$('v126Member').value;
+ const contact={name:$('v126Name').value.trim(),ig:$('v126Ig').value.trim().replace(/^@/,''),phone:$('v126Phone').value.trim(),line:$('v126Line').value.trim()};
+ if(!user||!v126Draft.length){message('v126SubmitMessage','請選擇會員並加入商品',true);return}
+ if(!contact.name||!/^[A-Za-z0-9._]{1,30}$/.test(contact.ig)||!/^[0-9+() -]{7,30}$/.test(contact.phone)){message('v126SubmitMessage','請填寫姓名、有效 IG ID 與電話',true);return}
+ if(!confirm('確定替所選會員送出 '+v126Draft.reduce((s,x)=>s+x.quantity,0)+' 件商品？'))return;
+ const btn=document.querySelector('button[onclick="v126Submit()"]');if(btn)btn.disabled=true;
+ try{
+  const {data,error}=await db.rpc('v126_admin_place_order',{p_user_id:user,p_items:v126Draft,p_note:$('v126Note').value.trim(),p_request_id:crypto.randomUUID(),p_contact:contact});
+  if(error)throw error;message('v126SubmitMessage','代客下單成功！訂單 #'+String(data).slice(0,8));v126Draft=[];v126RenderDraft();$('v126Note').value='';await loadAdminOrders();
+ }catch(e){message('v126SubmitMessage','下單失敗：'+e.message,true)}finally{if(btn)btn.disabled=false}
+}
 
 resetForm();db.auth.onAuthStateChange(()=>setTimeout(()=>refreshAuth().catch(console.error),0));refreshAuth().catch(e=>message('shopMessage','網站連線失敗：'+e.message,true));renderCart();
 </script>
