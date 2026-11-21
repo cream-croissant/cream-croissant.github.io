@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#faf7f1">
-<title>奶油可頌團 V12.1｜Cream Croissant Shop</title>
+<title>奶油可頌團 V12.2｜Cream Croissant Shop</title>
 <style>
 @font-face{font-family:CreamHand;src:url('./cream-font.ttf?v=121') format('truetype');font-display:swap}
 :root{--bg:#faf7f1;--paper:#fffdf9;--coffee:#49362b;--brown:#785b47;--milk:#efe5d8;--line:#e5d8c8;--muted:#95816f;--danger:#a64d45;--success:#56765a}
@@ -114,14 +114,16 @@ footer a,footer a:link,footer a:visited,footer a:hover,footer a:active{color:#78
 <section id="member" class="hidden"><h2 class="page-title">會員中心</h2><div id="memberAuth" class="panel"><h3>會員註冊／登入</h3><label>Email 電子郵件</label><input id="memberEmail" type="email" autocomplete="email"><label>密碼</label><input id="memberPassword" type="password" autocomplete="current-password"><div class="actions"><button onclick="handleSignup()">註冊會員</button><button class="light" onclick="handleLogin()">會員登入</button></div><p id="memberMessage" class="message"></p></div><div id="memberProfile" class="panel hidden"><h3>我的會員資料</h3><p id="memberInfo" class="muted"></p><label>會員名稱</label><input id="displayName"><label>Instagram 帳號</label><input id="igHandle" placeholder="例如：cream_shop"><p class="muted">僅登記 IG 名稱，並非 Instagram 官方授權綁定。</p><label>聯絡電話</label><input id="memberPhone" type="tel"><div class="actions"><button id="saveProfileBtn" onclick="saveProfile()">儲存資料</button><button class="light" onclick="handleLogout()">登出</button></div><p id="profileMessage" class="message"></p></div></section>
 <section id="admin" class="hidden"><h2 class="page-title">管理後台</h2><div class="note">只有管理員能管理商品與訂單。每個顏色／款式／尺寸組合有獨立庫存。</div><div class="panel"><h3 id="formTitle">新增商品</h3><input id="editId" type="hidden"><div class="form-grid"><div><label>商品名稱</label><input id="pName" placeholder="例如：日系復古花卉上衣"></div><div><label>售價 NT$</label><input id="pPrice" type="number" min="0"></div><div><label>商品分類</label><input id="pCategory" placeholder="童裝／髮飾／雜貨"></div><div><label>商品照片（手機相簿）</label><input id="pImageFile" type="file" accept="image/*" onchange="previewProductImage()"><p class="muted">單張上限 10MB，支援 JPG／PNG／WebP；編輯時不選新照片會保留原圖。</p><img id="pImagePreview" class="preview hidden" alt="照片預覽"><p id="pImageMessage" class="message"></p></div></div><label>商品說明</label><textarea id="pDesc" rows="3"></textarea><h3>商品規格與獨立庫存</h3><p class="muted">每列是一個可購買組合。無顏色或尺寸可填「單色」「單一尺寸」。同商品內不能重複相同組合。</p><div id="variantRows"></div><div class="actions"><button type="button" class="light" onclick="addVariantRow()">＋ 新增規格</button></div><label><input id="pActive" type="checkbox" checked> 商品上架中</label><div class="actions"><button id="saveProductBtn" onclick="saveProduct()">儲存商品</button><button class="light" onclick="resetForm()">清空欄位</button></div><p id="adminMessage" class="message"></p></div><div class="panel"><h3>商品管理</h3><div id="adminProducts"></div></div><div class="panel"><h3>日本連線場次</h3><p class="muted">每次開始新連線，請先設定新場次名稱；舊場次的訂單會保留。</p><p id="activeSessionAdmin" class="session-label">目前場次：載入中...</p><label>建立／切換日本連線場次</label><input id="newSessionName" maxlength="80" placeholder="例如：2026年12月日本連線"><div class="actions"><button onclick="startNewSession()">啟用新場次</button></div><p id="sessionAdminMessage" class="message"></p></div><div class="panel"><h3>真實訂單管理</h3><p class="muted">以下數據直接來自 Supabase，沒有示範訂單。</p><div id="orderStats" class="order-stats"></div><div class="actions"><button class="light" onclick="loadAdminOrders()">重新整理訂單</button></div><p id="orderAdminMessage" class="message"></p><div id="adminOrders"></div></div></section>
 </main>
-<footer><img src="./croissant.png" alt="可頌"><div>奶油可頌團</div><p>CREAM CROISSANT SHOP · JAPAN SELECT</p><a href="https://ig.me/m/creamoosin" target="_blank" rel="noopener noreferrer">私訊奶油</a></footer>
+<footer><p id="buildVersion" class="muted" style="font-size:11px">網站版本 V12.2 · 2026-11-21</p><img src="./croissant.png" alt="可頌"><div>奶油可頌團</div><p>CREAM CROISSANT SHOP · JAPAN SELECT</p><a href="https://ig.me/m/creamoosin" target="_blank" rel="noopener noreferrer">私訊奶油</a></footer>
 <dialog id="detail"><div class="line-top"><h3 id="dName"></h3><button class="light" onclick="$('detail').close()">✕</button></div><p id="dDesc" class="muted"></p><p id="dPrice" class="price"></p><label>顏色</label><select id="dColor" onchange="updateVariantChoices()"></select><label>款式</label><select id="dStyle" onchange="updateVariantChoices()"></select><label>尺寸</label><select id="dSize" onchange="updateVariantStock()"></select><label>數量</label><input id="dQty" type="number" min="1" value="1"><p id="dStock" class="muted hidden"></p><button id="addCartBtn" onclick="addCart()">加入喊單</button></dialog>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 'use strict';
 const SUPABASE_URL='https://hnrmbcldslljkctlepiz.supabase.co';
 const SUPABASE_KEY='sb_publishable_zJeAc2z9_lPIj_KG2YUnFw_sgo2BWQA';
+const BUILD_VERSION='V12.2';
 const db=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+console.info('[Cream Croissant Shop]',BUILD_VERSION,'session table: public.shopping_sessions');
 const $=id=>document.getElementById(id);
 const money=n=>'NT$ '+Number(n||0).toLocaleString('zh-TW');
 function message(id,text,error=false){const n=$(id);if(!n)return;n.textContent=text;n.classList.toggle('error',error);n.classList.toggle('success',!error&&!!text)}
@@ -170,18 +172,26 @@ function readProfile(){return{display_name:$('displayName').value.trim(),ig_hand
 function sameProfile(a,b){return!!a&&!!b&&Object.keys(a).every(k=>a[k]===b[k])}
 function updateProfileButton(){const b=$('saveProfileBtn'),saved=sameProfile(readProfile(),profileSavedValues);b.textContent=profileSaving?'儲存中...':saved?'✓ 已存檔':'儲存資料';b.disabled=profileSaving;b.classList.toggle('saved',saved&&!profileSaving)}
 ['displayName','igHandle','memberPhone'].forEach(id=>$(id).addEventListener('input',()=>{updateProfileButton();message('profileMessage','')}));
-async function refreshAuth(){const version=++profileLoadVersion;const {data,error}=await db.auth.getUser();if(version!==profileLoadVersion)return;const next=error?null:data.user,changed=currentUser?.id!==next?.id;currentUser=next;isAdmin=false;if(currentUser){const r=await db.from('profiles').select('*').eq('id',currentUser.id).maybeSingle();if(version!==profileLoadVersion)return;if(r.error)message('profileMessage','會員資料讀取失敗：'+r.error.message,true);isAdmin=r.data?.role==='admin';const f={display_name:r.data?.display_name||'',ig_handle:r.data?.ig_handle||'',phone:r.data?.phone||''};if(changed||(!profileSaving&&(!profileSavedValues||sameProfile(readProfile(),profileSavedValues)))){Object.entries({displayName:f.display_name,igHandle:f.ig_handle,memberPhone:f.phone}).forEach(([id,v])=>$(id).value=v);profileSavedValues=f}$('memberInfo').textContent='登入帳號：'+currentUser.email}else{profileSavedValues=null;['displayName','igHandle','memberPhone'].forEach(id=>$(id).value='');$('memberInfo').textContent='';message('profileMessage','')}$('memberAuth').classList.toggle('hidden',!!currentUser);$('memberProfile').classList.toggle('hidden',!currentUser);$('adminNav').classList.toggle('hidden',!isAdmin);updateProfileButton();if(!isAdmin&&!$('admin').classList.contains('hidden'))showPage('shop');await loadProducts();await loadActiveSession()}
+async function refreshAuth(){const version=++profileLoadVersion;const {data,error}=await db.auth.getUser();if(version!==profileLoadVersion)return;const next=error?null:data.user,changed=currentUser?.id!==next?.id;currentUser=next;isAdmin=false;if(currentUser){const r=await db.from('profiles').select('*').eq('id',currentUser.id).maybeSingle();if(version!==profileLoadVersion)return;if(r.error)message('profileMessage','會員資料讀取失敗：'+r.error.message,true);isAdmin=r.data?.role==='admin';const f={display_name:r.data?.display_name||'',ig_handle:r.data?.ig_handle||'',phone:r.data?.phone||''};if(changed||(!profileSaving&&(!profileSavedValues||sameProfile(readProfile(),profileSavedValues)))){Object.entries({displayName:f.display_name,igHandle:f.ig_handle,memberPhone:f.phone}).forEach(([id,v])=>$(id).value=v);profileSavedValues=f}$('memberInfo').textContent='登入帳號：'+currentUser.email}else{profileSavedValues=null;['displayName','igHandle','memberPhone'].forEach(id=>$(id).value='');$('memberInfo').textContent='';message('profileMessage','')}$('memberAuth').classList.toggle('hidden',!!currentUser);$('memberProfile').classList.toggle('hidden',!currentUser);$('adminNav').classList.toggle('hidden',!isAdmin);updateProfileButton();if(!isAdmin&&!$('admin').classList.contains('hidden'))showPage('shop');await loadProducts();loadActiveSession().catch(e=>console.warn("[V12.2] 場次讀取不影響會員資料",e))}
 async function handleSignup(){const email=$('memberEmail').value.trim(),password=$('memberPassword').value;if(!email||password.length<6){message('memberMessage','請輸入 Email 與至少六碼密碼',true);return}const {data,error}=await db.auth.signUp({email,password,options:{emailRedirectTo:location.origin+location.pathname}});message('memberMessage',error?'註冊失敗：'+error.message:data.session?'註冊成功':'請至信箱確認驗證信',!!error);if(!error)await refreshAuth()}
 async function handleLogin(){const {error}=await db.auth.signInWithPassword({email:$('memberEmail').value.trim(),password:$('memberPassword').value});$('memberPassword').value='';message('memberMessage',error?'登入失敗：'+error.message:'登入成功',!!error);if(!error)await refreshAuth()}
 async function handleLogout(){const {error}=await db.auth.signOut();if(error){alert(error.message);return}profileSavedValues=null;await refreshAuth();showPage('member')}
 async function saveProfile(){if(!currentUser||profileSaving)return;const f=readProfile();if(sameProfile(f,profileSavedValues)){message('profileMessage','會員資料已存檔');return}profileSaving=true;updateProfileButton();message('profileMessage','儲存中...');try{const {data,error}=await db.from('profiles').update(f).eq('id',currentUser.id).select('display_name,ig_handle,phone').single();if(error)throw error;profileSavedValues={display_name:data.display_name||'',ig_handle:data.ig_handle||'',phone:data.phone||''};message('profileMessage','✓ 會員資料已存檔')}catch(e){message('profileMessage','儲存失敗：'+e.message,true)}finally{profileSaving=false;updateProfileButton()}}
 async function loadActiveSession(){
- const {data,error}=await db.from('shopping_sessions').select('id,name').eq('is_active',true).maybeSingle();
- activeSession=error?null:data;
- const name=activeSession?.name||'尚未啟用（請管理員設定）';
- if($('activeSessionCart'))$('activeSessionCart').textContent='目前場次：'+name;
- if($('activeSessionAdmin'))$('activeSessionAdmin').textContent='目前場次：'+name;
- if(error)console.warn('讀取場次失敗',error.message);
+ // V12.2: The actual campaign table in this project's database is shopping_sessions.
+ // A session-load failure must never prevent a member from editing their profile.
+ try{
+  const {data,error}=await db.from('shopping_sessions').select('id,name').eq('is_active',true).limit(1).maybeSingle();
+  activeSession=error?null:data;
+  const name=error?'暫時無法讀取（不影響會員資料儲存）':(activeSession?.name||'尚未啟用（請管理員設定）');
+  if($('activeSessionCart'))$('activeSessionCart').textContent='目前場次：'+name;
+  if($('activeSessionAdmin'))$('activeSessionAdmin').textContent='目前場次：'+name;
+  if(error){console.warn('[V12.2] shopping_sessions 讀取失敗',error);if($('sessionAdminMessage')&&isAdmin)message('sessionAdminMessage','場次讀取失敗：'+error.message,true)}
+ }catch(e){
+  activeSession=null;
+  console.error('[V12.2] 場次載入異常',e);
+  if($('activeSessionCart'))$('activeSessionCart').textContent='目前場次：暫時無法讀取（會員資料仍可編輯）';
+ }
 }
 async function startNewSession(){
  if(!isAdmin)return;
@@ -239,4 +249,3 @@ resetForm();db.auth.onAuthStateChange(()=>setTimeout(()=>refreshAuth().catch(con
 </script>
 </body>
 </html>
-
