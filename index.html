@@ -269,3 +269,54 @@ resetForm();db.auth.onAuthStateChange(()=>setTimeout(()=>refreshAuth().catch(con
 </script>
 </body>
 </html>
+-- 奶油可頌團 V12.4 合併舊訂單前的唯讀檢查
+-- 僅 SELECT，不會新增、刪除或修改任何資料。
+
+-- 1. 相關資料表與欄位
+SELECT table_name, column_name, data_type, is_nullable
+FROM information_schema.columns
+WHERE table_schema='public'
+  AND table_name IN ('orders','order_items','payment_reports','shopping_sessions','v12_order_requests','profiles')
+ORDER BY table_name, ordinal_position;
+
+-- 2. 相關外鍵（確認匯款、商品、取消紀錄連到哪個訂單）
+SELECT tc.table_name, tc.constraint_name, kcu.column_name,
+       ccu.table_name AS referenced_table, ccu.column_name AS referenced_column,
+       rc.update_rule, rc.delete_rule
+FROM information_schema.table_constraints tc
+JOIN information_schema.key_column_usage kcu
+  ON tc.constraint_name=kcu.constraint_name AND tc.constraint_schema=kcu.constraint_schema
+JOIN information_schema.constraint_column_usage ccu
+  ON ccu.constraint_name=tc.constraint_name AND ccu.constraint_schema=tc.constraint_schema
+LEFT JOIN information_schema.referential_constraints rc
+  ON rc.constraint_name=tc.constraint_name AND rc.constraint_schema=tc.constraint_schema
+WHERE tc.table_schema='public' AND tc.constraint_type='FOREIGN KEY'
+  AND (tc.table_name IN ('orders','order_items','payment_reports','v12_order_requests')
+       OR ccu.table_name='orders')
+ORDER BY tc.table_name, tc.constraint_name;
+
+-- 3. 同會員、同場次重複主訂單的組數及筆數（不顯示會員 ID）
+SELECT COUNT(*) AS duplicate_groups,
+       COALESCE(SUM(order_count),0) AS orders_in_duplicate_groups
+FROM (
+ SELECT user_id,session_id,COUNT(*) AS order_count
+ FROM public.orders
+ WHERE session_id IS NOT NULL
+ GROUP BY user_id,session_id
+ HAVING COUNT(*)>1
+) d;
+
+-- 4. 訂單狀態分布（先了解取消、出貨、付款紀錄）
+SELECT status, payment_status, merge_open, COUNT(*) AS order_count
+FROM public.orders
+GROUP BY status,payment_status,merge_open
+ORDER BY status,payment_status,merge_open;
+
+-- 5. 可能記錄取消與出貨的資料表名稱（供確認，不作推測）
+SELECT table_name
+FROM information_schema.tables
+WHERE table_schema='public' AND table_type='BASE TABLE'
+  AND (table_name ILIKE '%cancel%' OR table_name ILIKE '%ship%'
+       OR table_name ILIKE '%refund%' OR table_name ILIKE '%history%'
+       OR table_name ILIKE '%audit%')
+ORDER BY table_name;
